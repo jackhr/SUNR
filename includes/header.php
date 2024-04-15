@@ -30,3 +30,28 @@ $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
 </head>
 
 <body id="<?php echo $page ?>-page">
+
+    <header>
+        <div class="inner">
+
+            <a href="/">
+                <img src="/assets/images/logo.png" alt="Website logo">
+            </a>
+
+            <nav>
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/vehicles">Vehicles</a>
+                <a href="/contact">Contact</a>
+            </nav>
+
+            <div id="hamburger-button">
+                <div id="hamburger-icon">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </div>
+            </div>
+
+        </div>
+    </header>

@@ -8,6 +8,7 @@
     --grey-light     : #888888;
     --grey-dark      : #676767;
     --max-width      : 1140px;
+    --nav-height     : 135px;
     --primary-font   : 'Montserrat', sans-serif;
     --general-padding: 1rem;
 }
@@ -38,6 +39,20 @@ h6 {
     text-transform: uppercase;
 }
 
+a {
+    color          : var(--red);
+    text-decoration: none;
+    transition     : color 0.3s;
+}
+
+a:not(header a):hover {
+    color: var(--white);
+}
+
+a:not(header a):focus {
+    color: var(--blue);
+}
+
 div.inner {
     max-width     : var(--max-width);
     display       : flex;
@@ -47,9 +62,64 @@ div.inner {
     text-align    : center;
 }
 
+header {
+    height: var(--nav-height);
+}
+
+header div.inner {
+    flex-direction: row;
+    height        : 100%;
+}
+
+header div.inner>a,
+header div.inner img {
+    height: 100%;
+}
+
+header div.inner nav {
+    display    : flex;
+    align-items: center;
+    margin-left: auto;
+    gap        : 48px;
+    font-weight: 600;
+}
+
+#hamburger-button {
+    display        : none;
+    position       : absolute;
+    right          : 45px;
+    cursor         : pointer;
+    color          : var(--white);
+    background     : #222628;
+    align-items    : center;
+    justify-content: center;
+    flex-direction : column;
+    transition     : opacity 0.3s ease-out;
+    pointer-events : none;
+    top            : 35px;
+    z-index        : 100;
+    border-radius  : 2px;
+    padding        : 10px;
+}
+
+#hamburger-icon {
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    justify-content: space-between;
+    gap            : 7px;
+}
+
+.hamburger-line {
+    background   : #ffffff80;
+    border-radius: 2px;
+    width        : 28px;
+    height       : 4px;
+}
+
 footer {
     background-color: var(--black);
-    color           : white;
+    color           : var(--white);
 }
 
 footer div {
@@ -69,20 +139,6 @@ footer ul {
     padding        : 0;
     font-size      : 14px;
     font-weight    : 500;
-}
-
-a {
-    color          : var(--red);
-    text-decoration: none;
-    transition     : color 0.3s;
-}
-
-a:hover {
-    color: var(--white);
-}
-
-a:focus {
-    color: var(--blue);
 }
 
 div#copyright {

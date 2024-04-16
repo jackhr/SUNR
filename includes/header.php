@@ -23,13 +23,19 @@ $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
     <meta property="og:description" content="<?php echo $description; ?>">
     <title><?php echo $title ?></title>
     <link type="text/css" rel="stylesheet" href="/styles/main.css">
+    <link type="text/css" rel="stylesheet" href="/js/datetimepicker-master/build/jquery.datetimepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <?php if (isset($page) && file_exists("/styles/{$page}.css")) { ?>
         <link type="text/css" rel="stylesheet" href="/styles/<?php echo $page ?>.css">
     <?php } ?>
     <script src="/js/jquery-3.7.1.min.js"></script>
+    <script src="/js/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
+    <script defer src="/js/main.js"></script>
 </head>
 
 <body id="<?php echo $page ?>-page">
+
+    <div class="overlay"></div>
 
     <header>
         <div class="inner">

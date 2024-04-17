@@ -62,7 +62,7 @@ div.inner {
     text-align    : center;
 }
 
-.overlay {
+body>.overlay {
     width           : 100%;
     height          : 100%;
     position        : fixed;
@@ -186,7 +186,8 @@ body.viewing-custom-select-options .custom-select.active .custom-select-options 
 }
 
 header {
-    height: var(--nav-height);
+    height    : var(--nav-height);
+    background: var(--white);
 }
 
 header div.inner {
@@ -294,6 +295,10 @@ header div.inner nav {
     fill : var(--white);
 }
 
+#feature-section {
+    background: var(--white);
+}
+
 #feature-section h1 {
     font-size     : 30px;
     margin        : 50px auto;
@@ -350,6 +355,161 @@ header div.inner nav {
     color      : var(--grey-light);
     font-weight: 600;
     font-size  : 13px;
+}
+
+#landing-cars-section {
+    background           : url("/assets/images/bg/st-johns.jpg") center no-repeat;
+    background-position  : center;
+    background-size      : cover;
+    background-attachment: fixed;
+}
+
+#landing-cars-section div.inner {
+    padding-top   : 80px;
+    padding-bottom: 50px;
+}
+
+#cars {
+    display        : flex;
+    flex-wrap      : wrap;
+    gap            : 30px;
+    justify-content: space-between;
+}
+
+.car-container {
+    background-color: #fff;
+    width           : calc(33.33% - 24px);
+    padding         : 40px 15px 15px;
+    position        : relative;
+    overflow        : hidden;
+    text-align      : left;
+    max-height      : 390px;
+    cursor          : pointer;
+    height          : 100%;
+}
+
+.car-container .overlay {
+    position       : absolute;
+    top            : 0;
+    left           : 0;
+    height         : 100%;
+    width          : 100%;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+}
+
+.car-container .overlay div {
+    transition: all ease-in-out 0.5s;
+    background: var(--red);
+    height    : 300px;
+    width     : calc(var(--max-width)/4);
+    opacity   : 0;
+}
+
+.car-container:hover .overlay div {
+    opacity: 1;
+    height : 450px;
+    width  : calc(var(--max-width)/3);
+}
+
+.car-container:nth-child(2n) {
+    margin: auto
+}
+
+.car-container .top,
+.car-container .bottom {
+    position: relative;
+}
+
+.car-container .top {
+    display: flex;
+    padding: 0 20px 12px;
+}
+
+.car-container .top .left {
+    width: 100%;
+}
+
+.car-container .top .left h1 {
+    margin        : 0;
+    font-size     : 22px;
+    text-transform: capitalize;
+}
+
+.car-container .top .left h2 {
+    margin   : 0;
+    font-size: 14px;
+}
+
+.car-container .top .left>div {
+    display       : flex;
+    flex-direction: column;
+    background    : var(--red);
+    margin        : 16px 24px 0 0;
+    color         : var(--white);
+    font-weight   : 800;
+    font-size     : 12px;
+    padding       : 8px 12px;
+    transition    : background-color ease 0.5s;
+}
+
+.car-container:hover .top .left>div {
+    background-color: var(--black);
+}
+
+.car-container .top .left>div span:nth-child(2) {
+    font-size: 24px;
+}
+
+.car-container .top .left>div span:last-child {
+    font-size: 15px;
+}
+
+.car-container .top .right {
+    display       : flex;
+    flex-direction: column;
+    color         : var(--grey-dark);
+    font-size     : 13px;
+    gap           : 8px;
+    min-width     : max-content;
+}
+
+.car-container .top .right div {
+    display    : flex;
+    align-items: center;
+    gap        : 8px;
+}
+
+.car-container svg {
+    width     : 20px;
+    height    : 20px;
+    fill      : var(--red);
+    transition: fill 0.3s;
+}
+
+.car-container:hover svg {
+    fill: var(--black);
+}
+
+.car-container .top .right div span {
+    font-weight: 500;
+}
+
+.car-container img {
+    width : 100%;
+    height: auto;
+}
+
+#cars+div {
+    margin     : 50px auto 0;
+    width      : max-content;
+    font-size  : 16px;
+    padding    : 18px 25px;
+    background : var(--red);
+    color      : var(--white);
+    cursor     : pointer;
+    font-weight: 500;
 }
 
 footer {

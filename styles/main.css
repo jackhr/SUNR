@@ -562,6 +562,40 @@ header div.inner nav {
     margin: 0;
 }
 
+#contact-banner {
+    background-color: var(--red);
+    display         : flex;
+    align-items     : center;
+    color           : var(--black);
+    padding         : 40px;
+}
+
+#contact-banner h1,
+#contact-banner a {
+    margin     : 0;
+    font-size  : 24px;
+    font-weight: 700;
+}
+
+#contact-banner a {
+    margin-left: auto;
+    color      : var(--black);
+}
+
+#contact-banner div {
+    border          : solid 2px var(--white);
+    border-radius   : 4px;
+    transition      : background-color 0.3s;
+    background-color: var(--red);
+    cursor          : pointer;
+    padding         : 12px 18px;
+    margin-left     : 24px;
+    font-weight     : 600;
+}
+
+#contact-banner div:hover {
+    background-color: var(--white);
+}
 
 footer {
     background-color: var(--black);

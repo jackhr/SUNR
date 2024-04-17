@@ -522,6 +522,10 @@ footer div {
     flex-direction: column;
 }
 
+footer div.inner>div:first-child {
+    margin: 60px 0;
+}
+
 footer h6 {
     font-size: 14px;
     margin   : 0;
@@ -534,6 +538,8 @@ footer ul {
     padding        : 0;
     font-size      : 14px;
     font-weight    : 500;
+    line-height    : 1.5;
+    letter-spacing : 0.67px;
 }
 
 div#copyright {

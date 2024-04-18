@@ -1,0 +1,88 @@
+#contact-page .general-header {
+    background-image: url("/assets/images/bg/shirley-heights-view.jpg");
+}
+
+#contact-card-section div.inner {
+    align-items: center;
+    gap        : 24px;
+    font-size  : 14px;
+    line-height: 22px;
+    font-weight: 500;
+}
+
+#contact-card-section h1 {
+    margin: 0;
+}
+
+.contact-brief-info {
+    display       : flex;
+    flex-direction: column;
+    color         : #555;
+}
+
+.contact-brief-info:last-child span:first-child,
+.contact-link span {
+    font-weight: 600;
+    color      : #333;
+}
+
+#contact-form-section form {
+    display: flex;
+    gap    : 30px;
+}
+
+#contact-form-section form>div {
+    width     : 100%;
+    text-align: left;
+}
+
+.input-container {
+    display       : flex;
+    flex-direction: column;
+    text-align    : left;
+    gap           : 15px;
+    font-weight   : 700;
+    text-transform: uppercase;
+    font-size     : 12px;
+    margin-bottom : 15px;
+}
+
+.input-container textarea,
+.input-container input {
+    background-color: #ebe9e5;
+    border          : 2px solid #ebe9e5;
+    color           : #888;
+    resize          : none;
+    transition      : all ease 0.3s;
+    outline         : none;
+    padding         : 12px;
+    margin          : 0;
+    font-weight     : 600;
+}
+
+.input-container textarea:focus,
+.input-container input:focus {
+    border-color    : var(--primary);
+    background-color: var(--white);
+}
+
+#contact-form-section button[type="submit"] {
+    background-color: #273f44;
+    color           : var(--white);
+    border          : solid 2px #273f44;
+    font-weight     : 600;
+    cursor          : pointer;
+    transition      : all ease 0.3s;
+    border-radius   : 4px;
+    padding         : 15px 42px;
+}
+
+#contact-form-section button[type="submit"]:hover {
+    background-color: var(--primary);
+    border-color    : var(--primary);
+}
+
+#contact-form-section button[type="submit"]:active {
+    background-color: var(--white);
+    color           : var(--primary);
+}

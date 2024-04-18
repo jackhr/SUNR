@@ -48,16 +48,16 @@
     display        : flex;
     align-items    : center;
     justify-content: center;
-    border         : solid #ababab 1px;
+    border         : solid #ababab 2px;
     color          : #ababab;
     font-weight    : 600;
-    font-size      : 18px;
+    font-size      : 20px;
 }
 
 .faq.open .faq-toggle::before {
-    content: "-";
-    border : solid rgb(204, 97, 25) 1px;
-    color  : rgb(204, 97, 25);
+    content     : "-";
+    border-color: var(--primary);
+    color       : var(--primary);
 }
 
 .faq-answer {

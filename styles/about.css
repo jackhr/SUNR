@@ -67,5 +67,5 @@
     -moz-osx-font-smoothing: grayscale;
     content                : "\f00c";
     font-size              : 14px;
-    color                  : #f0c540;
+    color                  : var(--primary);
 }

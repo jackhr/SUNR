@@ -21,6 +21,12 @@ $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
     <meta name="description" content="<?php echo $description ?>">
     <meta property="og:title" content="<?php echo $base_title ?>">
     <meta property="og:description" content="<?php echo $description; ?>">
+    <!-- favicon begin -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/site.webmanifest">
+    <!-- favicon end -->
     <title><?php echo $title ?></title>
     <link type="text/css" rel="stylesheet" href="/styles/main.css">
     <link type="text/css" rel="stylesheet" href="/js/datetimepicker-master/build/jquery.datetimepicker.min.css">

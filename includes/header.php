@@ -46,10 +46,10 @@ $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
 
             <nav>
                 <a href="/">Home</a>
-                <a href="/about">About</a>
-                <a href="/vehicles">Vehicles</a>
+                <a href="/about.php">About</a>
+                <a href="/vehicles.php">Vehicles</a>
                 <a href="/faq.php">FAQ</a>
-                <a href="/contact">Contact</a>
+                <a href="/contact.php">Contact</a>
             </nav>
 
             <div id="hamburger-button">

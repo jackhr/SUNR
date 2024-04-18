@@ -34,14 +34,14 @@ include_once 'includes/header.php';
                     <div class="faq-toggle"></div>
                     <span class="faq-question">Will there be a fee if I have to cancel my reservation?</span>
                 </div>
-                <p class="faq-answer">No, provided that Keys Car Rental has not dispatched a vehicle at the time you cancel.</p>
+                <p class="faq-answer">No, provided that Shaquan's Car Rental has not dispatched a vehicle at the time you cancel.</p>
             </div>
             <div class="faq">
                 <div class="faq-top">
                     <div class="faq-toggle"></div>
                     <span class="faq-question">When does the rental time start and stop?</span>
                 </div>
-                <p class="faq-answer">The start time of the rental period shall be at the actual delivery and acceptance by the individual of the vehicle. The ending time shall be at the end of rental time period. Keys Car Rental will make prior arrangements for pick ups and drop offs at locations most convenient for you.</p>
+                <p class="faq-answer">The start time of the rental period shall be at the actual delivery and acceptance by the individual of the vehicle. The ending time shall be at the end of rental time period. Shaquan's Car Rental will make prior arrangements for pick ups and drop offs at locations most convenient for you.</p>
             </div>
             <div class="faq">
                 <div class="faq-top">

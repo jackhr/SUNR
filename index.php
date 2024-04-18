@@ -112,7 +112,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
                 <div class="feature-info">
                     <h2>Outstanding Service</h2>
-                    <p>Keys Car Rental is committed to providing an unmatched service experience for our clients. We do this by honest, professional and friendly attention to all we serve. We place high value on your user experience and know that the very best recommendation is always by word-of-mouth.</p>
+                    <p>Shaquan's Car Rental is committed to providing an unmatched service experience for our clients. We do this by honest, professional and friendly attention to all we serve. We place high value on your user experience and know that the very best recommendation is always by word-of-mouth.</p>
                 </div>
             </div>
             <div class="feature-container">

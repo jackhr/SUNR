@@ -13,7 +13,7 @@
             </ul>
         </div>
 
-        <div id="copyright">© 2022 Keys Car Rental Antigua   |   US$ to EC$ Exchange at 2.7169   |   For discounted rate, enter 2 or more days.</div>
+        <div id="copyright">© 2022 Shaquan's Car Rental Antigua   |   US$ to EC$ Exchange at 2.7169   |   For discounted rate, enter 2 or more days.</div>
     </div>
 
 </footer>

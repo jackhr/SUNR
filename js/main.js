@@ -49,4 +49,9 @@ $(document).ready(() => {
         // submit the form
         window.location.href = newAction;
     });
+
+    $(".faq").on('click', function () {
+        $(this).toggleClass('open');
+        $(this).find('.faq-answer').slideToggle();
+    });
 });

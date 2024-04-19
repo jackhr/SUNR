@@ -409,9 +409,8 @@ header div.inner nav {
     position        : relative;
     overflow        : hidden;
     text-align      : left;
-    max-height      : 390px;
+    height          : 390px;
     cursor          : pointer;
-    height          : 100%;
 }
 
 .car-container .overlay {
@@ -439,13 +438,15 @@ header div.inner nav {
     width  : calc(var(--max-width)/3);
 }
 
-.car-container:nth-child(2n) {
+.car-container:nth-child(2n):not(.car-container:last-child) {
     margin: auto
 }
 
 .car-container .top,
 .car-container .bottom {
     position: relative;
+    height  : 50%;
+    overflow: hidden;
 }
 
 .car-container .top {
@@ -531,8 +532,9 @@ header div.inner nav {
 }
 
 .car-container img {
-    width : 100%;
-    height: auto;
+    width     : 100%;
+    height    : 100%;
+    object-fit: cover;
 }
 
 #cars+div {

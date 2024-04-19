@@ -7,7 +7,7 @@ include_once 'includes/header.php';
 
 $vehicles_arr = [];
 
-$query = "SELECT * FROM vehicles";
+$query = "SELECT * FROM vehicles WHERE landing_order IS NOT NULL ORDER BY landing_order ASC";
 $result = mysqli_query($con, $query);
 while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
 

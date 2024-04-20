@@ -354,6 +354,7 @@ header div.inner nav {
 
 .feature-icon {
     min-width    : 54px;
+    width        : 54px;
     height       : 54px;
     padding      : 12px;
     background   : var(--primary);

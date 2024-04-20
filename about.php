@@ -2,7 +2,7 @@
 
 $title_suffix = "About";
 $page = "about";
-$description = "Learn more about Shaq's Car Rental. Find out about our history, mission, and more.";
+$description = "Learn more about Shaquan's Car Rental. Find out about our history, mission, and more.";
 
 include_once 'includes/header.php';
 

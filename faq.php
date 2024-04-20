@@ -2,7 +2,7 @@
 
 $title_suffix = "FAQ";
 $page = "faq";
-$description = "Frequently asked questions about Shaq's Car Rental. Find answers to common questions about our services, vehicles, and more.";
+$description = "Frequently asked questions about Shaquan's Car Rental. Find answers to common questions about our services, vehicles, and more.";
 
 include_once 'includes/header.php';
 

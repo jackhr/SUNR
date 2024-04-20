@@ -2,9 +2,9 @@
 
 include 'connection.php';
 
-$description = isset($description) ? $description : "Welcome to Shaq's Car Rental. We offer a wide selection of vehicles for rent. Book your car today!";
+$description = isset($description) ? $description : "Welcome to Shaquan's Car Rental. We offer a wide selection of vehicles for rent. Book your car today!";
 
-$base_title = "Shaq's Car Rental";
+$base_title = "Shaquan's Car Rental";
 
 $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
 
@@ -22,10 +22,10 @@ $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
     <meta property="og:title" content="<?php echo $base_title ?>">
     <meta property="og:description" content="<?php echo $description; ?>">
     <!-- favicon begin -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
-    <link rel="manifest" href="/assets/images/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/favicon/site.webmanifest">
     <!-- favicon end -->
     <title><?php echo $title ?></title>
     <link type="text/css" rel="stylesheet" href="/styles/main.css">

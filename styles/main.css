@@ -55,8 +55,42 @@ a:hover {
     color: var(--secondary);
 }
 
-a:focus {
+a:focus:not(header a) {
     color: var(--white);
+}
+
+svg {
+    width: 12px;
+}
+
+input {
+    width         : 100%;
+    height        : 40px;
+    border        : none;
+    border-radius : 2px;
+    background    : var(--white);
+    color         : var(--black);
+    font-weight   : 600;
+    text-transform: uppercase;
+    padding       : 8px;
+}
+
+.continue-btn {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    background-color: var(--primary);
+    color           : var(--white);
+    border          : solid 2px var(--primary);
+    font-weight     : 700;
+    cursor          : pointer;
+    height          : 48px;
+    transition      : color 0.3s, background-color 0.3s;
+}
+
+.continue-btn:hover {
+    background-color: #fff;
+    color           : var(--primary);
 }
 
 div.inner {
@@ -70,14 +104,16 @@ div.inner {
 
 .general-header {
     display            : flex;
+    flex-direction     : column;
     align-items        : center;
     position           : relative;
     gap                : 12px;
-    height             : 225px;
+    min-height         : 225px;
     background-position: center;
     background-size    : cover;
     background-repeat  : no-repeat;
     color              : var(--white);
+    padding            : 15px;
 }
 
 .general-header h1 {
@@ -288,18 +324,6 @@ header div.inner nav {
 
 }
 
-#intro-section input {
-    width         : 100%;
-    height        : 40px;
-    border        : none;
-    border-radius : 2px;
-    background    : var(--white);
-    color         : var(--black);
-    font-weight   : 600;
-    text-transform: uppercase;
-    padding       : 8px;
-}
-
 #intro-section form button {
     display       : flex;
     width         : unset;
@@ -317,8 +341,7 @@ header div.inner nav {
 }
 
 #intro-section form svg {
-    width: 12px;
-    fill : var(--white);
+    fill: var(--white);
 }
 
 #feature-section {

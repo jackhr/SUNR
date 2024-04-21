@@ -1,0 +1,240 @@
+#reservation-page .general-header {
+    background-image: url("/assets/images/bg/red-car-palm-trees-sunshine-glare.jpg");
+}
+
+.general-header>h1 {
+    margin: 70px auto 36px;
+}
+
+#itinerary-section {
+    background-color: #fff;
+}
+
+#itinerary-section div.inner {
+    padding-top   : 60px;
+    padding-bottom: 60px;
+    text-align    : left;
+}
+
+#itinerary-section div.inner>h1 {
+    margin   : 0 0 55px;
+    font-size: 26px;
+}
+
+.reservation-flow-container {
+    display: flex;
+    padding: 30px;
+    gap    : 60px;
+}
+
+#itinerary-section div.inner div.left {
+    width: 100%;
+}
+
+#itinerary-section div.inner div.left>div h2 {
+    margin   : 0 0 30px;
+    font-size: 16px;
+}
+
+.main-itinerary-box {
+    border       : solid 2px var(--primary);
+    padding      : 30px;
+    margin-bottom: 30px;
+}
+
+.main-itinerary-box h6 {
+    font-size: 12px;
+    margin   : 0 0 5px;
+}
+
+.main-itinerary-box .checkbox-container {
+    margin: 10px 0 24px;
+}
+
+.main-itinerary-box .custom-select.return {
+    margin-bottom: 24px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#reservation-steps {
+    display        : flex;
+    justify-content: space-between;
+    gap            : 36px;
+    margin         : 0 auto 15px;
+    max-width      : var(--max-width);
+    width          : 100%;
+}
+
+.reservation-step {
+    width         : 100%;
+    display       : flex;
+    flex-direction: column;
+    align-items   : center;
+    font-size     : 14px;
+    font-weight   : 600;
+}
+
+.reservation-step>* {
+    width: 100%;
+}
+
+.reservation-step .header {
+    display   : flex;
+    background: #2a404580;
+}
+
+.reservation-step .header span {
+    width          : 54px;
+    height         : 54px;
+    background     : var(--black);
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    color          : var(--primary);
+    font-size      : 20px;
+    font-weight    : 800;
+}
+
+.reservation-step .header h2 {
+    margin        : auto 0 auto 15px;
+    font-size     : 18px;
+    text-transform: capitalize;
+}
+
+.reservation-step .body {
+    background: var(--white);
+    color     : var(--black);
+    padding   : 30px;
+}
+
+.reservation-step .body>div {
+    margin-bottom: 30px;
+}
+
+.reservation-step .body h6 {
+    margin   : 0 0 8px;
+    font-size: 14px;
+}
+
+.reservation-step .body p {
+    margin     : 0;
+    font-weight: normal;
+}
+
+.reservation-step.active .header span {
+    background: var(--white);
+    color     : var(--primary);
+}
+
+.reservation-step.active .body {
+    background: var(--primary);
+    color     : var(--white);
+}
+
+#reservation-summary {
+    min-width: 430px;
+}
+
+#reservation-summary>h5 {
+    margin   : 0 0 8px;
+    font-size: 16px;
+}
+
+#reservation-summary>h6 {
+    margin        : 0;
+    font-weight   : 400;
+    font-size     : 14px;
+    line-height   : 22px;
+    text-transform: none;
+}
+
+#reservation-summary div.car.summary {
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    height         : 184px;
+    justify-content: center;
+}
+
+#reservation-summary div.car.summary>div:first-child {
+    width          : 24px;
+    height         : 24px;
+    border-radius  : 50%;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    background     : #ccc;
+    color          : #fff;
+    font-size      : 30px;
+    font-weight    : 400;
+    transition     : background-color 0.3s;
+    cursor         : pointer;
+}
+
+#reservation-summary div.car.summary>div:first-child:hover {
+    background-color: #2a4045;
+}
+
+#reservation-summary div.car.summary>div:last-child {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    gap            : 8px;
+    height         : 42px;
+    width          : 154px;
+    background     : var(--primary);
+    border-radius  : 2px;
+    cursor         : pointer;
+    font-weight    : 800;
+    font-size      : 12px;
+    text-transform : uppercase;
+    margin-top     : 20px;
+}
+
+#reservation-summary div.summary h6 {
+    margin   : 0 0 12px;
+    font-size: 16px;
+}
+
+#reservation-summary div.rate.summary,
+#reservation-summary div.add-ons.summary {
+    margin-bottom: 24px;
+}
+
+#reservation-summary div.summary:not(.car)>div {
+    display   : flex;
+    background: #f4f4f4;
+    padding   : 10px 20px;
+}
+
+#reservation-summary div.summary:not(.car)>div>span:first-child {
+    margin-right: auto;
+}
+
+#reservation-summary div.summary:not(.car)>div>span:nth-child(2) {
+    margin-right: 100px;
+}
+
+#reservation-summary .estimated-total {
+    background     : #eee;
+    display        : flex;
+    align-items    : center;
+    height         : 100px;
+    padding        : 30px;
+    justify-content: space-between;
+    font-weight    : 700;
+}

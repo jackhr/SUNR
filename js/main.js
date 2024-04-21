@@ -6,8 +6,11 @@ $(document).ready(() => {
     $(".checkbox-container").click(function () {
         const checkbox = $(this).find('input');
         const isChecked = checkbox.prop('checked');
+        const onReservationPage = $('body').prop('id') === 'reservation-page';
+        const elementToToggle = onReservationPage ? $('.custom-select.return').parent('div') : $('.custom-select.return');
+
         checkbox.prop('checked', !isChecked);
-        $('.custom-select.return').slideToggle(!isChecked);
+        elementToToggle.slideToggle(!isChecked);
     });
 
     $(".custom-select").on('click', function () {

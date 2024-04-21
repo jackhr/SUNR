@@ -57,4 +57,13 @@ $(document).ready(() => {
         $(this).toggleClass('open');
         $(this).find('.faq-answer').slideToggle();
     });
+
+    $(".reservation-step .header").on('click', function () {
+        const container = $(this).parent('.reservation-step');
+        if (container.hasClass('active')) return;
+        const step = container.data('step');
+        const currentStep = $(".reservation-step.active").data('step');
+        $(".reservation-step").removeClass('active');
+        container.addClass('active');
+    });
 });

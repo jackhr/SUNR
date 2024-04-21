@@ -73,7 +73,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="itinerary-section" data-step="1">
+<section id="itinerary-section" style="display:none;" data-step="1">
     <div class="inner">
         <h1>Reserve Your Vehicle</h1>
         <div class="reservation-flow-container">

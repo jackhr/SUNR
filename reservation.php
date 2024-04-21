@@ -73,7 +73,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="itinerary-section" style="display:none;" data-step="1">
+<section id="itinerary-section" data-step="1" <?php if ($step != 1) echo 'style="display:none;"'; ?>>
     <div class="inner">
         <h1>Reserve Your Vehicle</h1>
         <div class="reservation-flow-container">
@@ -140,7 +140,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="vehicle-selection-section" data-step="2">
+<section id="vehicle-selection-section" data-step="2" <?php if ($step != 1) echo 'style="display:none;"'; ?>>
     <div class="inner">
         <h1>Select Vehicle</h1>
         <div id="vehicles">

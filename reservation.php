@@ -140,7 +140,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="vehicle-selection-section" data-step="2" <?php if ($step != 1) echo 'style="display:none;"'; ?>>
+<section id="vehicle-selection-section" data-step="2" <?php if ($step != 2) echo 'style="display:none;"'; ?>>
     <div class="inner">
         <h1>Select Vehicle</h1>
         <div id="vehicles">

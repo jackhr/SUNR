@@ -60,7 +60,8 @@ a:focus:not(header a) {
 }
 
 svg {
-    width: 12px;
+    width : 12px;
+    height: auto;
 }
 
 input {

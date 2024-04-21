@@ -65,5 +65,8 @@ $(document).ready(() => {
         const currentStep = $(".reservation-step.active").data('step');
         $(".reservation-step").removeClass('active');
         container.addClass('active');
+
+        $("section[data-step]").hide();
+        $(`section[data-step="${step}"]`).show();
     });
 });

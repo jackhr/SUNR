@@ -135,7 +135,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                     <div class="continue-btn">Continue Reservation</div>
                 </div>
             </div>
-            <?php include_once 'includes/reservation-summary.php'; ?>
+            <?php include 'includes/reservation-summary.php'; ?>
         </div>
     </div>
 </section>
@@ -191,6 +191,94 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                     </div>
                 </div>
             <?php } ?>
+        </div>
+    </div>
+</section>
+
+<section id="vehicle-add-ons" data-step="2" <?php if ($step != 2) echo 'style="display:none;"'; ?>>
+    <div class="inner">
+        <h1>Vehicle Add-ons</h1>
+        <div class="reservation-flow-container">
+            <div class="left">
+                <div id="add-ons">
+                    <div class="add-on-container">
+                        <div class="top">
+                            <div class="left">
+                                <h2>Collision Insurance – $10/day + Premium</h2>
+                                <div class="more-add-on-info">
+                                    <span>More Information</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                        <path d="m6 9 6 6 6-6" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="add-on-btn"></div>
+                        </div>
+                        <p>Insurance base cost is USD$10/day, plus a premium of up to USD$5/day depending on your car selection. If applicable, this premium will be added to your bill after you place your order. Please see full rates for all cars below.<br><br><b>$10/day:</b> <i>Toyota Vitz / Toyota Allion / Toyota Yaris / Toyota Corolla / Toyota Rush</i><br><br><b>$12/day:</b> <i>Toyota RAV4 / Hyundai Tucson / Jeep Wrangler</i><br><br><b>$15/day:</b> <i>Toyota Noah / Toyota Prado / Toyota Fortuner / Toyota Estima / Mazda BT50 / Toyota Hilux</i></p>
+                    </div>
+                    <div class="add-on-container">
+                        <div class="top">
+                            <div class="left">
+                                <h2>Antiguan Driving Permit (Required by Law) – $20</h2>
+                                <div class="more-add-on-info">
+                                    <span>More Information</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                        <path d="m6 9 6 6 6-6" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="add-on-btn"></div>
+                        </div>
+                        <p>All drivers in Antigua must have an Antigua & Barbuda Temporary Drivers License (in addition to a valid Drivers License from your country of residence. The temporary Drivers License is valid for 3 months and costs USD$20.00.</p>
+                    </div>
+                    <div class="add-on-container">
+                        <div class="top">
+                            <div class="left">
+                                <h2>Additional Driver</h2>
+                                <div class="more-add-on-info">
+                                    <span>More Information</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                        <path d="m6 9 6 6 6-6" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="add-on-btn"></div>
+                        </div>
+                        <p>An additional driver can be added to your rental agreement. Each driver must have a valid drivers license from their country of residence and is required to have an Antigua & Barbuda Temporary Drivers License.</p>
+                    </div>
+                    <div class="add-on-container">
+                        <div class="top">
+                            <div class="left">
+                                <h2>Child Seat (If Available) – Complimentary</h2>
+                                <div class="more-add-on-info">
+                                    <span>More Information</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                        <path d="m6 9 6 6 6-6" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="add-on-btn"></div>
+                        </div>
+                        <p>Child safety seats are recommended by law for children under the age of four. This option is complementary and based on availability.</p>
+                    </div>
+                    <div class="add-on-container">
+                        <div class="top">
+                            <div class="left">
+                                <h2>GPS Navigation (If Available) – Complimentary</h2>
+                                <div class="more-add-on-info">
+                                    <span>More Information</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                        <path d="m6 9 6 6 6-6" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="add-on-btn"></div>
+                        </div>
+                        <p>We have a limited number of GPS turn-by-turn navigation systems. This option is limited to availability.</p>
+                    </div>
+                </div>
+            </div>
+            <?php include 'includes/reservation-summary.php'; ?>
         </div>
     </div>
 </section>

@@ -329,3 +329,99 @@
     border-radius: 4px;
     width        : 120px;
 }
+
+#vehicle-add-ons {
+    background: #fff;
+}
+
+#vehicle-add-ons div.inner {
+    text-align: left;
+}
+
+#vehicle-add-ons div.inner h1 {
+    margin   : 50px 0 60px;
+    font-size: 26px;
+}
+
+#vehicle-add-ons .reservation-flow-container>div.left {
+    width: 100%;
+
+}
+
+.add-on-container {
+    margin-bottom: 60px;
+}
+
+.add-on-container .top {
+    display        : flex;
+    justify-content: space-between;
+    align-items    : center;
+}
+
+.add-on-container .top .left h2 {
+    margin   : 0;
+    font-size: 14px;
+}
+
+.more-add-on-info {
+    margin-top : 4px;
+    gap        : 4px;
+    display    : flex;
+    align-items: center;
+    cursor     : pointer;
+    width      : max-content;
+}
+
+.more-add-on-info span {
+    font-size     : 11px;
+    text-transform: uppercase;
+    border-bottom : solid 1px var(--grey-dark);
+    font-weight   : 500;
+}
+
+.more-add-on-info svg {
+    width: 14px;
+}
+
+.add-on-container.viewing-info svg {
+    transform: rotate(180deg);
+}
+
+.add-on-btn::before {
+    content: "ADD";
+}
+
+.add-on-btn.added::before {
+    content: "ADDED";
+}
+
+.add-on-btn.added:hover::before {
+    content: "REMOVE";
+}
+
+.add-on-btn {
+    width          : 90px;
+    border         : solid 2px var(--primary);
+    border-radius  : 4px;
+    cursor         : pointer;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    text-transform : uppercase;
+    font-size      : 12px;
+    font-weight    : 700;
+    height         : 45px;
+    transition     : background-color 0.3s, color 0.3s;
+}
+
+.add-on-btn.added,
+.add-on-btn:hover {
+    background-color: var(--primary);
+    color           : var(--white);
+}
+
+.add-on-container>p {
+    margin-top: 30px;
+    font-size : 13px;
+    display   : none;
+}

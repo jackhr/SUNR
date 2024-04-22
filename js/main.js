@@ -69,4 +69,21 @@ $(document).ready(() => {
         $("section[data-step]").hide();
         $(`section[data-step="${step}"]`).show();
     });
+
+    $(".vehicle-container .continue-btn").on('click', function () {
+        $("#vehicle-selection-section").hide();
+        $("#vehicle-add-ons").show();
+    });
+
+    $(".more-add-on-info").on('click', function () {
+        const container = $(this).closest('.add-on-container')
+        const viewingInfo = container.hasClass('viewing-info');
+
+        container.toggleClass('viewing-info', !viewingInfo);
+        container.children('p').slideToggle(!viewingInfo);
+    });
+
+    $(".add-on-btn").on('click', function () {
+        $(this).toggleClass('added');
+    });
 });

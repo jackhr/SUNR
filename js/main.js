@@ -67,7 +67,7 @@ $(document).ready(() => {
         container.addClass('active');
 
         $("section[data-step]").hide();
-        $(`section[data-step="${step}"]`).show();
+        $(`section[data-step="${step}"]`).first().show();
     });
 
     $(".vehicle-container .continue-btn").on('click', function () {
@@ -85,5 +85,13 @@ $(document).ready(() => {
 
     $(".add-on-btn").on('click', function () {
         $(this).toggleClass('added');
+    });
+
+    $("#itinerary-section .continue-btn").on('click', function () {
+        $(".reservation-step[data-step='2'] .header").click();
+    });
+
+    $("#vehicle-add-ons .continue-btn").on('click', function () {
+        $(".reservation-step[data-step='3'] .header").click();
     });
 });

@@ -195,7 +195,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="vehicle-add-ons" data-step="2" <?php if ($step != 2) echo 'style="display:none;"'; ?>>
+<section id="vehicle-add-ons" data-step="2" style="display: none;">
     <div class="inner">
         <h1>Vehicle Add-ons</h1>
         <div class="reservation-flow-container">
@@ -282,6 +282,60 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
             <?php include 'includes/reservation-summary.php'; ?>
         </div>
     </div>
+</section>
+
+<section id="final-section" data-step="3" <?php if ($step != 3) echo 'style="display:none;"'; ?>>
+    <div class="inner">
+        <h1>Final Details</h1>
+        <div class="reservation-flow-container">
+            <div class="left">
+                <div id="final-details-form">
+                    <h2>Billing Details</h2>
+                    <div class="mutiple-input-container">
+                        <div class="input-container">
+                            <h6>First Name*</h6>
+                            <input type="text">
+                        </div>
+                        <div class="input-container">
+                            <h6>Last Name*</h6>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="mutiple-input-container">
+                        <div class="input-container">
+                            <h6>Driver's License (Optional)</h6>
+                            <input type="text">
+                        </div>
+                        <div class="input-container">
+                            <h6>Country / Region (Optional)</h6>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <h6>Street address (optional)</h6>
+                        <input type="text">
+                    </div>
+                    <div class="input-container">
+                        <h6>Town / City (optional)</h6>
+                        <input type="text">
+                    </div>
+                    <div class="input-container">
+                        <h6>State / County (optional)</h6>
+                        <input type="text">
+                    </div>
+                    <div class="input-container">
+                        <h6>Phone *</h6>
+                        <input type="text">
+                    </div>
+                    <div class="input-container">
+                        <h6>Email address *</h6>
+                        <input type="text">
+                    </div>
+                    <div class="continue-btn">Send Request</div>
+                </div>
+            </div>
+            <?php include 'includes/reservation-summary.php'; ?>
+        </div>
 </section>
 
 

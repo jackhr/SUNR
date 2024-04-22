@@ -711,12 +711,14 @@ footer div {
 }
 
 footer div.inner>div:first-child {
-    margin: 60px 0;
+    margin         : 60px 0;
+    flex-direction : row;
+    justify-content: space-between;
 }
 
 footer h6 {
     font-size: 14px;
-    margin   : 0;
+    margin   : 0 0 14px;
     width    : max-content;
 }
 
@@ -724,10 +726,31 @@ footer ul {
     list-style-type: none;
     text-align     : left;
     padding        : 0;
+    margin         : 0;
     font-size      : 14px;
     font-weight    : 500;
     line-height    : 1.5;
     letter-spacing : 0.67px;
+}
+
+.footer-logo {
+    height    : 200px;
+    background: var(--white);
+    padding   : 12px;
+}
+
+.footer-logo img {
+    height: 100%;
+}
+
+.footer-contact {
+    align-items: flex-end;
+}
+
+footer .contact-link {
+    flex-direction: row;
+    gap           : 4px;
+    margin-bottom : 12px;
 }
 
 div#copyright {

@@ -22,7 +22,7 @@
 }
 
 .contact-brief-info:last-child span:first-child,
-.contact-link span {
+.contact-link:not(footer .contact-link) span {
     font-weight: 600;
     color      : #333;
 }

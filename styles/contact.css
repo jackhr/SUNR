@@ -1,5 +1,5 @@
 #contact-page .general-header {
-    background-image: url("/assets/images/bg/shirley-heights-view.jpg");
+    background-image: url("/assets/images/bg/palm-trees-on-beach.jpg");
 }
 
 #contact-card-section div.inner {
@@ -8,6 +8,7 @@
     font-size  : 14px;
     line-height: 22px;
     font-weight: 500;
+    padding-top: calc(var(--general-padding) + 30px);
 }
 
 #contact-card-section h1 {
@@ -24,6 +25,10 @@
 .contact-link span {
     font-weight: 600;
     color      : #333;
+}
+
+#contact-form-section div.inner {
+    padding-bottom: calc(var(--general-padding) + 30px);
 }
 
 #contact-form-section form {

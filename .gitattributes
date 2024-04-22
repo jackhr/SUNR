@@ -6,3 +6,4 @@ assets/images/vehicles/mazda_CX5.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/vehicles/toyota_corolla_axio_2.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/vehicles/toyota_vitz_2.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/vehicles/toyota_yaris.jpg filter=lfs diff=lfs merge=lfs -text
+assets/images/bg/palm-trees-on-beach.jpg filter=lfs diff=lfs merge=lfs -text

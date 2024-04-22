@@ -17,19 +17,19 @@ include_once 'includes/header.php';
         <h1>Shaquan's Car Rental</h1>
 
         <div class="contact-brief-info">
-            <span>Belle Vue Estate</span>
-            <span>St John’s</span>
+            <span>Herbert’s road</span>
+            <span>Piggots</span>
             <span>Antigua, WI</span>
         </div>
 
         <div>
             <div class="contact-link">
                 <span>Phone:</span>
-                <a href="tel:+1 (268) 771-1891">+1 (268) 771-1891</a>
+                <a href="tel:+1 (268) 786-7449">+1 (268) 786-7449</a>
             </div>
             <div class="contact-link">
                 <span>Email:</span>
-                <a href="mailto:info@shaquanscarrentalantigua.com">info@shaquanscarrentalantigua.com</a>
+                <a href="mailto:shaquanoneil99@gmail.com">shaquanoneil99@gmail.com</a>
             </div>
         </div>
 

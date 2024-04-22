@@ -255,10 +255,4 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </section>
 <?php } ?>
 
-<section id="contact-banner">
-    <h1>Have a Question? Feel free to ask...</h1>
-    <a href="tel:+12687711891">+1 (268) 771-1891</a>
-    <div>FAQ</div>
-</section>
-
 <?php include_once 'includes/footer.php' ?>

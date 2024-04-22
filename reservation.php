@@ -277,6 +277,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                         <p>We have a limited number of GPS turn-by-turn navigation systems. This option is limited to availability.</p>
                     </div>
                 </div>
+                <div class="continue-btn">Continue Reservation</div>
             </div>
             <?php include 'includes/reservation-summary.php'; ?>
         </div>

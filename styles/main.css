@@ -143,6 +143,49 @@ body.viewing-custom-select-options .overlay {
     pointer-events: all;
 }
 
+.input-container {
+    display       : flex;
+    flex-direction: column;
+    text-align    : left;
+    gap           : 15px;
+    font-weight   : 700;
+    text-transform: uppercase;
+    font-size     : 12px;
+    margin-bottom : 15px;
+    width         : 100%;
+}
+
+.input-container textarea,
+.input-container input {
+    background-color: #ebe9e5;
+    border          : 2px solid #ebe9e5;
+    color           : #888;
+    resize          : none;
+    transition      : all ease 0.3s;
+    outline         : none;
+    padding         : 12px;
+    margin          : 0;
+    font-weight     : 600;
+}
+
+.input-container textarea:focus,
+.input-container input:focus {
+    border-color    : var(--primary);
+    background-color: var(--white);
+}
+
+.input-container h6 {
+    font-size     : 12px;
+    text-transform: uppercase;
+    margin        : 0;
+}
+
+h6 sup {
+    margin-left: 4px;
+    color      : red;
+    font-size  : 12px;
+}
+
 #intro-section div.inner {
     padding  : 36px 40px 90px;
     max-width: unset;

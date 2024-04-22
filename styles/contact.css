@@ -36,36 +36,6 @@
     text-align: left;
 }
 
-.input-container {
-    display       : flex;
-    flex-direction: column;
-    text-align    : left;
-    gap           : 15px;
-    font-weight   : 700;
-    text-transform: uppercase;
-    font-size     : 12px;
-    margin-bottom : 15px;
-}
-
-.input-container textarea,
-.input-container input {
-    background-color: #ebe9e5;
-    border          : 2px solid #ebe9e5;
-    color           : #888;
-    resize          : none;
-    transition      : all ease 0.3s;
-    outline         : none;
-    padding         : 12px;
-    margin          : 0;
-    font-weight     : 600;
-}
-
-.input-container textarea:focus,
-.input-container input:focus {
-    border-color    : var(--primary);
-    background-color: var(--white);
-}
-
 #contact-form-section button[type="submit"] {
     background-color: #273f44;
     color           : var(--white);

@@ -22,9 +22,14 @@
 }
 
 .reservation-flow-container {
-    display: flex;
-    padding: 30px;
-    gap    : 60px;
+    display   : flex;
+    padding   : 30px;
+    gap       : 60px;
+    text-align: left;
+}
+
+.reservation-flow-container>div.left {
+    width: 100%;
 }
 
 #itinerary-section div.inner div.left {
@@ -343,11 +348,6 @@
     font-size: 26px;
 }
 
-#vehicle-add-ons .reservation-flow-container>div.left {
-    width: 100%;
-
-}
-
 .add-on-container {
     margin-bottom: 60px;
 }
@@ -424,4 +424,23 @@
     margin-top: 30px;
     font-size : 13px;
     display   : none;
+}
+
+#final-section {
+    background-color: #fff;
+}
+
+.mutiple-input-container {
+    display: flex;
+    gap    : 30px;
+}
+
+#final-details-form {
+    display       : flex;
+    flex-direction: column;
+    gap           : 8px;
+}
+
+#final-details-form .continue-btn {
+    margin-top: 30px;
 }

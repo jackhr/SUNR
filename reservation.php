@@ -82,7 +82,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                     <h2>Pick Up</h2>
                     <div class="main-itinerary-box">
                         <div>
-                            <h6>Place to pick up the Car*</h6>
+                            <h6>Place to pick up the Car<sup>*</sup></h6>
                             <div class="custom-select pick-up">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
@@ -104,14 +104,14 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                             <label class="custom-checkbox-label">Return to the same location</label>
                         </div>
                         <div>
-                            <h6>Pick-up Date/Time*</h6>
+                            <h6>Pick-up Date/Time<sup>*</sup></h6>
                             <input type="text" id="pick-up-datetimepicker" placeholder="Pickup Date">
                         </div>
                     </div>
                     <h2>Return</h2>
                     <div class="main-itinerary-box">
                         <div style="display: none;">
-                            <h6>Place to drop the Car*</h6>
+                            <h6>Place to drop the Car<sup>*</sup></h6>
                             <div class="custom-select return">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
@@ -128,7 +128,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                             </div>
                         </div>
                         <div>
-                            <h6>Drop Date/Time*</h6>
+                            <h6>Drop Date/Time<sup>*</sup></h6>
                             <input type="text" id="return-datetimepicker" placeholder="Return Date">
                         </div>
                     </div>
@@ -290,14 +290,14 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
         <div class="reservation-flow-container">
             <div class="left">
                 <div id="final-details-form">
-                    <h2>Billing Details</h2>
+                    <h2>Contact Info</h2>
                     <div class="mutiple-input-container">
                         <div class="input-container">
-                            <h6>First Name*</h6>
+                            <h6>First Name<sup>*</sup></h6>
                             <input type="text">
                         </div>
                         <div class="input-container">
-                            <h6>Last Name*</h6>
+                            <h6>Last Name<sup>*</sup></h6>
                             <input type="text">
                         </div>
                     </div>
@@ -324,11 +324,11 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                         <input type="text">
                     </div>
                     <div class="input-container">
-                        <h6>Phone *</h6>
+                        <h6>Phone <sup>*</sup></h6>
                         <input type="text">
                     </div>
                     <div class="input-container">
-                        <h6>Email address *</h6>
+                        <h6>Email address <sup>*</sup></h6>
                         <input type="text">
                     </div>
                     <div class="continue-btn">Send Request</div>

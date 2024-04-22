@@ -8,3 +8,4 @@ assets/images/vehicles/toyota_vitz_2.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/vehicles/toyota_yaris.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/bg/palm-trees-on-beach.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/bg/sunset-panorama.jpg filter=lfs diff=lfs merge=lfs -text
+assets/images/bg/aerial-vew-of-jolly-harbour.jpg filter=lfs diff=lfs merge=lfs -text

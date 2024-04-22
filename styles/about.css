@@ -1,5 +1,6 @@
 #about-page .general-header {
-    background-image: url("/assets/images/bg/palm-trees-sunset-puddle.jpg");
+    background-image     : url("/assets/images/bg/aerial-vew-of-jolly-harbour.jpg");
+    background-position-y: 20%;
 }
 
 #about-section {

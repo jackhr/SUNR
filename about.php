@@ -15,7 +15,7 @@ include_once 'includes/header.php';
 <section id="about-section">
     <div class="inner">
         <div class="about-panel">
-            <img src="/assets/images/misc/red-car-palm-trees.jpg" alt="">
+            <img src="/assets/images/misc/side-view-happy-friends-campervan.jpg" alt="">
             <div>
                 <h1>WELCOME TO SHAQUAN's CAR RENTAL</h1>
                 <p>Shaquan's Car Rental has been servicing the transport industry in Antigua for years and we are dedicated to growing our company as the tourism sector and economy of Antigua & Barbuda expands.</p>
@@ -25,7 +25,7 @@ include_once 'includes/header.php';
         </div>
 
         <div class="about-panel">
-            <img src="/assets/images/misc/shirleys-heights-view.jpg" alt="">
+            <img src="/assets/images/misc/scenic-view-sea-against-clear-sky.jpg" alt="">
             <div>
                 <h1>WELCOME TO ANTIGUA</h1>
                 <p>Antigua has so much to offer our visitors. We at Keys Car Rental want to make your visit one of discovery and exploration. Please don’t hesitate to ask us for guidance – we will do our best to point you in the right direction.</p>

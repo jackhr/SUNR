@@ -87,15 +87,11 @@ $(function () {
         $(this).toggleClass('added');
     });
 
-    $("#itinerary-section .continue-btn").on('click', function () {
-        $(".reservation-step[data-step='2'] .header").click();
-    });
-
     $("#vehicle-add-ons .continue-btn").on('click', function () {
         $(".reservation-step[data-step='3'] .header").click();
     });
 
-    $(".reservation-flow-container .continue-btn").on('click', async function () {
+    $("#itinerary-section .continue-btn").on('click', async function () {
 
         const returnToSameLocation = $("#return-to-same-location").prop('checked');
         const pickUpLocation = $(".reservation-flow-container .pick-up .custom-select-options span.selected").text();
@@ -117,6 +113,9 @@ $(function () {
         };
 
         const formDataIsValid = handleInvalidFormData(data, "itinerary");
+
+        console.log("data:", data);
+        console.log("formDataIsValid:", formDataIsValid);
 
         if (!formDataIsValid) return;
 

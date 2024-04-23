@@ -1,9 +1,9 @@
-$(document).ready(() => {
+$(function () {
     $("#pick-up-datetimepicker, #return-datetimepicker").datetimepicker({
         minDate: true
     });
 
-    $(".checkbox-container").click(function () {
+    $(".checkbox-container").on('click', function () {
         const checkbox = $(this).find('input');
         const isChecked = checkbox.prop('checked');
         const onReservationPage = $('body').prop('id') === 'reservation-page';
@@ -22,7 +22,7 @@ $(document).ready(() => {
     $(".custom-select-options span").on('click', function (e) {
         e.stopPropagation();
         $('body').removeClass('viewing-custom-select-options');
-        $(".custom-select-options span").removeClass('selected');
+        $(this).siblings().removeClass('selected');
         $(this).addClass('selected');
         const option = $(this).text();
         $(".custom-select.active > span").text(option);
@@ -101,15 +101,23 @@ $(document).ready(() => {
             pickUpLocation: $(".reservation-flow-container .pick-up .custom-select-options span.selected").text(),
             returnLocation: $(".reservation-flow-container .return .custom-select-options span.selected").text(),
             returnToSameLocation: $("#return-to-same-location").prop('checked'),
-            pickUpDate: $('#pick-up-datetimepicker').datetimepicker('getValue'),
-            returnDate: $('#return-datetimepicker').datetimepicker('getValue')
+            pickUpDate: {
+                date: $('#pick-up-datetimepicker').datetimepicker('getValue'),
+                ts: $('#pick-up-datetimepicker').datetimepicker('getValue').getTime(),
+                value: $('#pick-up-datetimepicker').val()
+            },
+            returnDate: {
+                date: $('#return-datetimepicker').datetimepicker('getValue'),
+                ts: $('#return-datetimepicker').datetimepicker('getValue').getTime(),
+                value: $('#return-datetimepicker').val()
+            }
         };
 
-        const formDataIsValid = handleInvalidFormData(data);
+        const formDataIsValid = handleInvalidFormData(data, "itinerary");
 
         if (!formDataIsValid) return;
 
-        const test = await fetch('/includes/cart.php', {
+        const cartSessionRes = await fetch('/includes/cart.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',  // Set Content-Type to JSON
@@ -117,20 +125,80 @@ $(document).ready(() => {
             body: JSON.stringify(data)
         });
 
-        const another = await test.json();
+        const cartSessionData = await cartSessionRes.json();
+        console.log("cartSessionData:", cartSessionData);
 
-        console.log(another);
     });
 
-    
+    $(".form-input").on('focus change input click', function () {
+        $(this).removeClass('form-error');
+    });
+
 });
 
-function handleInvalidFormData(data) {
-    let response = true;
+function handleInvalidFormData(data, section) {
+    let text;
 
-    if (data.pickUpLocation === 'Select Location') {
-        alert('Please select a pick-up location');
-        response = false;
+    if (section === "itinerary") {
+
+        if (!isWithinBusinessHours(data.pickUpDate.date)) {
+            text = 'Pick up time must be between 8am and 6pm.';
+            element = $('#pick-up-datetimepicker');
+        } else if (!isWithinBusinessHours(data.returnDate.date)) {
+            text = 'Return time must be between 8am and 6pm.';
+            element = $('#return-datetimepicker');
+        } else if (pickUpDateIsSameAsReturnDate(data)) {
+            text = 'Return date cannot be same as pick up date.';
+            element = $('#pick-up-datetimepicker, #return-datetimepicker');
+        } else if (pickUpDateIsAfterReturnDate(data)) {
+            text = 'Return date must be after pick up date.';
+            element = $('#pick-up-datetimepicker, #return-datetimepicker');
+        } else if (data.pickUpLocation === 'Choose Office' || !data.pickUpLocation) {
+            text = 'Please select a pick up location.';
+            element = $('.custom-select.pick-up');
+        } else if (data.pickUpDate.value === "") {
+            text = 'Please select a pick up date.';
+            element = $('#pick-up-datetimepicker');
+        } else if (data.returnDate.value === "") {
+            text = 'Please select a return date.';
+            element = $('#return-datetimepicker');
+        } else if (!data.returnToSameLocation && (data.returnLocation === 'Choose Office' || !data.returnLocation)) {
+            text = 'Please select a return location.';
+            element = $('.custom-select.return');
+        }
+
     }
 
+    if (text) {
+        Swal.fire({
+            text,
+            title: "Incomplete form",
+            icon: "warning",
+            confirmButtonText: "Ok"
+        });
+        element.addClass('form-error');
+    }
+
+    return !text;
+}
+
+function isWithinBusinessHours(date) {
+    const hour = date.getHours();
+    return hour >= 8 && hour <= 18;
+}
+
+function pickUpDateIsSameAsReturnDate(data) {
+    const pickUpDay = getDayFromDate(data.pickUpDate.value);
+    const returnDay = getDayFromDate(data.returnDate.value);
+    return pickUpDay === returnDay;
+}
+
+function pickUpDateIsAfterReturnDate(data) {
+    const pickUpDay = getDayFromDate(data.pickUpDate.value);
+    const returnDay = getDayFromDate(data.returnDate.value);
+    return pickUpDay > returnDay;
+}
+
+function getDayFromDate(dateStr) {
+    return dateStr.split(' ')[0].split('/').map(Number)[2];
 }

@@ -76,6 +76,10 @@ input {
     padding       : 8px;
 }
 
+.form-input.form-error {
+    border: solid 2px red !important;
+}
+
 .continue-btn {
     display         : flex;
     align-items     : center;

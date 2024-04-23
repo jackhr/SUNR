@@ -1,14 +1,12 @@
 <?php
 
+session_start();
+
 $title_suffix = "Reservation";
 $page = "reservation";
 $description = "Book a car rental with Shaquan's Car Rental. Choose from a variety of vehicles and rental options. Reserve your car today.";
 
 include_once 'includes/header.php';
-
-$step = $_GET['step'];
-
-if (!isset($step)) $step = 1;
 
 $vehicles_arr = [];
 
@@ -16,13 +14,44 @@ $query = "SELECT * FROM vehicles";
 $result = mysqli_query($con, $query);
 while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
 
+
+
+$reservation = [
+    "step" => $_GET['step'] ?? 1,
+    "itinerary" => [
+        "pick_up" => "",
+        "drop_off" => "",
+        "pick_up_date" => "",
+        "return_date" => ""
+    ],
+    "vehicle" => [],
+    "add_ons" => [
+        "collision_insurance" => 0,
+        "antiguan_driving_permit" => 0,
+        "additional_driver" => 0,
+        "child_seat" => 0,
+        "gps_navigation" => 0
+    ],
+    "contact_info" => [
+        "first_name" => "",
+        "last_name" => "",
+        "driver_license" => "",
+        "country" => "",
+        "street_address" => "",
+        "town_city" => "",
+        "state_county" => "",
+        "phone" => "",
+        "email" => ""
+    ]
+];
+
 ?>
 
 <section class="general-header">
     <h1>Reservation</h1>
 
     <div id="reservation-steps">
-        <div class="reservation-step itinerary <?php echo $step == 1 ? "active" : ""; ?>" data-step="1">
+        <div class="reservation-step itinerary <?php echo $reservation['step'] == 1 ? "active" : ""; ?>" data-step="1">
             <div class="header">
                 <span>1</span>
                 <h2>Your Itinerary</h2>
@@ -38,7 +67,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
             </div>
         </div>
-        <div class="reservation-step vehicle-add-on" data-step="2">
+        <div class="reservation-step vehicle-add-on <?php echo $reservation['step'] == 2 ? "active" : ""; ?>"" data-step=" 2">
             <div class="header">
                 <span>2</span>
                 <h2>Select Vehicle/Add-ons</h2>
@@ -54,7 +83,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
             </div>
         </div>
-        <div class="reservation-step reservation" data-step="3">
+        <div class="reservation-step reservation <?php echo $reservation['step'] == 3 ? "active" : ""; ?>"" data-step=" 3">
             <div class="header">
                 <span>3</span>
                 <h2>Reserve Your Vehicle</h2>
@@ -73,7 +102,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="itinerary-section" data-step="1" <?php if ($step != 1) echo 'style="display:none;"'; ?>>
+<section id="itinerary-section" data-step="1" <?php if ($reservation['step'] != 1) echo 'style="display:none;"'; ?>>
     <div class="inner">
         <h1>Reserve Your Vehicle</h1>
         <div class="reservation-flow-container">
@@ -83,7 +112,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                     <div class="main-itinerary-box">
                         <div>
                             <h6>Place to pick up the Car<sup>*</sup></h6>
-                            <div class="custom-select pick-up">
+                            <div class="custom-select pick-up form-input">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                                 </svg>
@@ -105,14 +134,14 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                         </div>
                         <div>
                             <h6>Pick-up Date/Time<sup>*</sup></h6>
-                            <input type="text" id="pick-up-datetimepicker" placeholder="Pickup Date">
+                            <input type="text" id="pick-up-datetimepicker" class="form-input" placeholder="Pickup Date">
                         </div>
                     </div>
                     <h2>Return</h2>
                     <div class="main-itinerary-box">
                         <div style="display: none;">
                             <h6>Place to drop the Car<sup>*</sup></h6>
-                            <div class="custom-select return">
+                            <div class="custom-select return form-input">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                                 </svg>
@@ -129,7 +158,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                         </div>
                         <div>
                             <h6>Drop Date/Time<sup>*</sup></h6>
-                            <input type="text" id="return-datetimepicker" placeholder="Return Date">
+                            <input type="text" id="return-datetimepicker" class="form-input" placeholder="Return Date">
                         </div>
                     </div>
                     <div class="continue-btn">Continue Reservation</div>
@@ -140,7 +169,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="vehicle-selection-section" data-step="2" <?php if ($step != 2) echo 'style="display:none;"'; ?>>
+<section id="vehicle-selection-section" data-step="2" <?php if ($reservation['step'] != 2) echo 'style="display:none;"'; ?>>
     <div class="inner">
         <h1>Select Vehicle</h1>
         <div id="vehicles">
@@ -284,7 +313,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     </div>
 </section>
 
-<section id="final-section" data-step="3" <?php if ($step != 3) echo 'style="display:none;"'; ?>>
+<section id="final-section" data-step="3" <?php if ($reservation['step'] != 3) echo 'style="display:none;"'; ?>>
     <div class="inner">
         <h1>Final Details</h1>
         <div class="reservation-flow-container">

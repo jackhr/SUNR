@@ -94,4 +94,43 @@ $(document).ready(() => {
     $("#vehicle-add-ons .continue-btn").on('click', function () {
         $(".reservation-step[data-step='3'] .header").click();
     });
+
+    $(".reservation-flow-container .continue-btn").on('click', async function () {
+
+        const data = {
+            pickUpLocation: $(".reservation-flow-container .pick-up .custom-select-options span.selected").text(),
+            returnLocation: $(".reservation-flow-container .return .custom-select-options span.selected").text(),
+            returnToSameLocation: $("#return-to-same-location").prop('checked'),
+            pickUpDate: $('#pick-up-datetimepicker').datetimepicker('getValue'),
+            returnDate: $('#return-datetimepicker').datetimepicker('getValue')
+        };
+
+        const formDataIsValid = handleInvalidFormData(data);
+
+        if (!formDataIsValid) return;
+
+        const test = await fetch('/includes/cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to JSON
+            },
+            body: JSON.stringify(data)
+        });
+
+        const another = await test.json();
+
+        console.log(another);
+    });
+
+    
 });
+
+function handleInvalidFormData(data) {
+    let response = true;
+
+    if (data.pickUpLocation === 'Select Location') {
+        alert('Please select a pick-up location');
+        response = false;
+    }
+
+}

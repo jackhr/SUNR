@@ -67,7 +67,7 @@ $reservation = [
                 </div>
             </div>
         </div>
-        <div class="reservation-step vehicle-add-on <?php echo $reservation['step'] == 2 ? "active" : ""; ?>"" data-step=" 2">
+        <div class="reservation-step vehicle-add-on <?php echo $reservation['step'] == 2 ? "active" : ""; ?>" data-step="2">
             <div class="header">
                 <span>2</span>
                 <h2>Select Vehicle/Add-ons</h2>
@@ -83,7 +83,7 @@ $reservation = [
                 </div>
             </div>
         </div>
-        <div class="reservation-step reservation <?php echo $reservation['step'] == 3 ? "active" : ""; ?>"" data-step=" 3">
+        <div class="reservation-step reservation <?php echo $reservation['step'] == 3 ? "active" : ""; ?>" data-step="3">
             <div class="header">
                 <span>3</span>
                 <h2>Reserve Your Vehicle</h2>

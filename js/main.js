@@ -97,10 +97,13 @@ $(function () {
 
     $(".reservation-flow-container .continue-btn").on('click', async function () {
 
+        const returnToSameLocation = $("#return-to-same-location").prop('checked');
+        const pickUpLocation = $(".reservation-flow-container .pick-up .custom-select-options span.selected").text();
+
         const data = {
-            pickUpLocation: $(".reservation-flow-container .pick-up .custom-select-options span.selected").text(),
-            returnLocation: $(".reservation-flow-container .return .custom-select-options span.selected").text(),
-            returnToSameLocation: $("#return-to-same-location").prop('checked'),
+            pickUpLocation,
+            returnLocation: returnToSameLocation ? pickUpLocation : $(".reservation-flow-container .return .custom-select-options span.selected").text(),
+            returnToSameLocation,
             pickUpDate: {
                 date: $('#pick-up-datetimepicker').datetimepicker('getValue'),
                 ts: $('#pick-up-datetimepicker').datetimepicker('getValue').getTime(),
@@ -128,6 +131,12 @@ $(function () {
         const cartSessionData = await cartSessionRes.json();
         console.log("cartSessionData:", cartSessionData);
 
+        // update itinerary section
+        $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.value}`);
+        $(".reservation-step.itinerary .body>div:last-child p").text(`${data.returnLocation} - ${data.returnDate.value}`);
+
+        // head to vehicle selection section
+        $(".reservation-step.vehicle-add-on .header").trigger('click');
     });
 
     $(".form-input").on('focus change input click', function () {

@@ -119,7 +119,7 @@ $(function () {
 
         if (!formDataIsValid) return;
 
-        const cartSessionRes = await fetch('/includes/cart.php', {
+        const ReservationSessionRes = await fetch('/includes/reservation.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',  // Set Content-Type to JSON
@@ -127,8 +127,8 @@ $(function () {
             body: JSON.stringify(data)
         });
 
-        const cartSessionData = await cartSessionRes.json();
-        console.log("cartSessionData:", cartSessionData);
+        const reservationSessionData = await ReservationSessionRes.json();
+        console.log("reservationSessionData:", reservationSessionData);
 
         // update itinerary section
         $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.value}`);

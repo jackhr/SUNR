@@ -206,7 +206,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
             <?php } ?>
         </div>
-        <a href="/reservation.php">BOOK NOW</a>
+        <a href="/book-now.php">BOOK NOW</a>
     </div>
 </section>
 

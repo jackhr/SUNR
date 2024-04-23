@@ -16,35 +16,6 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
 
 
 
-$reservation = [
-    "step" => $_GET['step'] ?? 1,
-    "itinerary" => [
-        "pick_up" => "",
-        "drop_off" => "",
-        "pick_up_date" => "",
-        "return_date" => ""
-    ],
-    "vehicle" => [],
-    "add_ons" => [
-        "collision_insurance" => 0,
-        "antiguan_driving_permit" => 0,
-        "additional_driver" => 0,
-        "child_seat" => 0,
-        "gps_navigation" => 0
-    ],
-    "contact_info" => [
-        "first_name" => "",
-        "last_name" => "",
-        "driver_license" => "",
-        "country" => "",
-        "street_address" => "",
-        "town_city" => "",
-        "state_county" => "",
-        "phone" => "",
-        "email" => ""
-    ]
-];
-
 ?>
 
 <section class="general-header">

@@ -9,3 +9,5 @@ assets/images/vehicles/toyota_yaris.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/bg/palm-trees-on-beach.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/bg/sunset-panorama.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/bg/aerial-vew-of-jolly-harbour.jpg filter=lfs diff=lfs merge=lfs -text
+assets/images/bg/hat-sunglasses-car-board-flipped.jpg filter=lfs diff=lfs merge=lfs -text
+assets/images/bg/shirley-heights-antigua-view.jpg filter=lfs diff=lfs merge=lfs -text

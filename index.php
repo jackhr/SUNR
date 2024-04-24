@@ -42,7 +42,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
             </div>
 
             <div>
-                <input type="text" id="pick-up-datetimepicker" placeholder="Pickup Date">
+                <input type="text" id="pick-up-flatpickr" class="flatpickr-input" placeholder="Pickup Date">
             </div>
 
             <h2>RETURN</h2>
@@ -61,7 +61,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
             </div>
             <div>
-                <input type="text" id="return-datetimepicker" placeholder="Return Date">
+                <input type="text" id="return-flatpickr" class="flatpickr-input" placeholder="Return Date">
             </div>
 
             <button type="submit">

@@ -444,3 +444,18 @@
 #final-details-form .continue-btn {
     margin-top: 30px;
 }
+
+.reset-data {
+    display        : flex;
+    justify-content: center;
+    margin         : 24px auto 0;
+    align-items    : center;
+    font-weight    : 400;
+    font-size      : 18px;
+    gap            : 8px;
+    cursor         : pointer;
+}
+
+.reset-data svg {
+    width: 18px;
+}

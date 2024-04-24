@@ -1,7 +1,18 @@
+const STATE = {
+    configFP: {
+        enableTime: true,
+        altInput: true,
+        altFormat: "F j, Y h:i K",
+        dateFormat: "Y-m-d H:i",
+        minDate: "today",
+    },
+    pickUpFP: null,
+    returnFP: null
+};
+
 $(function () {
-    $("#pick-up-datetimepicker, #return-datetimepicker").datetimepicker({
-        minDate: true
-    });
+    STATE.pickUpFP = $("#pick-up-flatpickr").flatpickr(STATE.configFP);
+    STATE.returnFP = $("#return-flatpickr").flatpickr(STATE.configFP);
 
     $(".checkbox-container").on('click', function () {
         const checkbox = $(this).find('input');
@@ -42,9 +53,9 @@ $(function () {
         const form = $(this);
         const pickUpLocation = $('.custom-select.pick-up>span').text();
         const returnLocation = $('.custom-select.return>span').text();
-        const returnToSameLocation = $("#return-to-same-location").prop('checked');
-        const pickUpDate = $('#pick-up-datetimepicker').datetimepicker('getValue');
-        const returnDate = $('#return-datetimepicker').datetimepicker('getValue')
+        const returnToSameLocation = $("#return-to-same-location").prop('checked') + 0; // convert boolean to integer
+        const pickUpDate = $('#pick-up-flatpickr').flatpickr('getValue');
+        const returnDate = $('#return-flatpickr').flatpickr('getValue')
         // append values to the action of the form
         const action = form.attr('action');
         const newAction = `${action}?pick-up-location=${pickUpLocation}&return-location=${returnLocation}&return-to-same-location=${returnToSameLocation}&pick-up-date=${pickUpDate}&return-date=${returnDate}`;
@@ -93,29 +104,35 @@ $(function () {
 
     $("#itinerary-section .continue-btn").on('click', async function () {
 
+        $(".form-input").removeClass('form-error');
+
         const returnToSameLocation = $("#return-to-same-location").prop('checked');
         const pickUpLocation = $(".reservation-flow-container .pick-up .custom-select-options span.selected").text();
 
         const data = {
+            action: "itinerary",
             pickUpLocation,
             returnLocation: returnToSameLocation ? pickUpLocation : $(".reservation-flow-container .return .custom-select-options span.selected").text(),
-            returnToSameLocation,
+            returnToSameLocation: {
+                checked: returnToSameLocation,
+                value: returnToSameLocation ? "on" : "off"
+            },
             pickUpDate: {
-                date: $('#pick-up-datetimepicker').datetimepicker('getValue'),
-                ts: $('#pick-up-datetimepicker').datetimepicker('getValue').getTime(),
-                value: $('#pick-up-datetimepicker').val()
+                date: STATE.pickUpFP.selectedDates[0],
+                ts: STATE.pickUpFP.selectedDates[0]?.getTime?.(),
+                value: STATE.pickUpFP.input.value,
+                altValue: STATE.pickUpFP.altInput.value
             },
             returnDate: {
-                date: $('#return-datetimepicker').datetimepicker('getValue'),
-                ts: $('#return-datetimepicker').datetimepicker('getValue').getTime(),
-                value: $('#return-datetimepicker').val()
-            }
+                date: STATE.returnFP.selectedDates[0],
+                ts: STATE.returnFP.selectedDates[0]?.getTime?.(),
+                value: STATE.returnFP.input.value,
+                altValue: STATE.returnFP.altInput.value
+            },
+            step: 2
         };
 
         const formDataIsValid = handleInvalidFormData(data, "itinerary");
-
-        console.log("data:", data);
-        console.log("formDataIsValid:", formDataIsValid);
 
         if (!formDataIsValid) return;
 
@@ -128,18 +145,43 @@ $(function () {
         });
 
         const reservationSessionData = await ReservationSessionRes.json();
-        console.log("reservationSessionData:", reservationSessionData);
 
         // update itinerary section
         $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.value}`);
         $(".reservation-step.itinerary .body>div:last-child p").text(`${data.returnLocation} - ${data.returnDate.value}`);
 
         // head to vehicle selection section
-        $(".reservation-step.vehicle-add-on .header").trigger('click');
+        Swal.fire({
+            title: "Setting Itinerary...",
+            timer: 1000,
+            didOpen: () => Swal.showLoading()
+        }).then(() => $(".reservation-step.vehicle-add-on .header").trigger('click'));
     });
 
     $(".form-input").on('focus change input click', function () {
         $(this).removeClass('form-error');
+    });
+
+    $(".reset-data").on('click', async function () {
+        const response = await Swal.fire({
+            icon: 'warning',
+            title: 'Are you sure you want to reset the form?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        });
+
+        if (response.isConfirmed) {
+            const ReservationSessionRes = await fetch('/includes/reservation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Set Content-Type to JSON
+                },
+                body: JSON.stringify({ action: "reset_reservation" })
+            });
+
+            const reservationSessionData = await ReservationSessionRes.json();
+        }
     });
 
 });
@@ -149,30 +191,30 @@ function handleInvalidFormData(data, section) {
 
     if (section === "itinerary") {
 
-        if (!isWithinBusinessHours(data.pickUpDate.date)) {
-            text = 'Pick up time must be between 8am and 6pm.';
-            element = $('#pick-up-datetimepicker');
-        } else if (!isWithinBusinessHours(data.returnDate.date)) {
-            text = 'Return time must be between 8am and 6pm.';
-            element = $('#return-datetimepicker');
-        } else if (pickUpDateIsSameAsReturnDate(data)) {
-            text = 'Return date cannot be same as pick up date.';
-            element = $('#pick-up-datetimepicker, #return-datetimepicker');
-        } else if (pickUpDateIsAfterReturnDate(data)) {
-            text = 'Return date must be after pick up date.';
-            element = $('#pick-up-datetimepicker, #return-datetimepicker');
-        } else if (data.pickUpLocation === 'Choose Office' || !data.pickUpLocation) {
+        if (data.pickUpLocation === 'Choose Office' || !data.pickUpLocation) {
             text = 'Please select a pick up location.';
             element = $('.custom-select.pick-up');
-        } else if (data.pickUpDate.value === "") {
+        } else if (!data.pickUpDate.date) {
             text = 'Please select a pick up date.';
-            element = $('#pick-up-datetimepicker');
-        } else if (data.returnDate.value === "") {
-            text = 'Please select a return date.';
-            element = $('#return-datetimepicker');
-        } else if (!data.returnToSameLocation && (data.returnLocation === 'Choose Office' || !data.returnLocation)) {
+            element = $('#pick-up-flatpickr + input');
+        } else if (!isWithinBusinessHours(data.pickUpDate.date)) {
+            text = 'Pick up time must be between 8am and 6pm.';
+            element = $('#pick-up-flatpickr + input');
+        } else if (!data.returnToSameLocation.checked && (data.returnLocation === 'Choose Office' || !data.returnLocation)) {
             text = 'Please select a return location.';
             element = $('.custom-select.return');
+        } else if (!data.returnDate.date) {
+            text = 'Please select a return date.';
+            element = $('#return-flatpickr + input');
+        } else if (!isWithinBusinessHours(data.returnDate.date)) {
+            text = 'Return time must be between 8am and 6pm.';
+            element = $('#return-flatpickr + input');
+        } else if (pickUpDateIsSameAsReturnDate(data)) {
+            text = 'You cannot pick up and return the car on the same day.';
+            element = $('#pick-up-flatpickr + input, #return-flatpickr + input');
+        } else if (pickUpDateIsAfterReturnDate(data)) {
+            text = 'You have to return the car at least one day after pick up.';
+            element = $('#pick-up-flatpickr + input, #return-flatpickr + input');
         }
 
     }
@@ -182,7 +224,7 @@ function handleInvalidFormData(data, section) {
             text,
             title: "Incomplete form",
             icon: "warning",
-            confirmButtonText: "Ok"
+            confirmButtonText: "Ok",
         });
         element.addClass('form-error');
     }
@@ -191,22 +233,24 @@ function handleInvalidFormData(data, section) {
 }
 
 function isWithinBusinessHours(date) {
-    const hour = date.getHours();
+    const hour = date?.getHours?.();
     return hour >= 8 && hour <= 18;
 }
 
 function pickUpDateIsSameAsReturnDate(data) {
-    const pickUpDay = getDayFromDate(data.pickUpDate.value);
-    const returnDay = getDayFromDate(data.returnDate.value);
+    const pickUpDay = getDayFromDate(data.pickUpDate.altValue);
+    const returnDay = getDayFromDate(data.returnDate.altValue);
     return pickUpDay === returnDay;
 }
 
 function pickUpDateIsAfterReturnDate(data) {
-    const pickUpDay = getDayFromDate(data.pickUpDate.value);
-    const returnDay = getDayFromDate(data.returnDate.value);
+    const pickUpDay = getDayFromDate(data.pickUpDate.altValue);
+    const returnDay = getDayFromDate(data.returnDate.altValue);
     return pickUpDay > returnDay;
 }
 
 function getDayFromDate(dateStr) {
-    return dateStr.split(' ')[0].split('/').map(Number)[2];
+    // dateStr = "April 24, 2024 10:00 am"
+    if (!dateStr) return;
+    return Number(dateStr.split(',')[0].split(' ')[1]);
 }

@@ -15,6 +15,24 @@ $result = mysqli_query($con, $query);
 while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
 
 
+$reservation = $_SESSION['reservation'];
+
+$reservation['step'] = isset($reservation['step']) ? $reservation['step'] : ($_GET['step'] ?? 1);
+
+if (isset($reservation['itinerary'])) {
+    $itinerary = $reservation['itinerary'];
+    $pick_up_val = $itinerary['pickUpDate']['value'];
+    $return_val = $itinerary['returnDate']['value'];
+    $pick_up_step_val = "{$itinerary['pickUpLocation']} - {$itinerary['pickUpDate']['altValue']}";
+    $return_step_val = "{$itinerary['returnLocation']} - {$itinerary['returnDate']['altValue']}";
+    $pick_up_location = $itinerary['pickUpLocation'];
+    $return_location = $itinerary['returnLocation'];
+} else {
+    $pick_up_step_val = "--";
+    $return_step_val = "--";
+    $pick_up_val = "";
+    $return_val = "";
+}
 
 ?>
 
@@ -30,11 +48,11 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
             <div class="body">
                 <div>
                     <h6>Pick Up</h6>
-                    <p>--</p>
+                    <p><?php echo $pick_up_step_val; ?></p>
                 </div>
                 <div>
                     <h6>Drop Off</h6>
-                    <p>--</p>
+                    <p><?php echo $return_step_val; ?></p>
                 </div>
             </div>
         </div>
@@ -87,52 +105,67 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                                 </svg>
-                                <span>Choose Office</span>
+                                <span><?php echo isset($pick_up_location) ? $pick_up_location : "Choose Office"; ?></span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                                 </svg>
                                 <div class="custom-select-options">
-                                    <span class="selected">Choose Office</span>
-                                    <span>Airport</span>
-                                    <span>Main Office</span>
+                                    <span <?php echo $pick_up_location === "Choose Office" ? 'class="selected"' : "" ?>>Choose Office</span>
+                                    <span <?php echo $pick_up_location === "Airport" ? 'class="selected"' : "" ?>>Airport</span>
+                                    <span <?php echo $pick_up_location === "Main Office" ? 'class="selected"' : "" ?>>Main Office</span>
                                 </div>
                             </div>
                         </div>
                         <div class="checkbox-container">
-                            <input id="return-to-same-location" type="checkbox" class="hidden-checkbox" hidden checked aria-checked="true" />
+                            <?php if (isset($itinerary)) { ?>
+                                <input id="return-to-same-location" type="checkbox" class="hidden-checkbox" hidden <?php if ($itinerary['returnToSameLocation']['value'] === 'on') echo 'checked aria-checked="true"'; ?> />
+                            <?php } else { ?>
+                                <input id="return-to-same-location" type="checkbox" class="hidden-checkbox" hidden checked aria-checked="true" />
+                            <?php } ?>
                             <div class="custom-checkbox"></div>
                             <label class="custom-checkbox-label">Return to the same location</label>
                         </div>
                         <div>
                             <h6>Pick-up Date/Time<sup>*</sup></h6>
-                            <input type="text" id="pick-up-datetimepicker" class="form-input" placeholder="Pickup Date">
+                            <input type="text" id="pick-up-flatpickr" class="form-input flatpickr-input" placeholder="Pickup Date" value="<?php echo $pick_up_val; ?>">
                         </div>
                     </div>
                     <h2>Return</h2>
                     <div class="main-itinerary-box">
-                        <div style="display: none;">
+                        <div <?php if ($itinerary == null || $itinerary['returnToSameLocation']['value'] === 'on') echo 'style="display: none;"'; ?>>
                             <h6>Place to drop the Car<sup>*</sup></h6>
                             <div class="custom-select return form-input">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                                 </svg>
-                                <span>Choose Office</span>
+                                <span><?php echo isset($return_location) ? $return_location : "Choose Office"; ?></span>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                     <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                                 </svg>
                                 <div class="custom-select-options">
-                                    <span class="selected">Choose Office</span>
-                                    <span>Airport</span>
-                                    <span>Main Office</span>
+                                    <span <?php echo $return_location === "Choose Office" ? 'class="selected"' : "" ?>>Choose Office</span>
+                                    <span <?php echo $return_location === "Airport" ? 'class="selected"' : "" ?>>Airport</span>
+                                    <span <?php echo $return_location === "Main Office" ? 'class="selected"' : "" ?>>Main Office</span>
                                 </div>
                             </div>
                         </div>
                         <div>
                             <h6>Drop Date/Time<sup>*</sup></h6>
-                            <input type="text" id="return-datetimepicker" class="form-input" placeholder="Return Date">
+                            <input type="text" id="return-flatpickr" class="form-input flatpickr-input" placeholder="Return Date" value="<?php echo $return_val; ?>">
                         </div>
                     </div>
                     <div class="continue-btn">Continue Reservation</div>
+                    <?php if (isset($itinerary)) { ?>
+                        <div class="reset-data">
+                            <span>reset data</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw" stroke-width="3" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                                <path d="M21 3v5h-5"></path>
+                                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                                <path d="M8 16H3v5"></path>
+                            </svg>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
             <?php include 'includes/reservation-summary.php'; ?>

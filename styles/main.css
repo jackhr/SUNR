@@ -2,6 +2,7 @@
 
 :root {
     --primary        : #d4a32a;
+    --primary-rgb    : rgb(212, 163, 42);
     --secondary      : #6c98e1;
     --black          : #232628;
     --white          : #f5f5f5;
@@ -74,6 +75,10 @@ input {
     font-weight   : 600;
     text-transform: uppercase;
     padding       : 8px;
+}
+
+input.flatpickr-input {
+    text-transform: none;
 }
 
 .form-input.form-error {

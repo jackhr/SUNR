@@ -357,8 +357,9 @@ header div.inner nav {
 }
 
 #intro-section {
-    background     : url("/assets/images/bg/hat-sunglasses-car-board-flipped.jpg") center no-repeat;
-    background-size: cover;
+    background           : url("/assets/images/bg/silver-car-under-palm-trees-at-beach-noon.jpg") center no-repeat;
+    background-size      : cover;
+    background-position-y: 100%;
 }
 
 #intro-section form {
@@ -722,7 +723,12 @@ footer div {
 footer div.inner>div:first-child {
     margin         : 60px 0;
     flex-direction : row;
-    justify-content: space-between;
+    justify-content: center;
+    height         : 200px
+}
+
+.footer-nav {
+    margin-right: auto
 }
 
 footer h6 {
@@ -746,6 +752,7 @@ footer ul {
     height    : 200px;
     background: var(--white);
     padding   : 12px;
+    position  : absolute;
 }
 
 .footer-logo img {

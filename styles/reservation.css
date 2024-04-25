@@ -1,31 +1,28 @@
 #reservation-page .general-header {
-    background-image: url("/assets/images/bg/red-car-palm-trees-sunshine-glare.jpg");
+    background-image: url("/assets/images/bg/side-view-happy-friends-campervan.jpg");
 }
 
-.general-header>h1 {
-    margin: 70px auto 36px;
+#itinerary-section div.inner,
+#vehicle-selection-section div.inner,
+#vehicle-add-ons div.inner,
+#final-section div.inner {
+    padding: 60px var(--general-padding);
 }
 
-#itinerary-section {
-    background-color: #fff;
-}
-
-#itinerary-section div.inner {
-    padding-top   : 60px;
-    padding-bottom: 60px;
-    text-align    : left;
-}
-
-#itinerary-section div.inner>h1 {
-    margin   : 0 0 55px;
+#itinerary-section div.inner>h1,
+#vehicle-selection-section div.inner>h1,
+#vehicle-add-ons div.inner>h1,
+#final-section div.inner>h1 {
+    margin   : 0 0 60px;
     font-size: 26px;
 }
 
 .reservation-flow-container {
-    display   : flex;
-    padding   : 30px;
-    gap       : 60px;
-    text-align: left;
+    display         : flex;
+    padding         : 30px;
+    gap             : 60px;
+    text-align      : left;
+    background-color: #fff;
 }
 
 .reservation-flow-container>div.left {
@@ -60,28 +57,19 @@
     margin-bottom: 24px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #reservation-steps {
+    background: #fff;
+}
+
+#reservation-steps div.inner {
     display        : flex;
     justify-content: space-between;
     gap            : 36px;
-    margin         : 0 auto 15px;
     max-width      : var(--max-width);
     width          : 100%;
+    flex-direction : row;
+    text-align     : left;
+    padding        : 60px var(--general-padding);
 }
 
 .reservation-step {
@@ -91,6 +79,13 @@
     align-items   : center;
     font-size     : 14px;
     font-weight   : 600;
+    cursor        : pointer;
+}
+
+.reservation-step.active {
+    box-shadow: 0 0 12px 9px rgba(var(--primary-rgb-vals), .2);
+    transform : scale(1.01);
+    cursor    : default;
 }
 
 .reservation-step>* {
@@ -102,12 +97,13 @@
     background: #2a404580;
 }
 
-.reservation-step:not(.active) .header {
-    cursor: pointer;
+.reservation-step.active .header {
+    background: var(--black);
+    color     : var(--white);
 }
 
 .reservation-step .header span {
-    width           : 54px;
+    min-width       : 54px;
     height          : 54px;
     background-color: var(--black);
     display         : flex;
@@ -120,9 +116,15 @@
 }
 
 .reservation-step .header h2 {
-    margin        : auto 0 auto 15px;
     font-size     : 18px;
     text-transform: capitalize;
+    width         : 100%;
+    height        : 100%;
+    margin        : 0;
+    padding-left  : 15px;
+    display       : flex;
+    align-items   : center;
+    transition    : all ease 0.3s;
 }
 
 .reservation-step .body {
@@ -147,8 +149,9 @@
 }
 
 .reservation-step.active .header span {
-    background: var(--white);
-    color     : var(--primary);
+    /* color: var(--primary); */
+    background: var(--primary);
+    color     : var(--white);
 }
 
 .reservation-step.active .body {
@@ -335,19 +338,6 @@
     width        : 120px;
 }
 
-#vehicle-add-ons {
-    background: #fff;
-}
-
-#vehicle-add-ons div.inner {
-    text-align: left;
-}
-
-#vehicle-add-ons div.inner h1 {
-    margin   : 50px 0 60px;
-    font-size: 26px;
-}
-
 .add-on-container {
     margin-bottom: 60px;
 }
@@ -424,10 +414,6 @@
     margin-top: 30px;
     font-size : 13px;
     display   : none;
-}
-
-#final-section {
-    background-color: #fff;
 }
 
 .mutiple-input-container {

@@ -15,7 +15,7 @@ include_once 'includes/header.php';
 <section id="about-section">
     <div class="inner">
         <div class="about-panel">
-            <img src="/assets/images/misc/side-view-happy-friends-campervan.jpg" alt="">
+            <img src="/assets/images/misc/smiley-couple-traveling-by-car.jpg" alt="">
             <div>
                 <h1>WELCOME TO SHAQUAN's CAR RENTAL</h1>
                 <p>Shaquan's Car Rental has been servicing the transport industry in Antigua for years and we are dedicated to growing our company as the tourism sector and economy of Antigua & Barbuda expands.</p>

@@ -38,8 +38,10 @@ if (isset($reservation['itinerary'])) {
 
 <section class="general-header">
     <h1>Reservation</h1>
+</section>
 
-    <div id="reservation-steps">
+<section id="reservation-steps">
+    <div class="inner">
         <div class="reservation-step itinerary <?php echo $reservation['step'] == 1 ? "active" : ""; ?>" data-step="1">
             <div class="header">
                 <span>1</span>

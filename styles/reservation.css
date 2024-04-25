@@ -95,6 +95,7 @@
 .reservation-step .header {
     display   : flex;
     background: #2a404580;
+    height    : 54px;
 }
 
 .reservation-step.active .header {
@@ -131,7 +132,8 @@
     background-color: var(--white);
     color           : var(--black);
     padding         : 30px;
-    transition      : background-color 0.3s, color 0.3s;
+    transition      : background-color 0.3s, color 0.3s, height 0.3s, padding 0.3s;
+    overflow        : hidden;
 }
 
 .reservation-step .body>div {
@@ -474,4 +476,49 @@
 
 .reset-data svg {
     width: 18px;
+}
+
+
+@media screen and (max-width: 991px) {
+
+    #reservation-steps div.inner {
+        flex-direction: column;
+        align-items   : center;
+        gap           : 0;
+    }
+
+    .reservation-step {
+        max-width: 580px;
+    }
+
+    .reservation-step.active {
+        transform : scale(1);
+        box-shadow: none;
+    }
+
+    .reservation-step:not(.active) .body {
+        padding: 0;
+        height : 0;
+    }
+}
+
+@media screen and (max-width: 991px) {
+
+    #reservation-steps div.inner {
+        padding: 32px;
+    }
+
+    .reservation-step {
+        max-width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    #reservation-steps div.inner {
+        padding: 0;
+    }
+
+
 }

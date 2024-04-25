@@ -16,7 +16,9 @@
                 </ul>
             </div>
             <div class="footer-logo">
-                <img src="/assets/images/logo.png" alt="Site Logo">
+                <div>
+                    <img src="/assets/images/logo.png" alt="Site Logo">
+                </div>
             </div>
             <div class="footer-contact">
                 <h6>Contact</h6>

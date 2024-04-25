@@ -533,12 +533,14 @@ html.viewing-hamburger-menu #hamburger-nav {
 .car-container {
     background-color: #fff;
     width           : calc(33.33% - 24px);
-    padding         : 40px 15px 15px;
+    padding         : 15px;
     position        : relative;
     overflow        : hidden;
     text-align      : left;
     height          : 390px;
     cursor          : pointer;
+    min-width       : 300px;
+    margin          : auto;
 }
 
 .car-container .overlay {
@@ -566,10 +568,6 @@ html.viewing-hamburger-menu #hamburger-nav {
     width  : calc(var(--max-width)/3);
 }
 
-.car-container:nth-child(2n):not(.car-container:last-child) {
-    margin: auto
-}
-
 .car-container .top,
 .car-container .bottom {
     position: relative;
@@ -583,7 +581,9 @@ html.viewing-hamburger-menu #hamburger-nav {
 }
 
 .car-container .top .left {
-    width: 100%;
+    width         : 100%;
+    display       : flex;
+    flex-direction: column;
 }
 
 .car-container .top .left h1 {
@@ -601,7 +601,7 @@ html.viewing-hamburger-menu #hamburger-nav {
     display       : flex;
     flex-direction: column;
     background    : var(--primary);
-    margin        : 16px 24px 0 0;
+    margin        : auto 24px 0 0;
     color         : var(--white);
     font-weight   : 800;
     font-size     : 12px;
@@ -773,12 +773,12 @@ footer div {
 footer div.inner>div:first-child {
     margin         : 60px 0;
     flex-direction : row;
-    justify-content: center;
+    justify-content: space-between;
     height         : 200px
 }
 
-.footer-nav {
-    margin-right: auto
+footer div.inner>div:first-child>div {
+    width: 100%;
 }
 
 footer h6 {
@@ -799,14 +799,21 @@ footer ul {
 }
 
 .footer-logo {
-    height    : 200px;
+    height         : 200px;
+    padding        : 12px;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+}
+
+.footer-logo div {
     background: var(--white);
-    padding   : 12px;
-    position  : absolute;
+    padding   : 24px;
 }
 
 .footer-logo img {
-    height: 100%;
+    height: auto;
+    width : 160px;
 }
 
 .footer-contact {
@@ -839,6 +846,25 @@ div#copyright {
         display       : flex;
         pointer-events: all;
     }
+
+    #intro-section div.inner {
+        padding        : 36px 40px 36px;
+        align-items    : center;
+        justify-content: center;
+    }
+
+    #features {
+        flex-direction: column;
+        gap           : 32px;
+    }
+
+    .feature-container:nth-child(n+4) {
+        margin-top: 0;
+    }
+
+    .feature-container {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -846,6 +872,34 @@ div#copyright {
     :root {
         --nav-height     : 80px;
         --general-padding: 0.75rem;
+    }
+
+    #intro-section div.inner {
+        padding: 24px;
+    }
+
+    #intro-section form {
+        max-width: 350px;
+        width    : 100%;
+    }
+
+    footer div.inner>div:first-child {
+        flex-direction: column;
+        height        : fit-content;
+        text-align    : center;
+        gap           : 18px;
+        margin        : 30px 0;
+    }
+
+    .footer-nav,
+    .footer-contact {
+        align-items: center;
+    }
+
+    footer ul {
+        display: flex;
+        margin : auto;
+        gap    : 32px;
     }
 
 }

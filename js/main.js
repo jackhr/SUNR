@@ -115,7 +115,9 @@ $(function () {
             didOpen: () => Swal.showLoading()
         }).then(() => {
             $('.vehicle-container').removeClass('active');
-            vehicleContainer.addClass('active');
+            vehicleContainer
+                .addClass('active')
+                .find('.continue-btn').text('CONTINUE');
 
             $(".reservation-step.vehicle-add-on .body>div:first h6, #reservation-summary>h5").text(name);
             $(".reservation-step.vehicle-add-on .body>div:first p, #reservation-summary>h6").text(type);
@@ -138,7 +140,14 @@ $(function () {
     });
 
     $(".add-on-btn").on('click', function () {
-        $(this).toggleClass('added');
+        if ($(this).hasClass('added')) {
+            $(this).removeClass('added');
+            $(this).addClass('show-removed');
+            setTimeout(() => $(this).removeClass('show-removed'), 1000);
+        } else {
+            $(this).addClass('added show-added');
+            setTimeout(() => $(this).removeClass('show-added'), 1000);
+        }
     });
 
     $("#vehicle-add-ons .continue-btn").on('click', function () {
@@ -215,7 +224,7 @@ $(function () {
         });
 
         if (response.isConfirmed) {
-            const ReservationSessionRes = await fetch('/includes/reservation.php', {
+            await fetch('/includes/reservation.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',  // Set Content-Type to JSON
@@ -223,7 +232,7 @@ $(function () {
                 body: JSON.stringify({ action: "reset_reservation" })
             });
 
-            const reservationSessionData = await ReservationSessionRes.json();
+            location.reload();
         }
     });
 

@@ -162,7 +162,8 @@
 }
 
 #reservation-summary {
-    min-width: 430px;
+    max-width: 430px;
+    width    : 100%;
 }
 
 #reservation-summary>h5 {
@@ -378,6 +379,7 @@
     display        : flex;
     justify-content: space-between;
     align-items    : center;
+    gap            : 24px;
 }
 
 .add-on-container .top .left h2 {
@@ -414,14 +416,19 @@
 }
 
 .add-on-btn.added::before {
-    content: "ADDED";
-}
-
-.add-on-btn.added:hover::before {
     content: "REMOVE";
 }
 
+.add-on-btn.added.show-added::before {
+    content: "ADDED";
+}
+
+.add-on-btn.show-removed::before {
+    content: "REMOVED";
+}
+
 .add-on-btn {
+    min-width      : 90px;
     width          : 90px;
     border         : solid 2px var(--primary);
     border-radius  : 4px;
@@ -436,10 +443,16 @@
     transition     : background-color 0.3s, color 0.3s;
 }
 
-.add-on-btn.added,
-.add-on-btn:hover {
+.add-on-btn.added {
     background-color: var(--primary);
     color           : var(--white);
+}
+
+@media (hover: hover) {
+    .add-on-btn:hover {
+        background-color: var(--primary);
+        color           : var(--white);
+    }
 }
 
 .add-on-container>p {
@@ -496,10 +509,23 @@
         box-shadow: none;
     }
 
+    .reservation-step.active .body {
+        padding-left: 54px;
+    }
+
     .reservation-step:not(.active) .body {
         padding: 0;
         height : 0;
     }
+
+    .reservation-flow-container {
+        flex-direction: column;
+    }
+
+    #reservation-summary {
+        max-width: 100%;
+    }
+
 }
 
 @media screen and (max-width: 991px) {
@@ -512,6 +538,43 @@
         max-width: 100%;
     }
 
+    #vehicles {
+        flex-wrap      : wrap;
+        flex-direction : row;
+        justify-content: center;
+    }
+
+    .vehicle-container {
+        height        : 450px;
+        width         : calc(50% - 6px);
+        flex-direction: column;
+        text-align    : center;
+    }
+
+    .vehicle-container img {
+        margin    : auto;
+        max-height: 200px;
+    }
+
+    .vehicle-container div.center {
+        margin-top: 24px;
+        gap       : 12px;
+    }
+
+    .vehicle-container div.center>div:last-child {
+        width          : 100%;
+        justify-content: center;
+    }
+
+    .vehicle-container div.right {
+        margin: 20px auto 0;
+        width : 100%;
+    }
+
+    .vehicle-container div.right>div.continue-btn {
+        width: 100%;
+    }
+
 }
 
 @media screen and (max-width: 768px) {
@@ -520,5 +583,24 @@
         padding: 0;
     }
 
+    .reservation-flow-container {
+        padding: 24px;
+    }
 
+    .vehicle-container {
+        width: 100%;
+    }
+
+    .mutiple-input-container {
+        gap: 12px
+    }
+
+    .add-on-container .top {
+        gap: 12px;
+    }
+
+    .add-on-btn {
+        min-width: 70px;
+        width    : 70px;
+    }
 }

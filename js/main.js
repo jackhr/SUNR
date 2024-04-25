@@ -27,12 +27,12 @@ $(function () {
     $(".custom-select").on('click', function () {
         $(".custom-select").removeClass('active');
         $(this).addClass('active');
-        $('body').addClass('viewing-custom-select-options');
+        $('html').addClass('viewing-custom-select-options');
     });
 
     $(".custom-select-options span").on('click', function (e) {
         e.stopPropagation();
-        $('body').removeClass('viewing-custom-select-options');
+        $('html').removeClass('viewing-custom-select-options');
         $(this).siblings().removeClass('selected');
         $(this).addClass('selected');
         const option = $(this).text();
@@ -41,8 +41,11 @@ $(function () {
     });
 
     $("body .overlay").on('click', function () {
-        if ($('body').hasClass('viewing-custom-select-options')) {
-            $('body').removeClass('viewing-custom-select-options');
+        if ($('html').hasClass('viewing-custom-select-options')) {
+            $('html').removeClass('viewing-custom-select-options');
+        }
+        if ($('html').hasClass('viewing-hamburger-menu')) {
+            $('html').removeClass('viewing-hamburger-menu');
         }
     });
 
@@ -222,6 +225,14 @@ $(function () {
 
             const reservationSessionData = await ReservationSessionRes.json();
         }
+    });
+
+    $("#hamburger-button").on('click', function () {
+        $("html").addClass('viewing-hamburger-menu');
+    });
+
+    $("#close-hamburger").on('click', function () {
+        $("html").removeClass('viewing-hamburger-menu');
     });
 
 });

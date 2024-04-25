@@ -1,11 +1,25 @@
+<?php
+
+if (isset($_SESSION['reservation']['vehicle'])) {
+    $vehicle = $_SESSION['reservation']['vehicle'];
+    $vehicle_name = $vehicle['name'];
+    $vehicle_type = $vehicle['type'];
+    $vehicle_img_src = $vehicle['imgSrc'];
+} else {
+    $vehicle_name = "Car";
+    $vehicle_type = "Please select your vehicle";
+}
+
+?>
+
 <div id="reservation-summary">
 
-    <h5>Car</h5>
-    <h6>Please select your vehicle</h6>
+    <h5><?php echo $vehicle_name; ?></h5>
+    <h6><?php echo $vehicle_type; ?></h6>
 
     <div class="car summary">
-        <?php if (isset($car)) { ?>
-
+        <?php if (isset($_SESSION['reservation']['vehicle'])) { ?>
+            <img src="<?php echo $vehicle_img_src; ?>" alt="">
         <?php } else { ?>
             <div>+</div>
             <div>

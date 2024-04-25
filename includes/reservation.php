@@ -15,6 +15,11 @@ if ($data['action'] === 'itinerary') {
     $_SESSION['reservation']['itinerary'] = $data;
 }
 
+if ($data['action'] === 'vehicle') {
+    unset($data['action']);
+    $_SESSION['reservation']['vehicle'] = $data;
+}
+
 if ($data['action'] === 'reset_reservation') {
     unset($_SESSION['reservation']);
 }

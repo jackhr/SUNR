@@ -80,9 +80,50 @@ $(function () {
         $(`section[data-step="${step}"]`).first().show();
     });
 
-    $(".vehicle-container .continue-btn").on('click', function () {
-        $("#vehicle-selection-section").hide();
-        $("#vehicle-add-ons").show();
+    $(".vehicle-container .continue-btn").on('click', async function () {
+        const vehicleContainer = $(this).closest('.vehicle-container');
+
+        if (vehicleContainer.hasClass('active')) return goToAddOns();
+
+        const id = vehicleContainer.data('vehicle-id');
+        const name = vehicleContainer.find('.vehicle-name').text();
+        const type = vehicleContainer.find('.vehicle-type').text();
+        const imgSrc = vehicleContainer.children('img').attr('src');
+        const data = {
+            action: "vehicle",
+            step: 2,
+            id,
+            name,
+            type,
+            imgSrc
+        };
+
+        const ReservationSessionRes = await fetch('/includes/reservation.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to JSON
+            },
+            body: JSON.stringify(data)
+        });
+
+        Swal.fire({
+            title: `Choosing ${name} (${type})...`,
+            timer: 1500,
+            didOpen: () => Swal.showLoading()
+        }).then(() => {
+            $('.vehicle-container').removeClass('active');
+            vehicleContainer.addClass('active');
+
+            $(".reservation-step.vehicle-add-on .body>div:first h6, #reservation-summary>h5").text(name);
+            $(".reservation-step.vehicle-add-on .body>div:first p, #reservation-summary>h6").text(type);
+
+            $("#reservation-summary div.car.summary").html(`
+                <img src="${imgSrc}" alt="${name}">
+            `);
+
+            goToAddOns();
+        });
+
     });
 
     $(".more-add-on-info").on('click', function () {
@@ -146,8 +187,8 @@ $(function () {
         const reservationSessionData = await ReservationSessionRes.json();
 
         // update itinerary section
-        $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.value}`);
-        $(".reservation-step.itinerary .body>div:last-child p").text(`${data.returnLocation} - ${data.returnDate.value}`);
+        $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.altValue}`);
+        $(".reservation-step.itinerary .body>div:last-child p").text(`${data.returnLocation} - ${data.returnDate.altValue}`);
 
         // head to vehicle selection section
         Swal.fire({
@@ -239,17 +280,22 @@ function isWithinBusinessHours(date) {
 function pickUpDateIsSameAsReturnDate(data) {
     const pickUpDay = getDayFromDate(data.pickUpDate.altValue);
     const returnDay = getDayFromDate(data.returnDate.altValue);
-    return pickUpDay === returnDay;
+    return pickUpDay === returnDay && (data.pickUpDate.ts + 86400000 > data.returnDate.ts); // could be same day but different month
 }
 
 function pickUpDateIsAfterReturnDate(data) {
     const pickUpDay = getDayFromDate(data.pickUpDate.altValue);
     const returnDay = getDayFromDate(data.returnDate.altValue);
-    return pickUpDay > returnDay;
+    return pickUpDay > returnDay && (data.pickUpDate.ts - 86400000 > data.returnDate.ts); // could be same day but different month;
 }
 
 function getDayFromDate(dateStr) {
     // dateStr = "April 24, 2024 10:00 am"
     if (!dateStr) return;
     return Number(dateStr.split(',')[0].split(' ')[1]);
+}
+
+function goToAddOns() {
+    $("#vehicle-selection-section").hide();
+    $("#vehicle-add-ons").show();
 }

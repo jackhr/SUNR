@@ -417,6 +417,7 @@ html.viewing-hamburger-menu #hamburger-nav {
     background: var(--primary);
     padding   : 30px;
     text-align: left;
+    border    : solid 2px var(--black);
 }
 
 #intro-section h2 {
@@ -879,8 +880,9 @@ div#copyright {
     }
 
     #intro-section form {
-        max-width: 350px;
-        width    : 100%;
+        max-width       : 350px;
+        width           : 100%;
+        background-color: rgba(var(--primary-rgb-vals), 0.6);
     }
 
     footer div.inner>div:first-child {

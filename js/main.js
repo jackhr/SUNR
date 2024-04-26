@@ -139,12 +139,43 @@ $(function () {
         container.children('p').slideToggle(!viewingInfo);
     });
 
-    $(".add-on-btn").on('click', function () {
+    $(".add-on-btn").on('click', async function () {
+        const addOnContainer = $(this).closest('.add-on-container');
         if ($(this).hasClass('added')) {
+            const data = {
+                action: "remove_add_on",
+                id: addOnContainer.data('id')
+            };
+            const ReservationSessionRes = await fetch('/includes/reservation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Set Content-Type to JSON
+                },
+                body: JSON.stringify(data)
+            });
+
+            const res = await ReservationSessionRes.json();
+            console.log('res', res);
+
             $(this).removeClass('added');
             $(this).addClass('show-removed');
             setTimeout(() => $(this).removeClass('show-removed'), 1000);
         } else {
+            const data = {
+                action: "add_add_on",
+                id: addOnContainer.data('id')
+            };
+            const ReservationSessionRes = await fetch('/includes/reservation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Set Content-Type to JSON
+                },
+                body: JSON.stringify(data)
+            });
+
+            const res = await ReservationSessionRes.json();
+            console.log('res', res);
+
             $(this).addClass('added show-added');
             setTimeout(() => $(this).removeClass('show-added'), 1000);
         }

@@ -2,6 +2,12 @@
 
 session_start();
 
+
+if ($_GET['reset-data'] == 'true') {
+    session_destroy();
+    header('Location: /book-now.php');
+}
+
 $title_suffix = "Reservation";
 $page = "reservation";
 $description = "Book a car rental with Shaquan's Car Rental. Choose from a variety of vehicles and rental options. Reserve your car today.";
@@ -10,9 +16,13 @@ include_once 'includes/header.php';
 
 $vehicles_arr = [];
 
-$query = "SELECT * FROM vehicles";
-$result = mysqli_query($con, $query);
-while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
+$vehicles_query = "SELECT * FROM vehicles";
+$vehicles_result = mysqli_query($con, $vehicles_query);
+while ($row = mysqli_fetch_assoc($vehicles_result)) $vehicles_arr[] = $row;
+
+$add_ons_query = "SELECT * FROM add_ons";
+$add_ons_result = mysqli_query($con, $add_ons_query);
+while ($row = mysqli_fetch_assoc($add_ons_result)) $add_ons_arr[] = $row;
 
 
 $reservation = $_SESSION['reservation'];
@@ -43,6 +53,16 @@ if (isset($reservation['vehicle'])) {
     $vehicle_name = "Type";
     $vehicle_type = "--";
 }
+
+$session_add_ons = [];
+if (isset($reservation['add_ons']) && count($reservation['add_ons']) > 0) {
+    $session_add_ons = $reservation['add_ons'];
+}
+$session_add_ons = count($session_add_ons) ? $session_add_ons : ["--"];
+
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
 
 ?>
 
@@ -80,7 +100,15 @@ if (isset($reservation['vehicle'])) {
                 </div>
                 <div>
                     <h6>Add-ons</h6>
-                    <p>--</p>
+                    <p>
+                        <?php
+                        $counter = 0;
+                        foreach ($session_add_ons as $add_on) {
+                            $prefix = $counter > 0 ? ", " : "";
+                            $counter++;
+                            echo "<span data-id=\"{$add_on['id']}\">{$prefix}{$add_on['abbr']}</span>";
+                        } ?>
+                    </p>
                 </div>
             </div>
         </div>
@@ -248,81 +276,23 @@ if (isset($reservation['vehicle'])) {
         <div class="reservation-flow-container">
             <div class="left">
                 <div id="add-ons">
-                    <div class="add-on-container">
-                        <div class="top">
-                            <div class="left">
-                                <h2>Collision Insurance – $10/day + Premium</h2>
-                                <div class="more-add-on-info">
-                                    <span>More Information</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
-                                        <path d="m6 9 6 6 6-6" />
-                                    </svg>
+                    <?php foreach ($add_ons_arr as $add_on) { ?>
+                        <div class="add-on-container" data-id="<?php echo $add_on['id']; ?>">
+                            <div class="top">
+                                <div class="left">
+                                    <h2><?php echo $add_on['name']; ?></h2>
+                                    <div class="more-add-on-info">
+                                        <span>More Information</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                            <path d="m6 9 6 6 6-6" />
+                                        </svg>
+                                    </div>
                                 </div>
+                                <div class="add-on-btn <?php echo isset($session_add_ons[$add_on['id']]) ? "added" : ""; ?>"></div>
                             </div>
-                            <div class="add-on-btn"></div>
+                            <p><?php echo $add_on['description']; ?></p>
                         </div>
-                        <p>Insurance base cost is USD$10/day, plus a premium of up to USD$5/day depending on your car selection. If applicable, this premium will be added to your bill after you place your order. Please see full rates for all cars below.<br><br><b>$10/day:</b> <i>Toyota Vitz / Toyota Allion / Toyota Yaris / Toyota Corolla / Toyota Rush</i><br><br><b>$12/day:</b> <i>Toyota RAV4 / Hyundai Tucson / Jeep Wrangler</i><br><br><b>$15/day:</b> <i>Toyota Noah / Toyota Prado / Toyota Fortuner / Toyota Estima / Mazda BT50 / Toyota Hilux</i></p>
-                    </div>
-                    <div class="add-on-container">
-                        <div class="top">
-                            <div class="left">
-                                <h2>Antiguan Driving Permit (Required by Law) – $20</h2>
-                                <div class="more-add-on-info">
-                                    <span>More Information</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
-                                        <path d="m6 9 6 6 6-6" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="add-on-btn"></div>
-                        </div>
-                        <p>All drivers in Antigua must have an Antigua & Barbuda Temporary Drivers License (in addition to a valid Drivers License from your country of residence. The temporary Drivers License is valid for 3 months and costs USD$20.00.</p>
-                    </div>
-                    <div class="add-on-container">
-                        <div class="top">
-                            <div class="left">
-                                <h2>Additional Driver</h2>
-                                <div class="more-add-on-info">
-                                    <span>More Information</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
-                                        <path d="m6 9 6 6 6-6" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="add-on-btn"></div>
-                        </div>
-                        <p>An additional driver can be added to your rental agreement. Each driver must have a valid drivers license from their country of residence and is required to have an Antigua & Barbuda Temporary Drivers License.</p>
-                    </div>
-                    <div class="add-on-container">
-                        <div class="top">
-                            <div class="left">
-                                <h2>Child Seat (If Available) – Complimentary</h2>
-                                <div class="more-add-on-info">
-                                    <span>More Information</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
-                                        <path d="m6 9 6 6 6-6" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="add-on-btn"></div>
-                        </div>
-                        <p>Child safety seats are recommended by law for children under the age of four. This option is complementary and based on availability.</p>
-                    </div>
-                    <div class="add-on-container">
-                        <div class="top">
-                            <div class="left">
-                                <h2>GPS Navigation (If Available) – Complimentary</h2>
-                                <div class="more-add-on-info">
-                                    <span>More Information</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
-                                        <path d="m6 9 6 6 6-6" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="add-on-btn"></div>
-                        </div>
-                        <p>We have a limited number of GPS turn-by-turn navigation systems. This option is limited to availability.</p>
-                    </div>
+                    <?php } ?>
                 </div>
                 <div class="continue-btn">Continue Reservation</div>
             </div>

@@ -134,6 +134,7 @@
     padding         : 30px;
     transition      : background-color 0.3s, color 0.3s, height 0.3s, padding 0.3s;
     overflow        : hidden;
+    height          : 100%;
 }
 
 .reservation-step .body>div {
@@ -511,6 +512,7 @@
 
     .reservation-step.active .body {
         padding-left: 54px;
+        height      : auto;
     }
 
     .reservation-step:not(.active) .body {

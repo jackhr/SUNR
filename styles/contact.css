@@ -73,6 +73,9 @@
     #contact-form-section form {
         flex-direction: column;
         gap           : 15px;
+        max-width     : 500px;
+        margin        : auto;
+        width         : 100%;
     }
 
     #contact-form-section form>div.left>.input-container {
@@ -80,7 +83,7 @@
     }
 
     #contact-form-section button[type="submit"] {
-        max-width: 400px;
+        max-width: 100%;
         margin   : auto;
     }
 

@@ -901,7 +901,7 @@ div#copyright {
     footer ul {
         display: flex;
         margin : auto;
-        gap    : 32px;
+        gap    : 24px;
     }
 
 }

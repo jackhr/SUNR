@@ -555,7 +555,7 @@
 
     .vehicle-container img {
         margin    : auto;
-        max-height: 200px;
+        max-height: 135px;
     }
 
     .vehicle-container div.center {
@@ -586,7 +586,7 @@
     }
 
     .reservation-flow-container {
-        padding: 24px;
+        padding: 12px;
     }
 
     .vehicle-container {

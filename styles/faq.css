@@ -10,9 +10,9 @@
 }
 
 #faq-header span {
-    text-wrap  : nowrap;
     font-weight: 700;
     font-size  : 13px;
+    min-width  : max-content;
 }
 
 #faq-header div {

@@ -37,6 +37,8 @@ if ($data['action'] === 'add_add_on') {
     uasort($_SESSION['reservation']['add_ons'], function ($a, $b) {
         return $a['id'] - $b['id'];
     });
+
+    $data = $_SESSION['reservation'];
 }
 
 if ($data['action'] === 'remove_add_on') {
@@ -48,6 +50,8 @@ if ($data['action'] === 'remove_add_on') {
     $_SESSION['reservation']['add_ons'] = array_filter($_SESSION['reservation']['add_ons'], function ($a) use ($add_on) {
         return $a['id'] !== $add_on['id'];
     });
+
+    $data = $_SESSION['reservation'];
 }
 
 if ($data['action'] === 'reset_reservation') {

@@ -212,39 +212,72 @@ $(function () {
 
     $(".add-on-btn").on('click', async function () {
         const addOnContainer = $(this).closest('.add-on-container');
+        const data = {
+            action: $(this).hasClass('added') ? "remove_add_on" : "add_add_on",
+            id: addOnContainer.data('id')
+        };
+
+        const ReservationSessionRes = await fetch('/includes/reservation.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to JSON
+            },
+            body: JSON.stringify(data)
+        });
+
+        const reservation = await ReservationSessionRes.json();
+
+        let rows = '', spans = '', html = '', count = 0;
+
+        for (const id in reservation.add_ons) {
+            count++;
+            const addOn = reservation.add_ons[id];
+            rows += `
+                <tr data-id="${addOn.id}">
+                    <td>${addOn.name}</td>
+                    <td>${makePriceString(addOn.cost)}</td>
+                </tr>
+            `;
+
+            spans += `${count > 1 ? ", " : ""}<span data-id="${addOn.id}">${addOn.abbr}</span>`;
+        }
+
+        // Calculate and append the total cost row
+        const totalCost = Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0);
+        rows += `
+            <tr>
+                <td>Add-ons Charges Rate</td>
+                <td>${makePriceString(totalCost)}</td>
+            </tr>
+        `;
+
+        if (totalCost > 0) {
+            html = `
+                <h6>Add-ons</h6>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `
+        } else {
+            html = '<div><span>--</span><span>--</span><span>--</span></div>';
+        }
+
+        $("#reservation-summary div.add-ons.summary").html(html);
+        $(".reservation-step.vehicle-add-on .body > div:last-child p").html(spans || "--");
+
         if ($(this).hasClass('added')) {
-            const data = {
-                action: "remove_add_on",
-                id: addOnContainer.data('id')
-            };
-            const ReservationSessionRes = await fetch('/includes/reservation.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',  // Set Content-Type to JSON
-                },
-                body: JSON.stringify(data)
-            });
-
-            const res = await ReservationSessionRes.json();
-
             $(this).removeClass('added');
             $(this).addClass('show-removed');
             setTimeout(() => $(this).removeClass('show-removed'), 1000);
         } else {
-            const data = {
-                action: "add_add_on",
-                id: addOnContainer.data('id')
-            };
-            const ReservationSessionRes = await fetch('/includes/reservation.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',  // Set Content-Type to JSON
-                },
-                body: JSON.stringify(data)
-            });
-
-            const res = await ReservationSessionRes.json();
-
             $(this).addClass('added show-added');
             setTimeout(() => $(this).removeClass('show-added'), 1000);
         }

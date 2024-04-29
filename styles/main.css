@@ -864,6 +864,16 @@ td:first-child {
     min-width: 150px;
 }
 
+table tbody tr:last-child {
+    font-weight: 600;
+    color      : var(--black);
+}
+
+table tr th:last-child,
+table tr td:last-child {
+    text-align: right;
+}
+
 @media screen and (max-width: 991px) {
     :root {
         --nav-height: 110px;

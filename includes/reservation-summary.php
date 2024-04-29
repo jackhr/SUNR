@@ -2,7 +2,16 @@
 
 include_once 'helpers.php';
 
-if (isset($_SESSION['reservation'])) {
+if (!!$order_request) {
+    $vehicle = [
+        'name' => $order_request['vehicle_name'],
+        'type' => $order_request['vehicle_type'],
+        'imgSrc' => "/assets/images/vehicles/{$order_request['vehicle_slug']}.jpg"
+    ];
+    $vehicle_name = $vehicle['name'];
+    $vehicle_type = $vehicle['type'];
+    $vehicle_img_src = $vehicle['imgSrc'];
+} else if (isset($_SESSION['reservation'])) {
     $reservation = $_SESSION['reservation'];
     if (isset($reservation['vehicle'])) {
         $vehicle = $reservation['vehicle'];
@@ -20,6 +29,9 @@ if (isset($_SESSION['reservation'])) {
             $rate['days'] = $days;
             $rate['sub_total'] = makePriceString((int)$vehicle['price_day'], $days);
         }
+    }
+    if (isset($reservation['add_ons'])) {
+        $add_ons = $reservation['add_ons'];
     }
 } else {
     $vehicle_name = "Car";
@@ -64,6 +76,10 @@ if (isset($_SESSION['reservation'])) {
                         <td><?php echo $rate['rate']; ?></td>
                         <td><?php echo $rate['sub_total']; ?></td>
                     </tr>
+                    <tr>
+                        <td colspan="2">Rental Subtotal</td>
+                        <td><?php echo $rate['sub_total']; ?></td>
+                    </tr>
                 </tbody>
             </table>
         <?php } else { ?>
@@ -77,14 +93,34 @@ if (isset($_SESSION['reservation'])) {
 
     <div class="add-ons summary">
         <h6>Add-ons</h6>
-        <div>
-            <?php if (isset($add_ons)) { ?>
-            <?php } else { ?>
+        <?php if (isset($add_ons)) { ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($add_ons as $id => $add_on) { ?>
+                        <tr data-id="<?php echo $id; ?>">
+                            <td><?php echo $add_on['name']; ?></td>
+                            <td><?php echo makePriceString($add_on['cost']); ?></td>
+                        </tr>
+                    <?php } ?>
+                    <tr>
+                        <td>Add-ons Subtotal</td>
+                        <td><?php echo makePriceString(array_sum(array_column($add_ons, 'cost'))); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        <?php } else { ?>
+            <div>
                 <span>--</span>
                 <span>--</span>
                 <span>--</span>
-            <?php } ?>
-        </div>
+            </div>
+        <?php } ?>
     </div>
 
     <div class="estimated-total">

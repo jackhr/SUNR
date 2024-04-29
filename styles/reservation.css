@@ -165,6 +165,17 @@
 #reservation-summary {
     max-width: 430px;
     width    : 100%;
+    position : relative;
+}
+
+.change-car-btn {
+    position     : absolute;
+    right        : 0;
+    font-size    : 12px;
+    cursor       : pointer;
+    height       : fit-content;
+    padding      : 2px 4px;
+    border-radius: 4px;
 }
 
 #reservation-summary>h5 {

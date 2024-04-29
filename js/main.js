@@ -169,8 +169,8 @@ $(function () {
 
         const rate = {
             days: 1,
-            rate: makePriceString(150),
-            subtotal: makePriceString(150)
+            rate: makePriceString(reservation.vehicle.price_day),
+            subtotal: makePriceString(reservation.vehicle.price_day)
         };
 
         if (reservation.itinerary) {
@@ -197,6 +197,10 @@ $(function () {
                 </tbody>
             </table>
         `);
+
+        const totalAddOnsCost = Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0);
+
+        $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + (reservation.vehicle.price_day * rate.days), getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts)));
 
         goToAddOns();
 
@@ -243,15 +247,9 @@ $(function () {
         }
 
         // Calculate and append the total cost row
-        const totalCost = Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0);
-        rows += `
-            <tr>
-                <td>Add-ons Charges Rate</td>
-                <td>${makePriceString(totalCost)}</td>
-            </tr>
-        `;
+        const totalAddOnsCost = Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0);
 
-        if (totalCost > 0) {
+        if (rows.length) {
             html = `
                 <h6>Add-ons</h6>
                 <table>
@@ -263,15 +261,25 @@ $(function () {
                     </thead>
                     <tbody>
                         ${rows}
+                        <tr>
+                            <td>Add-ons Charges Rate</td>
+                            <td>${makePriceString(totalAddOnsCost)}</td>
+                        </tr>
                     </tbody>
                 </table>
             `
         } else {
-            html = '<div><span>--</span><span>--</span><span>--</span></div>';
+            html = `
+                <h6>Add-ons</h6>
+                <div><span>--</span><span>--</span><span>--</span></div>
+            `;
         }
+
+        const rentalSubtotal = parseInt(reservation.vehicle.price_day) * getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
 
         $("#reservation-summary div.add-ons.summary").html(html);
         $(".reservation-step.vehicle-add-on .body > div:last-child p").html(spans || "--");
+        $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + rentalSubtotal, getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts)));
 
         if ($(this).hasClass('added')) {
             $(this).removeClass('added');
@@ -283,11 +291,16 @@ $(function () {
         }
     });
 
-    $("#vehicle-add-ons .continue-btn").on('click', function () {
+    $(".change-car-btn").on('click', function () {
+        $("#vehicle-add-ons").hide();
+        $("#vehicle-selection-section").show();
+    });
+
+    $("#vehicle-add-ons .continue-btn:not(.change-car-btn)").on('click', function () {
         $(".reservation-step[data-step='3'] .header").click();
     });
 
-    $("#itinerary-section .continue-btn").on('click', async function () {
+    $("#itinerary-section .continue-btn:not(.change-car-btn)").on('click', async function () {
 
         $(".form-input").removeClass('form-error');
 

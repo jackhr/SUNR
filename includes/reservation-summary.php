@@ -29,10 +29,13 @@ if (!!$order_request) {
             $rate['days'] = $days;
             $rate['sub_total'] = makePriceString((int)$vehicle['price_day'], $days);
         }
+        $estimated_total = (int)$vehicle['price_day'] * $days;
     }
-    if (isset($reservation['add_ons'])) {
+    if (isset($reservation['add_ons']) && count($reservation['add_ons']) > 0) {
         $add_ons = $reservation['add_ons'];
+        $estimated_total = isset($estimated_total) ? $estimated_total + array_sum(array_column($add_ons, 'cost')) : array_sum(array_column($add_ons, 'cost'));
     }
+    $estimated_total = isset($estimated_total) ? makePriceString($estimated_total) : "--";
 } else {
     $vehicle_name = "Car";
     $vehicle_type = "Please select your vehicle";
@@ -41,6 +44,8 @@ if (!!$order_request) {
 ?>
 
 <div id="reservation-summary">
+
+    <span class="change-car-btn continue-btn">Change?</span>
 
     <h5><?php echo $vehicle_name; ?></h5>
     <h6><?php echo $vehicle_type; ?></h6>
@@ -125,7 +130,7 @@ if (!!$order_request) {
 
     <div class="estimated-total">
         <span>Estimated Total</span>
-        <span>--</span>
+        <span><?php echo $estimated_total; ?></span>
     </div>
 
 </div>

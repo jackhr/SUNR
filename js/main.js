@@ -372,6 +372,51 @@ $(function () {
         $("html").removeClass('viewing-hamburger-menu');
     });
 
+    $("#final-details-form .continue-btn").on('click', async function () {
+        const data = {
+            "first-name": $('#final-details-form input[name="first-name"]').val(),
+            "last-name": $('#final-details-form input[name="last-name"]').val(),
+            "driver-license": $('#final-details-form input[name="driver-license"]').val(),
+            "country-region": $('#final-details-form input[name="country-region"]').val(),
+            "street": $('#final-details-form input[name="street"]').val(),
+            "town-city": $('#final-details-form input[name="town-city"]').val(),
+            "state-county": $('#final-details-form input[name="state-county"]').val(),
+            "phone": $('#final-details-form input[name="phone"]').val(),
+            "email": $('#final-details-form input[name="email"]').val(),
+            "h826r2whj4fi_cjz8jxs2zuwahhhk6": ""
+        };
+
+        const formDataIsValid = handleInvalidFormData(data, "final_details");
+
+        if (!formDataIsValid) return;
+
+        Swal.fire({
+            title: "Sending request...",
+            didOpen: () => Swal.showLoading()
+        });
+
+        const emailRes = await fetch('/includes/vehicle-request-send.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to JSON
+            },
+            body: JSON.stringify(data)
+        });
+
+        const emailJSON = await emailRes.json();
+
+        if (emailJSON.success) {
+            location.href = `/confirmation.php?key=${emailJSON.data.key}`;
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: emailJSON.message,
+                icon: "error",
+                confirmButtonText: "Ok",
+            });
+        }
+    });
+
 });
 
 function handleInvalidFormData(data, section) {
@@ -403,6 +448,24 @@ function handleInvalidFormData(data, section) {
         } else if (pickUpDateIsAfterReturnDate(data)) {
             text = 'You have to return the car at least one day after pick up.';
             element = $('#pick-up-flatpickr + input, #return-flatpickr + input');
+        }
+
+    }
+
+    if (section === "final_details") {
+
+        if (data.first_name === '') {
+            text = 'Please enter your first name.';
+            element = $('#final-details-form input[name="first-name"]');
+        } else if (data.last_name === '') {
+            text = 'Please enter your last name.';
+            element = $('#final-details-form input[name="last-name"]');
+        } else if (data.phone === '') {
+            text = 'Please enter your phone number.';
+            element = $('#final-details-form input[name="phone"]');
+        } else if (data.email === '') {
+            text = 'Please enter your email address.';
+            element = $('#final-details-form input[name="email"]');
         }
 
     }

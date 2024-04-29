@@ -349,42 +349,42 @@ if ($testing) {
                     <div class="mutiple-input-container">
                         <div class="input-container">
                             <h6>First Name<sup>*</sup></h6>
-                            <input type="text">
+                            <input class="form-input" type="text" name="first-name">
                         </div>
                         <div class="input-container">
                             <h6>Last Name<sup>*</sup></h6>
-                            <input type="text">
+                            <input class="form-input" type="text" name="last-name">
                         </div>
                     </div>
                     <div class="mutiple-input-container">
                         <div class="input-container">
                             <h6>Driver's License (Optional)</h6>
-                            <input type="text">
+                            <input type="text" name="driver-license">
                         </div>
                         <div class="input-container">
                             <h6>Country / Region (Optional)</h6>
-                            <input type="text">
+                            <input type="text" name="country-region">
                         </div>
                     </div>
                     <div class="input-container">
                         <h6>Street address (optional)</h6>
-                        <input type="text">
+                        <input type="text" name="street">
                     </div>
                     <div class="input-container">
                         <h6>Town / City (optional)</h6>
-                        <input type="text">
+                        <input type="text" name="town-city">
                     </div>
                     <div class="input-container">
                         <h6>State / County (optional)</h6>
-                        <input type="text">
+                        <input type="text" name="state-county">
                     </div>
                     <div class="input-container">
                         <h6>Phone <sup>*</sup></h6>
-                        <input type="text">
+                        <input class="form-input" type="text" name="phone">
                     </div>
                     <div class="input-container">
                         <h6>Email address <sup>*</sup></h6>
-                        <input type="text">
+                        <input class="form-input" type="text" name="email">
                     </div>
                     <div class="continue-btn">Send Request</div>
                 </div>

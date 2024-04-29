@@ -31,6 +31,9 @@ $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
     <link type="text/css" rel="stylesheet" href="/styles/main.css">
     <?php if (isset($page) && file_exists("styles/{$page}.css")) { ?>
         <link type="text/css" rel="stylesheet" href="/styles/<?php echo $page ?>.css">
+    <?php }
+    if (isset($extra_css)) { ?>
+        <link type="text/css" rel="stylesheet" href="/styles/<?php echo $extra_css ?>.css">
     <?php } ?>
     <script defer src="/js/main.js"></script>
 

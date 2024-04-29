@@ -60,9 +60,11 @@ if (isset($reservation['add_ons']) && count($reservation['add_ons']) > 0) {
 }
 $session_add_ons = count($session_add_ons) ? $session_add_ons : ["--"];
 
-echo "<pre>";
-print_r($_SESSION);
-echo "</pre>";
+if ($testing) {
+    echo "<pre>";
+    print_r($_SESSION);
+    echo "</pre>";
+}
 
 ?>
 
@@ -258,10 +260,9 @@ echo "</pre>";
                     </div>
                     <div class="right">
                         <div>
-                            <span>USD$<?php echo $v['price_day']; ?></span>
-                            <span>/Total</span>
+                            <span>EC$<?php echo $v['price_day']; ?></span>
+                            <span>/Day</span>
                         </div>
-                        <span>1 Days / 0 Hours</span>
                         <div class="continue-btn"><?php echo $active_vehicle ? "CONTINUE" : "BOOK NOW"; ?></div>
                     </div>
                 </div>

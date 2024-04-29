@@ -198,7 +198,7 @@ $(function () {
             </table>
         `);
 
-        const totalAddOnsCost = Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0);
+        const totalAddOnsCost = reservation.add_ons ? Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0) : 0;
 
         $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + (reservation.vehicle.price_day * rate.days), getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts)));
 
@@ -247,7 +247,7 @@ $(function () {
         }
 
         // Calculate and append the total cost row
-        const totalAddOnsCost = Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0);
+        const totalAddOnsCost = reservation.add_ons ? Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0) : 0;
 
         if (rows.length) {
             html = `

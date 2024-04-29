@@ -292,7 +292,8 @@ $(function () {
     });
 
     $(".change-car-btn").on('click', function () {
-        $("#vehicle-add-ons").hide();
+        $(".reservation-step.vehicle-add-on .header").trigger('click');
+        $("section[data-step]").hide();
         $("#vehicle-selection-section").show();
     });
 

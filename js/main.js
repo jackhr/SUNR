@@ -56,24 +56,24 @@ $(function () {
         $(".form-input").removeClass('form-error');
 
         const returnToSameLocation = $("#return-to-same-location").prop('checked');
-        const pickUpLocation = $(".reservation-flow-container .pick-up .custom-select-options span.selected").text();
+        const pickUpLocation = $(".pick-up .custom-select-options span.selected").text();
 
         const data = {
             action: "itinerary",
             pickUpLocation,
-            returnLocation: returnToSameLocation ? pickUpLocation : $(".reservation-flow-container .return .custom-select-options span.selected").text(),
+            returnLocation: returnToSameLocation ? pickUpLocation : $(".return .custom-select-options span.selected").text(),
             returnToSameLocation: {
                 checked: returnToSameLocation,
                 value: returnToSameLocation ? "on" : "off"
             },
             pickUpDate: {
-                date: STATE.pickUpFP.selectedDates[0],
+                date: STATE.pickUpFP.selectedDates[0].toISOString(),
                 ts: STATE.pickUpFP.selectedDates[0]?.getTime?.(),
                 value: STATE.pickUpFP.input.value,
                 altValue: STATE.pickUpFP.altInput.value
             },
             returnDate: {
-                date: STATE.returnFP.selectedDates[0],
+                date: STATE.returnFP.selectedDates[0].toISOString(),
                 ts: STATE.returnFP.selectedDates[0]?.getTime?.(),
                 value: STATE.returnFP.input.value,
                 altValue: STATE.returnFP.altInput.value
@@ -85,26 +85,7 @@ $(function () {
 
         if (!formDataIsValid) return;
 
-        const ReservationSessionRes = await fetch('/includes/reservation.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',  // Set Content-Type to JSON
-            },
-            body: JSON.stringify(data)
-        });
-
-        const reservationSessionData = await ReservationSessionRes.json();
-
-        // update itinerary section
-        $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.altValue}`);
-        $(".reservation-step.itinerary .body>div:last-child p").text(`${data.returnLocation} - ${data.returnDate.altValue}`);
-
-        // head to vehicle selection section
-        Swal.fire({
-            title: "Setting Itinerary...",
-            timer: 1000,
-            didOpen: () => Swal.showLoading()
-        }).then(() => $(".reservation-step.vehicle-add-on .header").trigger('click'));
+        location.href = `/book-now.php?itinerary[pickUpLocation]=${data.pickUpLocation}&itinerary[returnLocation]=${data.returnLocation}&itinerary[returnToSameLocation][checked]=${returnToSameLocation + 0}&itinerary[returnToSameLocation][value]=${returnToSameLocation ? "on" : "off"}&itinerary[pickUpDate][date]=${data.pickUpDate.date}&itinerary[pickUpDate][ts]=${data.pickUpDate.ts}&itinerary[pickUpDate][value]=${data.pickUpDate.value}&itinerary[pickUpDate][altValue]=${data.pickUpDate.altValue}&itinerary[returnDate][date]=${data.returnDate.date}&itinerary[returnDate][ts]=${data.returnDate.ts}&itinerary[returnDate][value]=${data.returnDate.value}&itinerary[returnDate][altValue]=${data.returnDate.altValue}&step=2`;
     });
 
     $(".faq").on('click', function () {
@@ -379,7 +360,7 @@ $(function () {
                 body: JSON.stringify({ action: "reset_reservation" })
             });
 
-            location.reload();
+            location.href = '/book-now.php';
         }
     });
 
@@ -440,6 +421,7 @@ function handleInvalidFormData(data, section) {
 }
 
 function isWithinBusinessHours(date) {
+    date = (typeof date === 'string') ? new Date(date) : date;
     const hour = date?.getHours?.();
     return hour >= 8 && hour <= 18;
 }
@@ -493,8 +475,8 @@ function customSerialize(obj) {
 
 
 function getDifferenceInDays(pickUpDate, returnDate) {
-    const start = new Date(pickUpDate);
-    const end = new Date(returnDate);
+    const start = new Date(Number(pickUpDate));
+    const end = new Date(Number(returnDate));
     const diffTime = Math.abs(end - start);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
     return diffDays;

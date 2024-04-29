@@ -24,10 +24,42 @@ $add_ons_query = "SELECT * FROM add_ons";
 $add_ons_result = mysqli_query($con, $add_ons_query);
 while ($row = mysqli_fetch_assoc($add_ons_result)) $add_ons_arr[] = $row;
 
+if (isset($_GET['itinerary'])) {
+    $_SESSION['reservation']['itinerary'] = $_GET['itinerary'];
+}
+
+if (isset($_GET['vehicle_id'])) {
+    $vehicle_query = "SELECT * FROM vehicles WHERE id = {$_GET['vehicle_id']}";
+    $vehicle_result = mysqli_query($con, $vehicle_query);
+    $vehicle_response = mysqli_fetch_assoc($vehicle_result);
+    $vehicle_response['imgSrc'] = "/assets/images/vehicles/{$vehicle_response['slug']}.jpg";
+    $_SESSION['reservation']['vehicle'] = $vehicle_response;
+    if (isset($_SESSION['reservation']['step'])) {
+        if ($_SESSION['reservation']['step'] == 2) $_SESSION['reservation']['step'] = 1;
+    }
+}
+
+if (isset($_SESSION['reservation']['itinerary'])) {
+    $_SESSION['reservation']['step'] = 2;
+    if (isset($_SESSION['reservation']['vehicle']) || isset($_SESSION['reservation']['add_ons'])) {
+        $_SESSION['reservation']['step'] = 3;
+    }
+} else if (isset($_SESSION['reservation']['vehicle']) || isset($_SESSION['reservation']['add_ons'])) {
+    $_SESSION['reservation']['step'] = 2;
+    if (isset($_SESSION['reservation']['vehicle']) && isset($_SESSION['reservation']['add_ons']) && count($_SESSION['reservation']['add_ons']) > 0) {
+        $_SESSION['reservation']['step'] = 3;
+    } else {
+        if (!isset($_SESSION['reservation']['itinerary'])) {
+            $_SESSION['reservation']['step'] = 1;
+        }
+    }
+} else if (isset($_GET['step'])) {
+    $_SESSION['reservation']['step'] = $_GET['step'];
+} else {
+    $_SESSION['reservation']['step'] = 1;
+}
 
 $reservation = $_SESSION['reservation'];
-
-$reservation['step'] = isset($reservation['step']) ? $reservation['step'] : ($_GET['step'] ?? 1);
 
 if (isset($reservation['itinerary'])) {
     $itinerary = $reservation['itinerary'];
@@ -66,9 +98,9 @@ $session_add_ons = count($session_add_ons) ? $session_add_ons : [
 ];
 
 if ($testing) {
-    echo "<pre>";
-    print_r($_SESSION);
-    echo "</pre>";
+    // echo "<pre>";
+    // print_r($_SESSION);
+    // echo "</pre>";
 }
 
 ?>

@@ -18,8 +18,9 @@ if (!!$order_request) {
         $vehicle_name = $vehicle['name'];
         $vehicle_type = $vehicle['type'];
         $vehicle_img_src = $vehicle['imgSrc'];
+        $days = 1;
         $rate = [
-            'days' => 1,
+            'days' => $days,
             'rate' => makePriceString($vehicle['price_day']),
             'sub_total' => makePriceString((int)$vehicle['price_day'])
         ];

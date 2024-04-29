@@ -20,7 +20,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
         <form action="">
 
             <h2>PICK UP</h2>
-            <div class="custom-select pick-up">
+            <div class="custom-select pick-up form-input">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                 </svg>
@@ -42,11 +42,11 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
             </div>
 
             <div>
-                <input type="text" id="pick-up-flatpickr" class="flatpickr-input" placeholder="Pickup Date">
+                <input type="text" id="pick-up-flatpickr" class="flatpickr-input form-input" placeholder="Pickup Date">
             </div>
 
             <h2>RETURN</h2>
-            <div class="custom-select return" style="display: none;">
+            <div class="custom-select return form-input" style="display: none;">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                 </svg>
@@ -61,7 +61,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
             </div>
             <div>
-                <input type="text" id="return-flatpickr" class="flatpickr-input" placeholder="Return Date">
+                <input type="text" id="return-flatpickr" class="flatpickr-input form-input" placeholder="Return Date">
             </div>
 
             <button type="submit">
@@ -157,7 +157,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
     <div class="inner">
         <div id="cars">
             <?php foreach ($vehicles_arr as $vehicle) { ?>
-                <div class="car-container">
+                <a class="car-container" href="/book-now.php?vehicle_id=<?php echo $vehicle['id']; ?>">
                     <div class="overlay">
                         <div></div>
                     </div>
@@ -203,7 +203,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                     <div class="bottom">
                         <img src="/assets/images/vehicles/<?php echo $vehicle['slug']; ?>.jpg" alt="Car thumbnail">
                     </div>
-                </div>
+                </a>
             <?php } ?>
         </div>
         <a href="/book-now.php">BOOK NOW</a>

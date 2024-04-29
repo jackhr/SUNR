@@ -542,6 +542,12 @@ html.viewing-hamburger-menu #hamburger-nav {
     cursor          : pointer;
     min-width       : 300px;
     margin          : auto;
+    color           : var(--black);
+}
+
+.car-container:hover,
+.car-container:focus {
+    color: var(--black);
 }
 
 .car-container .overlay {

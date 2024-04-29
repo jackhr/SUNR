@@ -49,22 +49,62 @@ $(function () {
         }
     });
 
-    $("#intro-section form").on('submit', function (e) {
+    $("#intro-section form").on('submit', async function (e) {
         // prevent the form from submitting
         e.preventDefault();
-        // get values form form
-        const form = $(this);
-        const pickUpLocation = $('.custom-select.pick-up>span').text();
-        const returnLocation = $('.custom-select.return>span').text();
-        const returnToSameLocation = $("#return-to-same-location").prop('checked') + 0; // convert boolean to integer
-        const pickUpDate = $('#pick-up-flatpickr').flatpickr('getValue');
-        const returnDate = $('#return-flatpickr').flatpickr('getValue')
-        // append values to the action of the form
-        const action = form.attr('action');
-        const newAction = `${action}?pick-up-location=${pickUpLocation}&return-location=${returnLocation}&return-to-same-location=${returnToSameLocation}&pick-up-date=${pickUpDate}&return-date=${returnDate}`;
-        form.attr('action', newAction);
-        // submit the form
-        window.location.href = newAction;
+
+        $(".form-input").removeClass('form-error');
+
+        const returnToSameLocation = $("#return-to-same-location").prop('checked');
+        const pickUpLocation = $(".reservation-flow-container .pick-up .custom-select-options span.selected").text();
+
+        const data = {
+            action: "itinerary",
+            pickUpLocation,
+            returnLocation: returnToSameLocation ? pickUpLocation : $(".reservation-flow-container .return .custom-select-options span.selected").text(),
+            returnToSameLocation: {
+                checked: returnToSameLocation,
+                value: returnToSameLocation ? "on" : "off"
+            },
+            pickUpDate: {
+                date: STATE.pickUpFP.selectedDates[0],
+                ts: STATE.pickUpFP.selectedDates[0]?.getTime?.(),
+                value: STATE.pickUpFP.input.value,
+                altValue: STATE.pickUpFP.altInput.value
+            },
+            returnDate: {
+                date: STATE.returnFP.selectedDates[0],
+                ts: STATE.returnFP.selectedDates[0]?.getTime?.(),
+                value: STATE.returnFP.input.value,
+                altValue: STATE.returnFP.altInput.value
+            },
+            step: 2
+        };
+
+        const formDataIsValid = handleInvalidFormData(data, "itinerary");
+
+        if (!formDataIsValid) return;
+
+        const ReservationSessionRes = await fetch('/includes/reservation.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to JSON
+            },
+            body: JSON.stringify(data)
+        });
+
+        const reservationSessionData = await ReservationSessionRes.json();
+
+        // update itinerary section
+        $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.altValue}`);
+        $(".reservation-step.itinerary .body>div:last-child p").text(`${data.returnLocation} - ${data.returnDate.altValue}`);
+
+        // head to vehicle selection section
+        Swal.fire({
+            title: "Setting Itinerary...",
+            timer: 1000,
+            didOpen: () => Swal.showLoading()
+        }).then(() => $(".reservation-step.vehicle-add-on .header").trigger('click'));
     });
 
     $(".faq").on('click', function () {
@@ -109,25 +149,56 @@ $(function () {
             body: JSON.stringify(data)
         });
 
-        Swal.fire({
+        const reservation = await ReservationSessionRes.json();
+
+        await Swal.fire({
             title: `Choosing ${name} (${type})...`,
             timer: 1500,
             didOpen: () => Swal.showLoading()
-        }).then(() => {
-            $('.vehicle-container').removeClass('active');
-            vehicleContainer
-                .addClass('active')
-                .find('.continue-btn').text('CONTINUE');
-
-            $(".reservation-step.vehicle-add-on .body>div:first h6, #reservation-summary>h5").text(name);
-            $(".reservation-step.vehicle-add-on .body>div:first p, #reservation-summary>h6").text(type);
-
-            $("#reservation-summary div.car.summary").html(`
-                <img src="${imgSrc}" alt="${name}">
-            `);
-
-            goToAddOns();
         });
+
+        $('.vehicle-container').removeClass('active');
+        vehicleContainer
+            .addClass('active')
+            .find('.continue-btn').text('CONTINUE');
+
+        $(".reservation-step.vehicle-add-on .body>div:first h6, #reservation-summary>h5").text(name);
+        $(".reservation-step.vehicle-add-on .body>div:first p, #reservation-summary>h6").text(type);
+
+        $("#reservation-summary div.car.summary").html(`<img src="${imgSrc}" alt="${name}">`);
+
+        const rate = {
+            days: 1,
+            rate: makePriceString(150),
+            subtotal: makePriceString(150)
+        };
+
+        if (reservation.itinerary) {
+            rate.days = getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
+            rate.subtotal = makePriceString(reservation.vehicle.price_day, rate.days);
+        }
+
+        $("#reservation-summary div.rate.summary").html(`
+            <h6>Rate</h6>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day(s)</th>
+                        <th>Rate</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${rate.days}</td>
+                        <td>${rate.rate}</td>
+                        <td>${rate.subtotal}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `);
+
+        goToAddOns();
 
     });
 
@@ -155,7 +226,6 @@ $(function () {
             });
 
             const res = await ReservationSessionRes.json();
-            console.log('res', res);
 
             $(this).removeClass('added');
             $(this).addClass('show-removed');
@@ -174,7 +244,6 @@ $(function () {
             });
 
             const res = await ReservationSessionRes.json();
-            console.log('res', res);
 
             $(this).addClass('added show-added');
             setTimeout(() => $(this).removeClass('show-added'), 1000);
@@ -349,4 +418,41 @@ function getDayFromDate(dateStr) {
 function goToAddOns() {
     $("#vehicle-selection-section").hide();
     $("#vehicle-add-ons").show();
+}
+
+function customSerialize(obj) {
+    const queryParams = [];
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            const value = obj[key];
+
+            // Handle nested objects recursively
+            if (typeof value === 'object' && !Array.isArray(value)) {
+                for (const nestedKey in value) {
+                    if (value.hasOwnProperty(nestedKey)) {
+                        const nestedValue = value[nestedKey];
+                        queryParams.push(`${key}[${nestedKey}]=${encodeURIComponent(nestedValue)}`);
+                    }
+                }
+            } else {
+                queryParams.push(`${key}=${encodeURIComponent(value)}`);
+            }
+        }
+    }
+
+    return queryParams.join('&');  // Join with '&' to create the query parameter string
+}
+
+
+function getDifferenceInDays(pickUpDate, returnDate) {
+    const start = new Date(pickUpDate);
+    const end = new Date(returnDate);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    return diffDays;
+}
+
+function makePriceString(rate, days = 1) {
+    return `$EC${parseInt(rate) * days}`;
 }

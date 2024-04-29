@@ -19,14 +19,19 @@ if ($data['action'] === 'itinerary') {
 
 if ($data['action'] === 'vehicle') {
     unset($data['action']);
-    $_SESSION['reservation']['vehicle'] = $data;
+    $vehicle_query = "SELECT * FROM vehicles WHERE id = {$data['id']}";
+    $vehicle_result = mysqli_query($con, $vehicle_query);
+    $vehicle = mysqli_fetch_assoc($vehicle_result);
+    $vehicle['imgSrc'] = "/assets/images/vehicles/{$vehicle['slug']}.jpg";
+    $_SESSION['reservation']['vehicle'] = $vehicle;
+    $data = $_SESSION['reservation'];
 }
 
 if ($data['action'] === 'add_add_on') {
     $add_on_query = "SELECT * FROM add_ons WHERE id = {$data['id']}";
     $add_on_result = mysqli_query($con, $add_on_query);
     $add_on = mysqli_fetch_assoc($add_on_result);
-    
+
     // merge new add on with current addons on the session object and sort the array by id
     $_SESSION['reservation']['add_ons'][$add_on['id']] = $add_on;
     uasort($_SESSION['reservation']['add_ons'], function ($a, $b) {
@@ -38,7 +43,7 @@ if ($data['action'] === 'remove_add_on') {
     $add_on_query = "SELECT * FROM add_ons WHERE id = {$data['id']}";
     $add_on_result = mysqli_query($con, $add_on_query);
     $add_on = mysqli_fetch_assoc($add_on_result);
-    
+
     // remove add_on from current addons on the session object
     $_SESSION['reservation']['add_ons'] = array_filter($_SESSION['reservation']['add_ons'], function ($a) use ($add_on) {
         return $a['id'] !== $add_on['id'];

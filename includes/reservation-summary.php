@@ -1,10 +1,26 @@
 <?php
 
-if (isset($_SESSION['reservation']['vehicle'])) {
-    $vehicle = $_SESSION['reservation']['vehicle'];
-    $vehicle_name = $vehicle['name'];
-    $vehicle_type = $vehicle['type'];
-    $vehicle_img_src = $vehicle['imgSrc'];
+include_once 'helpers.php';
+
+if (isset($_SESSION['reservation'])) {
+    $reservation = $_SESSION['reservation'];
+    if (isset($reservation['vehicle'])) {
+        $vehicle = $reservation['vehicle'];
+        $vehicle_name = $vehicle['name'];
+        $vehicle_type = $vehicle['type'];
+        $vehicle_img_src = $vehicle['imgSrc'];
+        $rate = [
+            'days' => 1,
+            'rate' => makePriceString($vehicle['price_day']),
+            'sub_total' => makePriceString((int)$vehicle['price_day'])
+        ];
+        if (isset($reservation['itinerary'])) {
+            $itinerary = $reservation['itinerary'];
+            $days = getDifferenceInDays($itinerary['pickUpDate']['date'], $itinerary['returnDate']['date']);
+            $rate['days'] = $days;
+            $rate['sub_total'] = makePriceString((int)$vehicle['price_day'], $days);
+        }
+    }
 } else {
     $vehicle_name = "Car";
     $vehicle_type = "Please select your vehicle";
@@ -18,8 +34,8 @@ if (isset($_SESSION['reservation']['vehicle'])) {
     <h6><?php echo $vehicle_type; ?></h6>
 
     <div class="car summary">
-        <?php if (isset($_SESSION['reservation']['vehicle'])) { ?>
-            <img src="<?php echo $vehicle_img_src; ?>" alt="">
+        <?php if (isset($vehicle)) { ?>
+            <img src="<?php echo $vehicle['imgSrc']; ?>" alt="">
         <?php } else { ?>
             <div>+</div>
             <div>
@@ -33,14 +49,30 @@ if (isset($_SESSION['reservation']['vehicle'])) {
 
     <div class="rate summary">
         <h6>Rate</h6>
-        <div>
-            <?php if (isset($rate)) { ?>
-            <?php } else { ?>
+        <?php if (isset($rate)) { ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day(s)</th>
+                        <th>Rate</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><?php echo $rate['days']; ?></td>
+                        <td><?php echo $rate['rate']; ?></td>
+                        <td><?php echo $rate['sub_total']; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        <?php } else { ?>
+            <div>
                 <span>--</span>
                 <span>--</span>
                 <span>--</span>
-            <?php } ?>
-        </div>
+            </div>
+        <?php } ?>
     </div>
 
     <div class="add-ons summary">

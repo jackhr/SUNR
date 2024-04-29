@@ -58,7 +58,12 @@ $session_add_ons = [];
 if (isset($reservation['add_ons']) && count($reservation['add_ons']) > 0) {
     $session_add_ons = $reservation['add_ons'];
 }
-$session_add_ons = count($session_add_ons) ? $session_add_ons : ["--"];
+$session_add_ons = count($session_add_ons) ? $session_add_ons : [
+    [
+        "id" => "",
+        "abbr" => "--"
+    ]
+];
 
 if ($testing) {
     echo "<pre>";

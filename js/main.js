@@ -417,6 +417,44 @@ $(function () {
         }
     });
 
+    $("#contact-form-section form").on('submit', async function (e) {
+        e.preventDefault();
+
+        const data = {
+            "name": $('#contact-form-section input[name="name"]').val(),
+            "email": $('#contact-form-section input[name="email"]').val(),
+            "message": $('#contact-form-section textarea[name="message"]').val(),
+            "h826r2whj4fi_cjz8jxs2zuwahhhk6": ""
+        };
+
+        const formDataIsValid = handleInvalidFormData(data, "contact");
+
+        if (!formDataIsValid) return;
+
+        Swal.fire({
+            title: "Submitting form...",
+            didOpen: () => Swal.showLoading()
+        });
+
+        const emailRes = await fetch('/includes/contact-send.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to JSON
+            },
+            body: JSON.stringify(data)
+        });
+
+        const emailJSON = await emailRes.json();
+
+        console.log("emailJSON:", emailJSON);
+
+        Swal.fire({
+            title: emailJSON.success ? "Success" : emailJSON.message,
+            text: emailJSON.success ? "Your message has been sent successfully." : "error",
+            icon: emailJSON.success ? "Success" : "Error"
+        });
+    })
+
 });
 
 function handleInvalidFormData(data, section) {
@@ -450,9 +488,7 @@ function handleInvalidFormData(data, section) {
             element = $('#pick-up-flatpickr + input, #return-flatpickr + input');
         }
 
-    }
-
-    if (section === "final_details") {
+    } else if (section === "final_details") {
 
         if (data.first_name === '') {
             text = 'Please enter your first name.';
@@ -466,6 +502,19 @@ function handleInvalidFormData(data, section) {
         } else if (data.email === '') {
             text = 'Please enter your email address.';
             element = $('#final-details-form input[name="email"]');
+        }
+
+    } else if (section === "contact") {
+
+        if (data.name === '') {
+            text = 'Please enter your name.';
+            element = $('#contact-form-section input[name="name"]');
+        } else if (data.email === '') {
+            text = 'Please enter your email address.';
+            element = $('#contact-form-section input[name="email"]');
+        } else if (data.message === '') {
+            text = 'Please enter your message.';
+            element = $('#contact-form-section textarea[name="message"]');
         }
 
     }
@@ -511,31 +560,6 @@ function goToAddOns() {
     $("#vehicle-selection-section").hide();
     $("#vehicle-add-ons").show();
 }
-
-function customSerialize(obj) {
-    const queryParams = [];
-
-    for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            const value = obj[key];
-
-            // Handle nested objects recursively
-            if (typeof value === 'object' && !Array.isArray(value)) {
-                for (const nestedKey in value) {
-                    if (value.hasOwnProperty(nestedKey)) {
-                        const nestedValue = value[nestedKey];
-                        queryParams.push(`${key}[${nestedKey}]=${encodeURIComponent(nestedValue)}`);
-                    }
-                }
-            } else {
-                queryParams.push(`${key}=${encodeURIComponent(value)}`);
-            }
-        }
-    }
-
-    return queryParams.join('&');  // Join with '&' to create the query parameter string
-}
-
 
 function getDifferenceInDays(pickUpDate, returnDate) {
     const start = new Date(Number(pickUpDate));

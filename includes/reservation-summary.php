@@ -3,15 +3,21 @@
 include_once 'helpers.php';
 
 if (!!$order_request) {
-    $vehicle = [
-        'name' => $order_request['vehicle_name'],
-        'type' => $order_request['vehicle_type'],
-        'imgSrc' => "/assets/images/vehicles/{$order_request['vehicle_slug']}.jpg"
-    ];
+    $vehicle['imgSrc'] = "/assets/images/vehicles/{$vehicle['slug']}.jpg";
     $vehicle_name = $vehicle['name'];
     $vehicle_type = $vehicle['type'];
     $vehicle_img_src = $vehicle['imgSrc'];
+    $render_change_btn = false;
+    $days = getDifferenceInDays($order_request['pick_up'], $order_request['drop_off']);
+    $rate = [
+        'days' => $days,
+        'rate' => makePriceString($vehicle['price_day']),
+        'sub_total' => makePriceString((int)$vehicle['price_day'], $days)
+    ];
+    $estimated_total = ((int)$vehicle['price_day'] * $days) + array_sum(array_column($add_ons, 'cost'));
+    $estimated_total = makePriceString($estimated_total);
 } else if (isset($_SESSION['reservation'])) {
+    $render_change_btn = true;
     $reservation = $_SESSION['reservation'];
     if (isset($reservation['vehicle'])) {
         $vehicle = $reservation['vehicle'];
@@ -46,7 +52,9 @@ if (!!$order_request) {
 
 <div id="reservation-summary">
 
-    <span class="change-car-btn continue-btn">Change?</span>
+    <?php if ($render_change_btn) { ?>
+        <span class="change-car-btn continue-btn">Change?</span>
+    <?php } ?>
 
     <h5><?php echo $vehicle_name; ?></h5>
     <h6><?php echo $vehicle_type; ?></h6>

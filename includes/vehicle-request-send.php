@@ -84,6 +84,8 @@ try {
 
     // Let on we send to shaquanoneil99@gmail.com
 
+    session_destroy();
+
     respond([
         "success" => true,
         "message" => "success",

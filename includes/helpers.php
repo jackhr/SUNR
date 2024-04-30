@@ -29,8 +29,13 @@ function respond($res)
     die();
 }
 
-function generateEmailBody($first_name, $last_name, $phone, $email, $order_request_id, $vehicle, $add_ons, $itinerary, $days, $sub_total, $timestamp, $key)
+function generateEmailBody($first_name, $last_name, $country_region, $street, $town_city, $state_county, $phone, $email, $order_request_id, $vehicle, $add_ons, $itinerary, $days, $sub_total, $timestamp, $key)
 {
+    function generateAddress($first_name, $last_name, $country_region, $street, $town_city, $state_county, $phone, $email)
+    {
+        return "{$first_name} {$last_name}<br>{$street}<br>{$town_city}, {$state_county}<br>{$country_region}<br><a href=\"tel:{$phone}\" style=\"color:#d4a32a;font-weight:normal;text-decoration:underline\" target=\"_blank\">{$phone}</a><br><a href=\"mailto:$email\" target=\"_blank\">{$email}</a>";
+    }
+    
     $fontFamily = 'font-family:"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;';
 
     $body = '
@@ -130,7 +135,7 @@ function generateEmailBody($first_name, $last_name, $phone, $email, $order_reque
                                                                             <td valign="top" width="50%" style="text-align:left;' . $fontFamily . 'border:0;padding:0">
                                                                                 <h2 style="color:#d4a32a;display:block;' . $fontFamily . 'font-size:18px;font-weight:bold;line-height:130%;margin:18px 0;text-align:left">Billing address</h2>
 
-                                                                                <address style="' . $fontFamily . 'padding:12px;color:#636363;border:1px solid #e5e5e5">' . $first_name . ' ' . $last_name . '<br><a href="tel:' . $phone . '" style="color:#d4a32a;font-weight:normal;text-decoration:underline" target="_blank">' . $phone . '</a> <br><a href="mailto:' . $email . '" target="_blank">' . $email . '</a> </address>
+                                                                                <address style="' . $fontFamily . 'padding:12px;color:#636363;border:1px solid #e5e5e5">' . generateAddress($first_name, $last_name, $country_region, $street, $town_city, $state_county, $phone, $email) . ' </address>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>

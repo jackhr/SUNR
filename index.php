@@ -167,7 +167,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                             <h2><?php echo $vehicle['type']; ?></h2>
                             <div>
                                 <span>FROM</span>
-                                <span>USD$<?php echo $vehicle['price_day']; ?><span style="font-size: 15px;">/</span></span>
+                                <span>USD$<?php echo $vehicle['price_day_USD']; ?><span style="font-size: 15px;">/</span></span>
                                 <span>DAY</span>
                             </div>
                         </div>

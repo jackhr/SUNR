@@ -11,10 +11,10 @@ if (!!$order_request) {
     $days = getDifferenceInDays($order_request['pick_up'], $order_request['drop_off']);
     $rate = [
         'days' => $days,
-        'rate' => makePriceString($vehicle['price_day']),
-        'sub_total' => makePriceString((int)$vehicle['price_day'], $days)
+        'rate' => makePriceString($vehicle['price_day_USD']),
+        'sub_total' => makePriceString((int)$vehicle['price_day_USD'], $days)
     ];
-    $estimated_total = ((int)$vehicle['price_day'] * $days) + array_sum(array_column($add_ons, 'cost'));
+    $estimated_total = ((int)$vehicle['price_day_USD'] * $days) + array_sum(array_column($add_ons, 'cost'));
     $estimated_total = makePriceString($estimated_total);
 } else if (isset($_SESSION['reservation'])) {
     $render_change_btn = true;
@@ -27,16 +27,16 @@ if (!!$order_request) {
         $days = 1;
         $rate = [
             'days' => $days,
-            'rate' => makePriceString($vehicle['price_day']),
-            'sub_total' => makePriceString((int)$vehicle['price_day'])
+            'rate' => makePriceString($vehicle['price_day_USD']),
+            'sub_total' => makePriceString((int)$vehicle['price_day_USD'])
         ];
         if (isset($reservation['itinerary'])) {
             $itinerary = $reservation['itinerary'];
             $days = getDifferenceInDays($itinerary['pickUpDate']['date'], $itinerary['returnDate']['date']);
             $rate['days'] = $days;
-            $rate['sub_total'] = makePriceString((int)$vehicle['price_day'], $days);
+            $rate['sub_total'] = makePriceString((int)$vehicle['price_day_USD'], $days);
         }
-        $estimated_total = (int)$vehicle['price_day'] * $days;
+        $estimated_total = (int)$vehicle['price_day_USD'] * $days;
     }
     if (isset($reservation['add_ons']) && count($reservation['add_ons']) > 0) {
         $add_ons = $reservation['add_ons'];

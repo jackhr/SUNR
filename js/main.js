@@ -150,13 +150,13 @@ $(function () {
 
         const rate = {
             days: 1,
-            rate: makePriceString(reservation.vehicle.price_day),
-            subtotal: makePriceString(reservation.vehicle.price_day)
+            rate: makePriceString(reservation.vehicle.price_day_USD),
+            subtotal: makePriceString(reservation.vehicle.price_day_USD)
         };
 
         if (reservation.itinerary) {
             rate.days = getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
-            rate.subtotal = makePriceString(reservation.vehicle.price_day, rate.days);
+            rate.subtotal = makePriceString(reservation.vehicle.price_day_USD, rate.days);
         }
 
         $("#reservation-summary div.rate.summary").html(`
@@ -181,7 +181,7 @@ $(function () {
 
         const totalAddOnsCost = reservation.add_ons ? Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0) : 0;
 
-        $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + (reservation.vehicle.price_day * rate.days)));
+        $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + (reservation.vehicle.price_day_USD * rate.days)));
 
         goToAddOns();
 
@@ -256,7 +256,7 @@ $(function () {
             `;
         }
 
-        const rentalSubtotal = parseInt(reservation.vehicle.price_day) * getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
+        const rentalSubtotal = parseInt(reservation.vehicle.price_day_USD) * getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
 
         $("#reservation-summary div.add-ons.summary").html(html);
         $(".reservation-step.vehicle-add-on .body > div:last-child p").html(spans || "--");
@@ -545,6 +545,8 @@ function getDifferenceInDays(pickUpDate, returnDate) {
     return diffDays;
 }
 
-function makePriceString(rate, days = 1) {
-    return `$EC${parseInt(rate) * days}`;
+function makePriceString(rate, days = 1, currency = 'USD') {
+    // Currency can only be USD or EC
+    if (currency !== 'USD' && currency !== 'EC') currency = "USD";
+    return `$${currency}${parseInt(rate) * days}`;
 }

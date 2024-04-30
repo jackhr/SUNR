@@ -8,9 +8,11 @@ function getDifferenceInDays($pickUpDate, $returnDate)
     return $diff->days;
 }
 
-function makePriceString($rate, $days = 1)
+function makePriceString($rate, $days = 1, $currency = "USD")
 {
-    return '$EC' . ((int)$rate * $days);
+    // Currency can only be USD or EC
+    if ($currency !== "USD" && $currency !== "EC") $currency = "USD";
+    return '$' . $currency . ((int)$rate * $days);
 }
 
 function generateRandomKey($length = 24)
@@ -35,7 +37,7 @@ function generateEmailBody($first_name, $last_name, $country_region, $street, $t
     {
         return "{$first_name} {$last_name}<br>{$street}<br>{$town_city}, {$state_county}<br>{$country_region}<br><a href=\"tel:{$phone}\" style=\"color:#d4a32a;font-weight:normal;text-decoration:underline\" target=\"_blank\">{$phone}</a><br><a href=\"mailto:$email\" target=\"_blank\">{$email}</a>";
     }
-    
+
     $fontFamily = 'font-family:"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;';
 
     $body = '
@@ -84,7 +86,7 @@ function generateEmailBody($first_name, $last_name, $country_region, $street, $t
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;word-wrap:break-word">' . $vehicle['name'] . '</td>
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:Helvetica,Roboto,Arial,sans-serif">' . $days . ' days</td>
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:Helvetica,Roboto,Arial,sans-serif">
-                                                                                <span><u></u>EC<span>$</span>' . ($vehicle['price_day'] * $days) . '<u></u></span>
+                                                                                <span><u></u>USD<span>$</span>' . ($vehicle['price_day_USD'] * $days) . '<u></u></span>
                                                                             </td>
                                                                         </tr>';
     foreach ($add_ons as $add_on) {
@@ -92,7 +94,7 @@ function generateEmailBody($first_name, $last_name, $country_region, $street, $t
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;word-wrap:break-word">' . $add_on['name'] . '</td>
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:Helvetica,Roboto,Arial,sans-serif">1</td>
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:Helvetica,Roboto,Arial,sans-serif">
-                                                                                <span><u></u>EC<span>$</span>' . $add_on['cost'] . '<u></u></span>
+                                                                                <span><u></u>USD<span>$</span>' . $add_on['cost'] . '<u></u></span>
                                                                             </td>
                                                                         </tr>';
     }
@@ -117,7 +119,7 @@ function generateEmailBody($first_name, $last_name, $country_region, $street, $t
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row" colspan="2" style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:4px">Subtotal</th>
-                                                                            <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:4px"><span><u></u>EC<span>$</span>' . $sub_total . '<u></u></span></td>
+                                                                            <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:4px"><span><u></u>USD<span>$</span>' . $sub_total . '<u></u></span></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row" colspan="2" style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">Payment method</th>
@@ -125,7 +127,7 @@ function generateEmailBody($first_name, $last_name, $country_region, $street, $t
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row" colspan="2" style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">Total</th>
-                                                                            <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left"><span><u></u>EC<span>$</span>' . $sub_total . '<u></u></span></td>
+                                                                            <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left"><span><u></u>USD<span>$</span>' . $sub_total . '<u></u></span></td>
                                                                         </tr>
                                                                     </tfoot>
                                                                 </table>

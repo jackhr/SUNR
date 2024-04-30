@@ -297,7 +297,7 @@ if ($testing) {
                     </div>
                     <div class="right">
                         <div>
-                            <span>EC$<?php echo $v['price_day']; ?></span>
+                            <span>USD$<?php echo $v['price_day_USD']; ?></span>
                             <span>/Day</span>
                         </div>
                         <div class="continue-btn"><?php echo $active_vehicle ? "CONTINUE" : "BOOK NOW"; ?></div>

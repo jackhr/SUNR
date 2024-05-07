@@ -90,7 +90,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
                 <div class="feature-info">
                     <h2>Quality Vehicles</h2>
-                    <p>Every day, we want our clients to know their well-being is our primary concern. To this end our top priority is to provide safe, clean and reliable vehicles. Our entire fleet is well maintained with adherence to the highest safety standards.</p>
+                    <p>Each day, we prioritize our clients' well-being above all else. Ensuring safety, cleanliness, and reliability remains our foremost commitment. Our fleet undergoes rigorous maintenance, meeting the highest safety benchmarks for your peace of mind.</p>
                 </div>
             </div>
             <div class="feature-container">
@@ -101,7 +101,8 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
                 <div class="feature-info">
                     <h2>Driving In Antigua</h2>
-                    <p>Welcome to our small island nation. We want to enhance your experience as you explore and discover Antigua. We drive on the left and most international driving standards and regulations are applied and enforced.</p>
+                    <p>Welcome to our enchanting island nation! Our aim is to enrich your journey as you explore and uncover the beauty of Antigua. As a unique characteristic, we drive on the left, adhering to international driving norms and regulations to ensure a seamless and safe experience for all travelers.
+</p>
                 </div>
             </div>
             <div class="feature-container">
@@ -112,7 +113,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
                 <div class="feature-info">
                     <h2>Outstanding Service</h2>
-                    <p>Shaquan's Car Rental is committed to providing an unmatched service experience for our clients. We do this by honest, professional and friendly attention to all we serve. We place high value on your user experience and know that the very best recommendation is always by word-of-mouth.</p>
+                    <p>At Shaquan's Car Rental, we're dedicated to delivering a service experience that surpasses expectations. Our approach is rooted in honesty, professionalism, and a warm, friendly demeanor towards all our clients. We prioritize your user experience, understanding that the most powerful endorsement comes from satisfied customers sharing their positive experiences through word-of-mouth.</p>
                 </div>
             </div>
             <div class="feature-container">
@@ -123,7 +124,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
                 <div class="feature-info">
                     <h2>Add-On Options</h2>
-                    <p>When available, we offer complementary child safety seats & GPS turn-by-turn navigation. If interested, please let us know when making your booking. Maps of Antigua are also provided in every vehicle. Child seats are recommended by Law for children under the age of four.</p>
+                    <p>We strive to enhance your journey by offering complimentary child safety seats and GPS turn-by-turn navigation whenever possible. If you're interested, simply inform us during the booking process. Additionally, maps of Antigua are readily available in every vehicle for your convenience. It's worth noting that according to the law, child seats are recommended for children under the age of four.</p>
                 </div>
             </div>
             <div class="feature-container">
@@ -134,7 +135,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
                 <div class="feature-info">
                     <h2>24 Hour Support</h2>
-                    <p>In our efforts to provide the best possible service, we maintain 24-hour a day support. Roads and signage are not the most efficient, but as we know Antigua well, we are always able to reach all our customers when in need.</p>
+                    <p>In our ongoing commitment to exceptional service, we offer round-the-clock support to assist you whenever necessary. While roads and signage might not always be the most straightforward, our intimate knowledge of Antigua ensures that we can promptly reach all our customers in times of need.</p>
                 </div>
             </div>
             <div class="feature-container">
@@ -145,7 +146,7 @@ while ($row = mysqli_fetch_assoc($result)) $vehicles_arr[] = $row;
                 </div>
                 <div class="feature-info">
                     <h2>Payment</h2>
-                    <p>We accept these major credit cards – Visa, MasterCard and American Express.<br><br>For discounted rates, enter 2 or more days.</p>
+                    <p>We gladly accept major credit cards, including Visa, MasterCard, and American Express.<br><br>For discounted rates, simply book for two or more days.</p>
                 </div>
             </div>
         </div>

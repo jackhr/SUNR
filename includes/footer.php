@@ -6,13 +6,12 @@
         <div>
             <div class="footer-nav">
                 <h6>Navigation</h6>
-
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Book Now</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/book-now.php">Book Now</a></li>
+                    <li><a href="/about.php">About</a></li>
+                    <li><a href="/faq.php">FAQ</a></li>
+                    <li><a href="/contact.php">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-logo">
@@ -24,11 +23,11 @@
                 <h6>Contact</h6>
                 <div class="contact-link">
                     <span>Phone:</span>
-                    <a href="tel:+1 (268) 771-1891">+1 (268) 771-1891</a>
+                    <a href="tel:+1 (268) 786-7559">+1 (268) 786-7559</a>
                 </div>
                 <div class="contact-link">
                     <span>Email:</span>
-                    <a href="mailto:info@shaq.com">info@shaq.com</a>
+                    <a href="mailto:shaquanoneil99@gmail.com">shaquanoneil99@gmail.com</a>
                 </div>
             </div>
         </div>

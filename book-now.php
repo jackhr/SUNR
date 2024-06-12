@@ -191,7 +191,6 @@ if ($testing) {
                                 <div class="custom-select-options">
                                     <span <?php echo $pick_up_location === "Choose Office" ? 'class="selected"' : "" ?>>Choose Office</span>
                                     <span <?php echo $pick_up_location === "Airport" ? 'class="selected"' : "" ?>>Airport</span>
-                                    <span <?php echo $pick_up_location === "Main Office" ? 'class="selected"' : "" ?>>Main Office</span>
                                 </div>
                             </div>
                         </div>
@@ -224,7 +223,6 @@ if ($testing) {
                                 <div class="custom-select-options">
                                     <span <?php echo $return_location === "Choose Office" ? 'class="selected"' : "" ?>>Choose Office</span>
                                     <span <?php echo $return_location === "Airport" ? 'class="selected"' : "" ?>>Airport</span>
-                                    <span <?php echo $return_location === "Main Office" ? 'class="selected"' : "" ?>>Main Office</span>
                                 </div>
                             </div>
                         </div>

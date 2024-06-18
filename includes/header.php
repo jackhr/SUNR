@@ -17,7 +17,7 @@ $title = isset($title_suffix) ? $base_title .= " | " . $title_suffix : $title;
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <meta name="robots" content="noindex">
-    <meta name="keywords" content="car rental, affordable car rentals, car hire, vehicle rental, rent a car, car rental near me, airport car rental, luxury car hire, cheap car rental, car booking, online car rental, city car rental, car rental services, weekend car rental, business car hire, caribbean rentals, antigua, antigua and barbuda, antigua rentals">
+    <meta name="keywords" content="antigua, antigua and barbuda, antigua rentals, st. john's, car rental, car hire, vehicle rental, car rental near me, airport car rental, cheap car rental, car booking, online car rental, city car rental, car rental services, weekend car rental, business car hire, caribbean rentals">
     <meta name="description" content="<?php echo $description ?>">
     <meta property="og:title" content="<?php echo $base_title ?>">
     <meta property="og:description" content="<?php echo $description; ?>">

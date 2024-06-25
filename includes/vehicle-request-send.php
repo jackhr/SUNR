@@ -43,7 +43,7 @@ try {
     if ((int)$vehicle['uses_discount'] && $days >= 2) {
         $price_day = (int)$vehicle['price_day_low_USD'];
     }
-    $sub_total = $price_day * getAddOnsSubTotal($reservation);
+    $sub_total = ($price_day * $days) + getAddOnsSubTotal($add_ons, $days);
     $timestamp = time();
     $pick_up_ts = ((int)$itinerary['pickUpDate']['ts'] / 1000);
     $drop_off_ts = ((int)$itinerary['returnDate']['ts'] / 1000);
@@ -85,7 +85,8 @@ try {
     $mail_res_client = mail($email, $subject, $body, $headers);
 
     // Send email to Admin
-    $mail_res_admin = mail("jc2o@mac.com,jrainey@tropicalstudios.com,shaquanoneil99@gmail.com", $subject, $body, $headers);
+    $to = "jc2o@mac.com,jrainey@tropicalstudios.com,shaquanoneil99@gmail.com";
+    $mail_res_admin = mail($to, $subject, $body, $headers);
 
     session_destroy();
 
@@ -94,7 +95,7 @@ try {
         "message" => "success",
         "status" => 200,
         "data" => [
-            "mail" => compact("to", "subject", "body", "headers", "mail_res", "mail_res_client", "mail_res_admin"),
+            "mail" => compact("to", "subject", "body", "headers", "mail_res_client", "mail_res_admin"),
             "key" => $key,
         ]
     ]);

@@ -34,7 +34,7 @@ function respond($res)
 function getNameTdStr($add_on, $days)
 {
     $name_td_str = "1 x {$add_on['name']}";
-    if ($add_on['fixed_price'] !== "1") $name_td_str += " for $days day(s)";
+    if ($add_on['fixed_price'] !== "1") $name_td_str .= " for $days day(s)";
     return $name_td_str;
 }
 
@@ -45,17 +45,18 @@ function getAddOnCostForTotalDays($add_on, $days = 1)
     return $new_cost;
 }
 
-function getAddOnsSubTotal($reservation)
+function getAddOnsSubTotal($add_ons = null, $days = null, $itinerary = null)
 {
     $sub_total = 0;
-    if (isset($reservation['add_ons'])) {
-        $days = 1;
-        if (isset($reservation['vehicle']) && isset($reservation['itinerary'])) {
-            $itinerary = $reservation['itinerary'];
-            $days = getDifferenceInDays($itinerary['pickUpDate']['date'], $itinerary['returnDate']['date']);
+    if (isset($add_ons)) {
+        if (!isset($days)) {
+            $days = 1;
+            if (isset($itinerary)) {
+                $days = getDifferenceInDays($itinerary['pickUpDate']['date'], $itinerary['returnDate']['date']);
+            }
         }
 
-        foreach ($reservation['add_ons'] as $add_on) {
+        foreach ($add_ons as $add_on) {
             $sub_total += getAddOnCostForTotalDays($add_on, $days);
         }
     }
@@ -122,11 +123,13 @@ function generateEmailBody($first_name, $last_name, $country_region, $street, $t
                                                                             </td>
                                                                         </tr>';
     foreach ($add_ons as $add_on) {
+        $add_on_cost = getAddOnCostForTotalDays($add_on, $days);
+        $quantity = $add_on['fixed_price'] !== "1" ? $days : 1;
         $body .= '                                                      <tr>
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;word-wrap:break-word">' . $add_on['name'] . '</td>
-                                                                            <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:Helvetica,Roboto,Arial,sans-serif">1</td>
+                                                                            <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:Helvetica,Roboto,Arial,sans-serif">' . $quantity . '</td>
                                                                             <td style="' . $fontFamily . 'color:#636363;border:1px solid #e5e5e5;padding:12px;text-align:left;vertical-align:middle;font-family:Helvetica,Roboto,Arial,sans-serif">
-                                                                                <span><u></u>USD<span>$</span>' . $add_on['cost'] . '<u></u></span>
+                                                                                <span><u></u>USD<span>$</span>' . $add_on_cost . '<u></u></span>
                                                                             </td>
                                                                         </tr>';
     }

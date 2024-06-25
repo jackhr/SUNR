@@ -25,7 +25,7 @@ if (!!$order_request) {
         $rate['rate'] .= '<div class="discount-tool-tip">i<div><span>Fixed price:</span><span><b>2</b> days or more: <b>' . $rate['rate'] . '</b></span></div></div>';
     }
 
-    $estimated_total = ($price_day * $days) + array_sum(array_column($add_ons, 'cost'));
+    $estimated_total = ($price_day * $days) + getAddOnsSubTotal($add_ons, $days);
     $estimated_total = makePriceString($estimated_total);
 } else if (isset($_SESSION['reservation'])) {
     $render_change_btn = true;
@@ -63,7 +63,9 @@ if (!!$order_request) {
     }
     if (isset($reservation['add_ons']) && count($reservation['add_ons']) > 0) {
         $add_ons = $reservation['add_ons'];
-        $estimated_total = isset($estimated_total) ? $estimated_total + getAddOnsSubTotal($reservation) : getAddOnsSubTotal($reservation);
+        $new_total = getAddOnsSubTotal($reservation['add_ons'], null, $reservation['itinerary']);
+        if (isset($estimated_total)) $new_total += $estimated_total;
+        $estimated_total = $new_total;
     }
     $estimated_total = isset($estimated_total) ? makePriceString($estimated_total) : "--";
 } else {
@@ -150,7 +152,14 @@ if (!!$order_request) {
                     <tr>
                         <td>Add-ons Subtotal</td>
                         <td></td>
-                        <td><?php echo makePriceString(getAddOnsSubTotal($reservation)); ?></td>
+                        <?php
+                        $add_ons_sub_total = !!$order_request ? (
+                            getAddOnsSubTotal($add_ons, $days)
+                        ) : (
+                            getAddOnsSubTotal($add_ons, null, $reservation['itinerary'])
+                        );
+                        ?>
+                        <td><?php echo makePriceString($add_ons_sub_total); ?></td>
                     </tr>
                 </tbody>
             </table>

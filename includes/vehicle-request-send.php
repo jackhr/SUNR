@@ -32,13 +32,18 @@ try {
     $email = $data["email"];
 
     // Get data from session
-    $itinerary = $_SESSION['reservation']['itinerary'];
-    $vehicle = $_SESSION['reservation']['vehicle'];
-    $add_ons = $_SESSION['reservation']['add_ons'];
+    $reservation = $_SESSION['reservation'];
+    $itinerary = $reservation['itinerary'];
+    $vehicle = $reservation['vehicle'];
+    $add_ons = $reservation['add_ons'];
 
     // Caclulate what is needed
     $days = getDifferenceInDays($itinerary['pickUpDate']['date'], $itinerary['returnDate']['date']);
-    $sub_total = (int)$vehicle['price_day_USD'] * $days + array_sum(array_column($add_ons, 'cost'));
+    $price_day = (int)$vehicle['price_day_USD'];
+    if ((int)$vehicle['uses_discount'] && $days >= 2) {
+        $price_day = (int)$vehicle['price_day_low_USD'];
+    }
+    $sub_total = $price_day * getAddOnsSubTotal($reservation);
     $timestamp = time();
     $pick_up_ts = ((int)$itinerary['pickUpDate']['ts'] / 1000);
     $drop_off_ts = ((int)$itinerary['returnDate']['ts'] / 1000);

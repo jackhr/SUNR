@@ -31,6 +31,38 @@ function respond($res)
     die();
 }
 
+function getNameTdStr($add_on, $days)
+{
+    $name_td_str = "1 x {$add_on['name']}";
+    if ($add_on['fixed_price'] !== "1") $name_td_str += " for $days day(s)";
+    return $name_td_str;
+}
+
+function getAddOnCostForTotalDays($add_on, $days = 1)
+{
+    $new_cost = (int)$add_on['cost'];
+    if ($add_on['fixed_price'] !== "1") $new_cost *= $days;
+    return $new_cost;
+}
+
+function getAddOnsSubTotal($reservation)
+{
+    $sub_total = 0;
+    if (isset($reservation['add_ons'])) {
+        $days = 1;
+        if (isset($reservation['vehicle']) && isset($reservation['itinerary'])) {
+            $itinerary = $reservation['itinerary'];
+            $days = getDifferenceInDays($itinerary['pickUpDate']['date'], $itinerary['returnDate']['date']);
+        }
+
+        foreach ($reservation['add_ons'] as $add_on) {
+            $sub_total += getAddOnCostForTotalDays($add_on, $days);
+        }
+    }
+
+    return $sub_total;
+}
+
 function generateEmailBody($first_name, $last_name, $country_region, $street, $town_city, $state_county, $phone, $email, $order_request_id, $vehicle, $add_ons, $itinerary, $days, $sub_total, $timestamp, $key)
 {
     function generateAddress($first_name, $last_name, $country_region, $street, $town_city, $state_county, $phone, $email)

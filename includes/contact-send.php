@@ -23,7 +23,7 @@ try {
     $message = $data["message"];
 
     // Email values
-    $to = "jc2o@mac.com,jrainey@tropicalstudios.com";
+    $to = "jc2o@mac.com,jrainey@tropicalstudios.com,shaquanoneil99@gmail.com";
     $subject = "Someone Has Contacted You From Shaquan's Car Rental Website";
     $headers  = "From: no-reply@shaquanscarrental.com\r\n";
     $headers .= "Reply-To: $email\r\n";

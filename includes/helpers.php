@@ -70,7 +70,7 @@ function generateEmailBody($first_name, $last_name, $country_region, $street, $t
                                                         <td valign="top" style="padding:48px 48px 32px">
                                                             <div style="color:#636363;' . $fontFamily . 'font-size:14px;line-height:150%;text-align:left">
                                                                 <p style="margin:0 0 16px">Hi ' . $first_name . ' ' . $last_name . ',</p>
-                                                                <p style="margin:0 0 16px">Just to let you know - we\'ve received your order #43, and it is now being processed.</p>
+                                                                <p style="margin:0 0 16px">Just to let you know - we\'ve received your order #' . $order_request_id . ', and it is now being processed.</p>
                                                                 <p style="margin:0 0 16px">Pay with cash or card when you pick-up your vehicle.</p>
                                                                 <h2 style="color:#d4a32a;display:block;' . $fontFamily . 'font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">Order #' . $order_request_id . ' (<time datetime="' . gmdate("Y-m-d\TH:i:s\+00:00", $timestamp) . '">' . (date("F d, Y", $timestamp)) . '</time>)</h2>
                                                                 <table cellspacing="0" cellpadding="6" border="1" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;width:100%;font-family:\"Helvetica Neue\"Helvetica,Roboto,Arial,sans-serif">

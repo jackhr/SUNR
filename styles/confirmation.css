@@ -3,10 +3,10 @@
 }
 
 #confirmation-section {
-    padding: 48px 0 80px;
+    padding: 48px 0 0;
 }
 
-#confirmation-section div.inner>h1 {
+#confirmation-section div.inner>h2 {
     margin   : 0 0 60px;
     font-size: 26px;
 }
@@ -56,6 +56,43 @@
 #order-summary .order-summary-item>div p {
     margin   : 0;
     font-size: 13px;
+}
+
+#key-submit-section {
+    padding: 50px 0;
+}
+
+#key-submit-section h2 span {
+    text-transform: none;
+}
+
+#confirmation-key-form {
+    width        : 500px;
+    max-width    : 100%;
+    margin       : 54px auto;
+    border       : solid 2px var(--black);
+    border-radius: 6px;
+    padding      : 12px;
+}
+
+#confirmation-key-form button[type="submit"] {
+    background-color: #273f44;
+    color           : var(--white);
+    border          : solid 2px #273f44;
+    font-weight     : 600;
+    cursor          : pointer;
+    transition      : all ease 0.3s;
+    border-radius   : 4px;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    height          : 48px;
+    width           : 100%;
+}
+
+#confirmation-key-form button[type="submit"]:hover {
+    background-color: var(--primary);
+    border-color    : var(--primary);
 }
 
 @media screen and (max-width: 768px) {

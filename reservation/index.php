@@ -2,27 +2,101 @@
 
 session_start();
 
+include_once '../includes/connection.php';
 
-if ($_GET['reset-data'] == 'true') {
+if (isset($_GET['reset-data']) && $_GET['reset-data'] == 'true') {
     session_destroy();
-    header('Location: /book-now.php');
+    header('Location: /reservation/');
 }
 
-$title_suffix = "Reservation";
+$title_override = "Reserve Your Island Adventure with Shaquan's Car Rental in Antigua!";
 $page = "reservation";
-$description = "Book a car rental with Shaquan's Car Rental. Choose from a variety of vehicles and rental options. Reserve your car today.";
+$description = "Book a car rental no stress with Shaquan's Car Rental! Choose from a variety of vehicles and rental options. Reserve your car today!";
 
-include_once 'includes/header.php';
+$see_all_vehicles = isset($_GET['itinerary']) && ($_GET['see-all-vehicles'] == 'true');
 
 $vehicles_arr = [];
 
-$vehicles_query = "SELECT * FROM vehicles";
+$vehicles_query = "SELECT * FROM `vehicles` WHERE `showing` = 1 ORDER BY `base_price_USD`, `name` ASC;";
 $vehicles_result = mysqli_query($con, $vehicles_query);
 while ($row = mysqli_fetch_assoc($vehicles_result)) $vehicles_arr[] = $row;
 
 $add_ons_query = "SELECT * FROM add_ons";
 $add_ons_result = mysqli_query($con, $add_ons_query);
 while ($row = mysqli_fetch_assoc($add_ons_result)) $add_ons_arr[] = $row;
+
+$structured_data = [];
+
+foreach ($vehicles_arr as $vehicle) {
+    $structured_data[] = [
+        "@context" => "https://schema.org",
+        "@type" => "Product",
+        "name" => $vehicle['name'],
+        "description" => $vehicle['type'] . " with room for " . $vehicle['people'] . " people.",
+        "image" => "https://www.shaquanscarrental.com/assets/images/vehicles/" . $vehicle['slug'] . ".avif",
+        "brand" => [
+            "@type" => "Brand",
+            "name" => explode(" ", $vehicle['name'])[0]
+        ],
+        "offers" => [
+            "@type" => "Offer",
+            "price" => $vehicle['price_day_USD'],
+            "priceCurrency" => "USD",
+            "availability" => "https://schema.org/" . ($vehicle['showing'] == "1" ? "InStock" : "OutOfStock"),
+        ],
+        "additionalProperty" => [
+            [
+                "@type" => "PropertyValue",
+                "name" => "Transmission",
+                "value" => $vehicle['manual'] == "1" ? "Manual" : "Automatic"
+            ],
+            [
+                "@type" => "PropertyValue",
+                "name" => "Air Conditioning",
+                "value" => $vehicle['ac'] == "1" ? "Yes" : "No"
+            ],
+            [
+                "@type" => "PropertyValue",
+                "name" => "4WD",
+                "value" => $vehicle['4wd'] == "1" ? "Yes" : "No"
+            ],
+            [
+                "@type" => "PropertyValue",
+                "name" => "Seats",
+                "value" => $vehicle['people']
+            ],
+            [
+                "@type" => "PropertyValue",
+                "name" => "Doors",
+                "value" => $vehicle['doors']
+            ]
+        ]
+    ];
+}
+
+foreach ($add_ons_arr as $add_on) {
+    $structured_data[] = [
+        "@context" => "https://schema.org",
+        "@type" => "Product",
+        "name" => $add_on['name'],
+        "description" => strip_tags($add_on['description']),
+        "offers" => [
+            "@type" => "Offer",
+            "price" => $add_on['cost'],
+            "priceCurrency" => "USD",
+            "availability" => "https://schema.org/InStock"
+        ],
+        "additionalProperty" => [
+            [
+                "@type" => "PropertyValue",
+                "name" => "Fixed Price",
+                "value" => $add_on['fixed_price'] == "1" ? "Yes" : "No"
+            ]
+        ]
+    ];
+}
+
+include_once '../includes/header.php';
 
 if (isset($_GET['itinerary'])) {
     $_SESSION['reservation']['itinerary'] = $_GET['itinerary'];
@@ -32,7 +106,7 @@ if (isset($_GET['vehicle_id'])) {
     $vehicle_query = "SELECT * FROM vehicles WHERE id = {$_GET['vehicle_id']}";
     $vehicle_result = mysqli_query($con, $vehicle_query);
     $vehicle_response = mysqli_fetch_assoc($vehicle_result);
-    $vehicle_response['imgSrc'] = "/assets/images/vehicles/{$vehicle_response['slug']}.jpg";
+    $vehicle_response['imgSrc'] = "/assets/images/vehicles/{$vehicle_response['slug']}.avif";
     $_SESSION['reservation']['vehicle'] = $vehicle_response;
     if (isset($_SESSION['reservation']['step'])) {
         if ($_SESSION['reservation']['step'] == 2) $_SESSION['reservation']['step'] = 1;
@@ -111,7 +185,7 @@ if ($testing) {
 
 <section id="reservation-steps">
     <div class="inner">
-        <div class="reservation-step itinerary <?php echo $reservation['step'] == 1 ? "active" : ""; ?>" data-step="1">
+        <div class="reservation-step itinerary <?php echo $reservation['step'] == 1 && !$see_all_vehicles ? "active" : ""; ?>" data-step="1">
             <div class="header">
                 <span>1</span>
                 <h2>Your Itinerary</h2>
@@ -127,7 +201,7 @@ if ($testing) {
                 </div>
             </div>
         </div>
-        <div class="reservation-step vehicle-add-on <?php echo $reservation['step'] == 2 ? "active" : ""; ?>" data-step="2">
+        <div class="reservation-step vehicle-add-on <?php echo $reservation['step'] == 2 || $see_all_vehicles ? "active" : ""; ?>" data-step="2">
             <div class="header">
                 <span>2</span>
                 <h2>Select Vehicle/Add-ons</h2>
@@ -151,7 +225,7 @@ if ($testing) {
                 </div>
             </div>
         </div>
-        <div class="reservation-step reservation <?php echo $reservation['step'] == 3 ? "active" : ""; ?>" data-step="3">
+        <div class="reservation-step reservation <?php echo $reservation['step'] == 3 && !$see_all_vehicles ? "active" : ""; ?>" data-step="3">
             <div class="header">
                 <span>3</span>
                 <h2>Reserve Your Vehicle</h2>
@@ -170,9 +244,9 @@ if ($testing) {
     </div>
 </section>
 
-<section id="itinerary-section" data-step="1" <?php if ($reservation['step'] != 1) echo 'style="display:none;"'; ?>>
+<section class="booking-flow-section" id="itinerary-section" data-step="1" <?php if ($see_all_vehicles || $reservation['step'] != 1) echo 'style="display:none;"'; ?>>
     <div class="inner">
-        <h1>Reserve Your Vehicle</h1>
+        <h2>Reserve Your Vehicle</h2>
         <div class="reservation-flow-container">
             <div class="left">
                 <div>
@@ -189,8 +263,8 @@ if ($testing) {
                                     <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                                 </svg>
                                 <div class="custom-select-options">
-                                    <span <?php echo $pick_up_location === "Choose Office" ? 'class="selected"' : "" ?>>Choose Office</span>
-                                    <span <?php echo $pick_up_location === "Airport" ? 'class="selected"' : "" ?>>Airport</span>
+                                    <span <?php echo (isset($pick_up_location) && $pick_up_location === "Choose Office") ? 'class="selected"' : "" ?>>Choose Office</span>
+                                    <span <?php echo (isset($pick_up_location) && $pick_up_location === "Airport") ? 'class="selected"' : "" ?>>Airport</span>
                                 </div>
                             </div>
                         </div>
@@ -221,8 +295,8 @@ if ($testing) {
                                     <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                                 </svg>
                                 <div class="custom-select-options">
-                                    <span <?php echo $return_location === "Choose Office" ? 'class="selected"' : "" ?>>Choose Office</span>
-                                    <span <?php echo $return_location === "Airport" ? 'class="selected"' : "" ?>>Airport</span>
+                                    <span <?php echo isset($return_location) && $return_location === "Choose Office" ? 'class="selected"' : "" ?>>Choose Office</span>
+                                    <span <?php echo isset($return_location) && $return_location === "Airport" ? 'class="selected"' : "" ?>>Airport</span>
                                 </div>
                             </div>
                         </div>
@@ -245,23 +319,23 @@ if ($testing) {
                     <?php } ?>
                 </div>
             </div>
-            <?php include 'includes/reservation-summary.php'; ?>
+            <?php include '../includes/reservation-summary.php'; ?>
         </div>
     </div>
 </section>
 
-<section id="vehicle-selection-section" data-step="2" <?php echo $reservation['step'] != 2 ? 'style="display:none;"' : (isset($vehicle) ? 'style="display:none;"' : ""); ?>>
+<section class="booking-flow-section" id="vehicle-selection-section" data-step="2" <?php echo $see_all_vehicles ? "" : ($reservation['step'] != 2 ? 'style="display:none;"' : (isset($vehicle) ? 'style="display:none;"' : "")); ?>>
     <div class="inner">
-        <h1>Select Vehicle</h1>
+        <h2>Select Vehicle</h2>
         <div id="vehicles">
             <?php foreach ($vehicles_arr as $v) {
                 $active_vehicle = $vehicle['id'] == $v['id'];
             ?>
                 <div class="vehicle-container <?php echo $active_vehicle ? "active" : ""; ?>" data-vehicle-id="<?php echo $v['id']; ?>">
-                    <img src="/assets/images/vehicles/<?php echo $v['slug']; ?>.jpg" alt="Car thumbnail">
+                    <img src="/assets/images/vehicles/<?php echo $v['slug']; ?>.avif" alt="<?php echo $v['name']; ?> thumbnail">
                     <div class="center">
                         <div>
-                            <h1 class="vehicle-name"><?php echo $v['name']; ?></h1>
+                            <span class="vehicle-name"><?php echo $v['name']; ?></span>
                             <span class="vehicle-type"><?php echo $v['type']; ?></span>
                         </div>
                         <div>
@@ -271,6 +345,14 @@ if ($testing) {
                                 </svg>
                                 <span><?php echo $v['people']; ?> Seats</span>
                             </div>
+                            <?php if ($v['bags'] > 0) { ?>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                        <path d="M184 48l144 0c4.4 0 8 3.6 8 8l0 40L176 96l0-40c0-4.4 3.6-8 8-8zm-56 8l0 40L64 96C28.7 96 0 124.7 0 160l0 96 192 0 128 0 192 0 0-96c0-35.3-28.7-64-64-64l-64 0 0-40c0-30.9-25.1-56-56-56L184 0c-30.9 0-56 25.1-56 56zM512 288l-192 0 0 32c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-32L0 288 0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-128z" />
+                                    </svg>
+                                    <span><?php echo $v['bags']; ?> Bags</span>
+                                </div>
+                            <?php } ?>
                             <div>
                                 <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <defs>
@@ -283,7 +365,15 @@ if ($testing) {
                                 </svg>
                                 <span><?php echo $v['doors']; ?> Doors</span>
                             </div>
-                            <?php if ($v['ac'] == 1) { ?>
+                            <?php if ($v['4wd']) { ?>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40" stroke-width="24" class="add-stroke">
+                                        <path d="M155.667-150.667q-42.417 0-71.375-29.458-28.958-29.459-28.958-71.542 0-36.105 23-63.386 23-27.28 57-33.947v-262q-34-6.667-57-33.947-23-27.281-23-63.915 0-41.863 28.958-71.167 28.958-29.304 71.375-29.304t71.708 29.304q29.292 29.304 29.292 71.167 0 36.634-23.334 63.915Q210-617.667 176.667-611v110h283v-110q-34-6.667-57-33.947-23-27.281-23-63.915 0-41.863 28.958-71.167 28.958-29.304 71.375-29.304t71.708 29.304Q581-750.725 581-708.862q0 36.634-23.333 63.915Q534.333-617.667 501-611v110h225.333q24.675 0 41.838-17.096 17.162-17.096 17.162-41.904v-51.356q-34-6.311-57-33.591-23-27.281-23-63.915 0-41.863 29.39-71.167 29.39-29.304 71.375-29.304t71.277 29.304q29.291 29.304 29.291 71.167 0 36.634-23 63.915-23 27.28-57 33.591V-560q0 42.583-29.264 71.458-29.263 28.875-71.069 28.875H501V-349q33.333 6.667 56.667 33.947Q581-287.772 581-251.667q0 42.083-29.458 71.542-29.459 29.458-71.542 29.458-42.417 0-71.375-29.458-28.958-29.459-28.958-71.542 0-36.105 23-63.386 23-27.28 57-33.947v-110.667h-283V-349q33.333 6.667 56.666 33.947 23.334 27.281 23.334 63.386 0 42.083-29.459 71.542-29.458 29.458-71.541 29.458Zm0-41.333q24.808 0 42.238-17.012 17.429-17.013 17.429-42.321 0-24.476-17.324-41.905-17.324-17.429-42.238-17.429-24.914 0-42.009 17.579-17.096 17.579-17.096 41.755 0 25.141 17.162 42.237Q130.992-192 155.667-192Zm0-457.333q24.808 0 42.238-16.979 17.429-16.979 17.429-42.238 0-25.258-17.324-42.354T155.772-768q-24.914 0-42.009 17.162Q96.667-733.675 96.667-709q0 24.809 17.162 42.238 17.163 17.429 41.838 17.429ZM480-192q24.808 0 42.238-17.012 17.429-17.013 17.429-42.321 0-24.476-17.429-41.905-17.43-17.429-42.238-17.429t-41.904 17.579Q421-275.509 421-251.333q0 25.141 17.096 42.237Q455.192-192 480-192Zm0-457.333q24.808 0 42.238-16.979 17.429-16.979 17.429-42.238 0-25.258-17.429-42.354Q504.808-768 480-768t-41.904 17.129Q421-733.742 421-709.117q0 25.592 17.096 42.688 17.096 17.096 41.904 17.096Zm326.333 0q24.808 0 41.904-16.979 17.096-16.979 17.096-42.238 0-25.258-17.162-42.354Q831.008-768 806.333-768q-24.808 0-42.238 17.129-17.429 17.129-17.429 41.754 0 25.592 17.429 42.688 17.43 17.096 42.238 17.096ZM155.667-251.667Zm0-457.333ZM480-251.667ZM480-709Zm326.333 0Z" />
+                                    </svg>
+                                    <span>4WD</span>
+                                </div>
+                            <?php } ?>
+                            <?php if ($v['ac']) { ?>
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                                         <path d="M224 0c13.3 0 24 10.7 24 24V70.1l23-23c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-57 57v76.5l66.2-38.2 20.9-77.8c3.4-12.8 16.6-20.4 29.4-17s20.4 16.6 17 29.4L373 142.2l37.1-21.4c11.5-6.6 26.2-2.7 32.8 8.8s2.7 26.2-8.8 32.8L397 183.8l31.5 8.4c12.8 3.4 20.4 16.6 17 29.4s-16.6 20.4-29.4 17l-77.8-20.9L272 256l66.2 38.2 77.8-20.9c12.8-3.4 26 4.2 29.4 17s-4.2 26-17 29.4L397 328.2l37.1 21.4c11.5 6.6 15.4 21.3 8.8 32.8s-21.3 15.4-32.8 8.8L373 369.8l8.4 31.5c3.4 12.8-4.2 26-17 29.4s-26-4.2-29.4-17l-20.9-77.8L248 297.6v76.5l57 57c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-23-23V488c0 13.3-10.7 24-24 24s-24-10.7-24-24V441.9l-23 23c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l57-57V297.6l-66.2 38.2-20.9 77.8c-3.4 12.8-16.6 20.4-29.4 17s-20.4-16.6-17-29.4L75 369.8 37.9 391.2c-11.5 6.6-26.2 2.7-32.8-8.8s-2.7-26.2 8.8-32.8L51 328.2l-31.5-8.4c-12.8-3.4-20.4-16.6-17-29.4s16.6-20.4 29.4-17l77.8 20.9L176 256l-66.2-38.2L31.9 238.6c-12.8 3.4-26-4.2-29.4-17s4.2-26 17-29.4L51 183.8 13.9 162.4c-11.5-6.6-15.4-21.3-8.8-32.8s21.3-15.4 32.8-8.8L75 142.2l-8.4-31.5c-3.4-12.8 4.2-26 17-29.4s26 4.2 29.4 17l20.9 77.8L200 214.4V137.9L143 81c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l23 23V24c0-13.3 10.7-24 24-24z" />
@@ -295,7 +385,7 @@ if ($testing) {
                     </div>
                     <div class="right">
                         <div>
-                            <span>USD$<?php echo $v['price_day_USD']; ?></span>
+                            <span>USD$<?php echo $v['base_price_USD']; ?></span>
                             <span>/Day</span>
                         </div>
                         <div class="continue-btn"><?php echo $active_vehicle ? "CONTINUE" : "BOOK NOW"; ?></div>
@@ -306,17 +396,23 @@ if ($testing) {
     </div>
 </section>
 
-<section id="vehicle-add-ons" data-step="2" <?php echo $reservation['step'] != 2 ? 'style="display:none;"' : (isset($vehicle) ? "" : 'style="display:none;"'); ?>>
+<section class="booking-flow-section" id="vehicle-add-ons" data-step="2" <?php echo $see_all_vehicles || $reservation['step'] != 2 ? 'style="display:none;"' : (isset($vehicle) ? "" : 'style="display:none;"'); ?>>
     <div class="inner">
-        <h1>Vehicle Add-ons</h1>
+        <h2>Vehicle Add-ons</h2>
         <div class="reservation-flow-container">
             <div class="left">
                 <div id="add-ons">
                     <?php foreach ($add_ons_arr as $add_on) { ?>
-                        <div class="add-on-container" data-id="<?php echo $add_on['id']; ?>">
+                        <div class="add-on-container" data-id="<?php echo $add_on['id']; ?>" data-add-on-name="<?php echo $add_on['name']; ?>">
                             <div class="top">
                                 <div class="left">
-                                    <h2><?php echo $add_on['name']; ?></h2>
+                                    <?php
+                                    $add_on_text = $add_on['name'];
+                                    if ($add_on['name'] === "Collision Insurance" && isset($vehicle)) {
+                                        $add_on_text .= " - \${$vehicle['insurance']}/day";
+                                    }
+                                    ?>
+                                    <h2><?php echo $add_on_text; ?></h2>
                                     <div class="more-add-on-info">
                                         <span>More Information</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
@@ -326,24 +422,28 @@ if ($testing) {
                                 </div>
                                 <div class="add-on-btn <?php echo isset($session_add_ons[$add_on['id']]) ? "added" : ""; ?>"></div>
                             </div>
-                            <p><?php echo $add_on['description']; ?></p>
+                            <p><?php echo makeAddOnDescriptionStr($add_on, $vehicles_arr); ?></p>
                         </div>
                     <?php } ?>
                 </div>
                 <div class="continue-btn">Continue Reservation</div>
             </div>
-            <?php include 'includes/reservation-summary.php'; ?>
+            <?php include '../includes/reservation-summary.php'; ?>
         </div>
     </div>
 </section>
 
-<section id="final-section" data-step="3" <?php if ($reservation['step'] != 3) echo 'style="display:none;"'; ?>>
+<section class="booking-flow-section" id="final-section" data-step="3" <?php echo $see_all_vehicles || $reservation['step'] != 3 ? 'style="display:none;"' : ""; ?>>
     <div class="inner">
-        <h1>Final Details</h1>
+        <h2>Final Details</h2>
         <div class="reservation-flow-container">
             <div class="left">
                 <div id="final-details-form">
                     <h2>Contact Info</h2>
+                    <div class="input-container">
+                        <h6>Hotel in Antigua (optional)</h6>
+                        <input type="text" name="hotel">
+                    </div>
                     <div class="mutiple-input-container">
                         <div class="input-container">
                             <h6>First Name<sup>*</sup></h6>
@@ -360,17 +460,17 @@ if ($testing) {
                             <input type="text" name="driver-license">
                         </div>
                         <div class="input-container">
-                            <h6>Country / Region (Optional)</h6>
-                            <input type="text" name="country-region">
+                            <h6>Country / Region<sup>*</sup></h6>
+                            <input class="form-input" type="text" name="country-region">
                         </div>
                     </div>
                     <div class="input-container">
-                        <h6>Street address (optional)</h6>
-                        <input type="text" name="street">
+                        <h6>Street address<sup>*</sup></h6>
+                        <input class="form-input" type="text" name="street">
                     </div>
                     <div class="input-container">
-                        <h6>Town / City (optional)</h6>
-                        <input type="text" name="town-city">
+                        <h6>Town / City<sup>*</sup></h6>
+                        <input class="form-input" type="text" name="town-city">
                     </div>
                     <div class="input-container">
                         <h6>State / County (optional)</h6>
@@ -387,9 +487,9 @@ if ($testing) {
                     <div class="continue-btn">Send Request</div>
                 </div>
             </div>
-            <?php include 'includes/reservation-summary.php'; ?>
+            <?php include '../includes/reservation-summary.php'; ?>
         </div>
 </section>
 
 
-<?php include_once 'includes/footer.php'; ?>
+<?php include_once '../includes/footer.php'; ?>

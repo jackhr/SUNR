@@ -8,10 +8,10 @@
 RewriteEngine On
 
 # Temporarily redirect all routes to /under-construction/
-RewriteCond %{REQUEST_URI} !^/under-construction/
-RewriteCond %{REQUEST_URI} !\.png$
-RewriteCond %{REQUEST_URI} !\.css$
-RewriteRule ^(.*)$ https://www.shaquanscarrental.com/under-construction/ [R=302,L]
+# RewriteCond %{REQUEST_URI} !^/under-construction/
+# RewriteCond %{REQUEST_URI} !\.png$
+# RewriteCond %{REQUEST_URI} !\.css$
+# RewriteRule ^(.*)$ https://www.shaquanscarrental.com/under-construction/ [R=302,L]
 
 # Force HTTPS and prepend www. to domain name
 RewriteCond %{HTTPS} off [OR]

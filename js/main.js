@@ -7,12 +7,13 @@ const STATE = {
         minDate: "today",
     },
     pickUpFP: null,
-    returnFP: null
+    returnFP: null,
+    emailRegEx: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 };
 
 $(function () {
-    STATE.pickUpFP = $("#pick-up-flatpickr").flatpickr(STATE.configFP);
-    STATE.returnFP = $("#return-flatpickr").flatpickr(STATE.configFP);
+    STATE.pickUpFP = $("#pick-up-flatpickr").flatpickr?.(STATE.configFP);
+    STATE.returnFP = $("#return-flatpickr").flatpickr?.(STATE.configFP);
 
     $(".checkbox-container").on('click', function () {
         const checkbox = $(this).find('input');
@@ -57,6 +58,8 @@ $(function () {
 
         const returnToSameLocation = $("#return-to-same-location").prop('checked');
         const pickUpLocation = $(".pick-up .custom-select-options span.selected").text();
+        const pickUpTS = STATE.pickUpFP.selectedDates[0]?.getTime?.();
+        const returnTS = STATE.returnFP.selectedDates[0]?.getTime?.();
 
         const data = {
             action: "itinerary",
@@ -78,14 +81,15 @@ $(function () {
                 value: STATE.returnFP.input.value,
                 altValue: STATE.returnFP.altInput.value
             },
-            step: 2
+            step: 2,
+            days: getDifferenceInDays(pickUpTS, returnTS)
         };
 
         const formDataIsValid = handleInvalidFormData(data, "itinerary");
 
         if (!formDataIsValid) return;
 
-        location.href = `/book-now.php?itinerary[pickUpLocation]=${data.pickUpLocation}&itinerary[returnLocation]=${data.returnLocation}&itinerary[returnToSameLocation][checked]=${returnToSameLocation + 0}&itinerary[returnToSameLocation][value]=${returnToSameLocation ? "on" : "off"}&itinerary[pickUpDate][date]=${data.pickUpDate.date}&itinerary[pickUpDate][ts]=${data.pickUpDate.ts}&itinerary[pickUpDate][value]=${data.pickUpDate.value}&itinerary[pickUpDate][altValue]=${data.pickUpDate.altValue}&itinerary[returnDate][date]=${data.returnDate.date}&itinerary[returnDate][ts]=${data.returnDate.ts}&itinerary[returnDate][value]=${data.returnDate.value}&itinerary[returnDate][altValue]=${data.returnDate.altValue}&step=2`;
+        location.href = `/reservation/?itinerary[pickUpLocation]=${data.pickUpLocation}&itinerary[returnLocation]=${data.returnLocation}&itinerary[returnToSameLocation][checked]=${returnToSameLocation + 0}&itinerary[returnToSameLocation][value]=${returnToSameLocation ? "on" : "off"}&itinerary[pickUpDate][date]=${data.pickUpDate.date}&itinerary[pickUpDate][ts]=${data.pickUpDate.ts}&itinerary[pickUpDate][value]=${data.pickUpDate.value}&itinerary[pickUpDate][altValue]=${data.pickUpDate.altValue}&itinerary[returnDate][date]=${data.returnDate.date}&itinerary[returnDate][ts]=${data.returnDate.ts}&itinerary[returnDate][value]=${data.returnDate.value}&itinerary[returnDate][altValue]=${data.returnDate.altValue}&step=2&itinerary[days]=${data.days}`;
     });
 
     $(".faq").on('click', function () {
@@ -93,30 +97,41 @@ $(function () {
         $(this).find('.faq-answer').slideToggle();
     });
 
-    $(".reservation-step").on('click', function () {
+    $(".reservation-step").on('click', async function () {
         if ($(this).hasClass('active')) return;
         const step = $(this).data('step');
         $(".reservation-step").removeClass('active');
         $(this).addClass('active');
+        const goToFirstStep = () => {
+            $(".booking-flow-section").hide();
+            $(`section[data-step="${step}"]`).first().show();
+        };
 
-        $("section[data-step]").hide();
-        $(`section[data-step="${step}"]`).first().show();
+        if (step === 2) {
+            const ReservationSessionRes = await fetch('/includes/reservation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Set Content-Type to JSON
+                },
+                body: JSON.stringify({ action: "get_reservation" })
+            });
+
+            const reservation = await ReservationSessionRes.json();
+            if (reservation.vehicle) return goToAddOns();
+            goToFirstStep();
+        } else {
+            goToFirstStep();
+        }
     });
 
     $(".vehicle-container .continue-btn").on('click', async function () {
         const vehicleContainer = $(this).closest('.vehicle-container');
-
         const id = vehicleContainer.data('vehicle-id');
         const name = vehicleContainer.find('.vehicle-name').text();
-        const type = vehicleContainer.find('.vehicle-type').text();
         const imgSrc = vehicleContainer.children('img').attr('src');
         const data = {
             action: "vehicle",
-            step: 2,
             id,
-            name,
-            type,
-            imgSrc
         };
 
         const ReservationSessionRes = await fetch('/includes/reservation.php', {
@@ -130,7 +145,7 @@ $(function () {
         const reservation = await ReservationSessionRes.json();
 
         await Swal.fire({
-            title: `Choosing ${name} (${type})...`,
+            title: `Choosing ${name} (${reservation.vehicle.type})...`,
             timer: 1500,
             didOpen: () => Swal.showLoading()
         });
@@ -140,24 +155,20 @@ $(function () {
             .addClass('active')
             .find('.continue-btn').text('CONTINUE');
 
-        $(".reservation-step.vehicle-add-on .body>div:first h6, #reservation-summary>h5").text(name);
-        $(".reservation-step.vehicle-add-on .body>div:first p, #reservation-summary>h6").text(type);
+        const insuranceStr = `$${reservation.vehicle.insurance}/day`;
 
+        $(".reservation-step.vehicle-add-on .body>div:first h6, #reservation-summary>h5").text(name);
+        $(".reservation-step.vehicle-add-on .body>div:first p, #reservation-summary>h6").text(`${reservation.vehicle.type} - USD${insuranceStr} Insurance`);
+        $('.add-on-container[data-add-on-name="Collision Insurance"] h2').text(`Collision Insurance - ${insuranceStr}`);
         $("#reservation-summary div.car.summary").html(`<img src="${imgSrc}" alt="${name}">`);
 
-        let priceDay = Number(reservation.vehicle.price_day_USD);
-        let days = 1;
-        let applyDiscount = false;
-        if (reservation.itinerary) {
-            days = getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
-            if (Number(reservation.vehicle.uses_discount) === 1 && days >= 2) {
-                applyDiscount = true;
-                priceDay = Number(reservation.vehicle.price_day_low_USD);
-            }
+        let priceDay = Number(reservation.vehicle.base_price_USD);
+        if (reservation.discount) {
+            priceDay = Number(reservation.discount.price_USD);
         }
 
         const rate = {
-            days,
+            days: reservation.itinerary ? reservation.itinerary.days : 1,
             rate: makePriceString(priceDay),
             subtotal: makePriceString(priceDay)
         };
@@ -167,7 +178,7 @@ $(function () {
         }
 
         let rateHTML = rate.rate;
-        if (applyDiscount) rateHTML += `<div class="discount-tool-tip">i<div><span>Fixed price:</span><span><b>2</b> days or more: <b>${rate.rate}</b></span></div></div>`;
+        if (reservation.discount) rateHTML += `<div class="discount-tool-tip">i<div><span>Fixed price:</span><span><b>2</b> days or more: <b>${rate.rate}</b></span></div></div>`;
 
         $("#reservation-summary div.rate.summary").html(`
             <h6>Rate</h6>
@@ -185,16 +196,77 @@ $(function () {
                         <td>${rateHTML}</td>
                         <td>${rate.subtotal}</td>
                     </tr>
+                    <tr>
+                        <td colspan="2">Rental Subtotal</td>
+                        <td>${rate.subtotal}</td>
+                    </tr>
                 </tbody>
             </table>
         `);
 
-        const totalAddOnsCost = reservation.add_ons ? Object.values(reservation.add_ons).reduce((sum, addOn) => sum + parseInt(addOn.cost), 0) : 0;
+        const totalAddOnsCost = getAddOnsSubTotal(reservation);
 
-        $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + (priceDay * rate.days)));
+        if (reservation.add_ons) {
+            let rows = '', html = '', count = 0;
+            const days = reservation?.itinerary?.days;
+
+            for (const id in reservation.add_ons) {
+                count++;
+                const addOn = reservation.add_ons[id];
+                let addOnRate = addOn.cost;
+                let nameTdString = `1 x ${addOn.name}`;
+                if (addOn.fixed_price !== "1") nameTdString += ` for ${days || 1} day(s)`;
+                if (addOn.name === "Collision Insurance") {
+                    if (reservation.vehicle) {
+                        addOnRate = reservation.vehicle.insurance;
+                    } else {
+                        addOnRate = 0;
+                    }
+                }
+                rows += `
+                    <tr data-id="${addOn.id}">
+                        <td>${nameTdString}</td>
+                        <td>${makePriceString(addOnRate)}</td>
+                        <td>${makePriceString(getAddOnCostForTotalDays(addOn, days, reservation.vehicle))}</td>
+                    </tr>
+                `;
+            }
+
+            if (rows.length) {
+                html = `
+                <h6>Add-ons</h6>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Rate</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                        <tr>
+                            <td>Add-ons Subtotal</td>
+                            <td></td>
+                            <td>${makePriceString(totalAddOnsCost)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `
+            } else {
+                html = `
+                <h6>Add-ons</h6>
+                <div><span>--</span><span>--</span><span>--</span></div>
+            `;
+            }
+
+            $("#reservation-summary div.add-ons.summary").html(html);
+        }
+
+        const rentalSubtotal = parseInt(priceDay) * rate.days;
+        $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + rentalSubtotal));
 
         goToAddOns();
-
     });
 
     $(".more-add-on-info").on('click', function () {
@@ -222,27 +294,34 @@ $(function () {
 
         const reservation = await ReservationSessionRes.json();
 
-        let priceDay = Number(reservation.vehicle.price_day_USD);
-        let days = 1;
-        if (reservation.itinerary) {
-            days = getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
-            if (Number(reservation.vehicle.uses_discount) === 1 && days >= 2) {
-                priceDay = Number(reservation.vehicle.price_day_low_USD);
-            }
+        let priceDay = Number(reservation.vehicle.base_price_USD);
+        if (reservation.discount) {
+            priceDay = Number(reservation.discount.price_USD);
         }
+
+        const days = reservation.itinerary ? reservation.itinerary.days : 1;
 
         let rows = '', spans = '', html = '', count = 0;
 
         for (const id in reservation.add_ons) {
             count++;
             const addOn = reservation.add_ons[id];
+            let addOnRate = addOn.cost;
             let nameTdString = `1 x ${addOn.name}`;
             if (addOn.fixed_price !== "1") nameTdString += ` for ${days} day(s)`;
+            if (addOn.name === "Collision Insurance") {
+                if (reservation.vehicle) {
+                    addOnRate = reservation.vehicle.insurance;
+                } else {
+                    addOnRate = 0;
+                }
+            }
+
             rows += `
                 <tr data-id="${addOn.id}">
                     <td>${nameTdString}</td>
-                    <td>${makePriceString(addOn.cost)}</td>
-                    <td>${makePriceString(getAddOnCostForTotalDays(addOn, days))}</td>
+                    <td>${makePriceString(addOnRate)}</td>
+                    <td>${makePriceString(getAddOnCostForTotalDays(addOn, days, reservation.vehicle))}</td>
                 </tr>
             `;
 
@@ -251,7 +330,6 @@ $(function () {
 
         // Calculate and append the total cost row
         const totalAddOnsCost = getAddOnsSubTotal(reservation);
-        console.log("totalAddOnsCost:", totalAddOnsCost);
 
         if (rows.length) {
             html = `
@@ -281,8 +359,7 @@ $(function () {
             `;
         }
 
-        const rentalSubtotal = parseInt(priceDay) * getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts);
-
+        const rentalSubtotal = parseInt(priceDay) * days;
         $("#reservation-summary div.add-ons.summary").html(html);
         $(".reservation-step.vehicle-add-on .body > div:last-child p").html(spans || "--");
         $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + rentalSubtotal));
@@ -297,9 +374,10 @@ $(function () {
         }
     });
 
-    $(".change-car-btn, .car.summary > div").off('click').on('click', function () {
-        $(".reservation-step.vehicle-add-on .header").trigger('click');
-        $("section[data-step]").hide();
+    $(".change-car-btn, .car.summary > div").on('click', function () {
+        $(".reservation-step").removeClass('active');
+        $(".reservation-step.vehicle-add-on").addClass('active');
+        $(".booking-flow-section").hide();
         $("#vehicle-selection-section").show();
     });
 
@@ -349,18 +427,123 @@ $(function () {
             body: JSON.stringify(data)
         });
 
-        await ReservationSessionRes.json();
+        const reservation = await ReservationSessionRes.json();
 
         // update itinerary section
         $(".reservation-step.itinerary .body>div:first-child p").text(`${data.pickUpLocation} - ${data.pickUpDate.altValue}`);
         $(".reservation-step.itinerary .body>div:last-child p").text(`${data.returnLocation} - ${data.returnDate.altValue}`);
 
         // head to vehicle selection section
-        Swal.fire({
+        await Swal.fire({
             title: "Setting Itinerary...",
             timer: 1000,
             didOpen: () => Swal.showLoading()
-        }).then(() => $(".reservation-step.vehicle-add-on .header").trigger('click'));
+        });
+
+        $(".reservation-step.vehicle-add-on .header").trigger('click');
+
+        if (reservation.vehicle) {
+
+            let priceDay = Number(reservation.vehicle.base_price_USD);
+            if (reservation.discount) {
+                priceDay = Number(reservation.discount.price_USD);
+            }
+
+            const rate = {
+                days: reservation.itinerary.days,
+                rate: makePriceString(priceDay),
+                subtotal: makePriceString(priceDay, reservation.itinerary.days)
+            };
+
+            let rateHTML = rate.rate;
+            if (reservation.discount) rateHTML += `<div class="discount-tool-tip">i<div><span>Fixed price:</span><span><b>2</b> days or more: <b>${rate.rate}</b></span></div></div>`;
+
+            $("#reservation-summary div.rate.summary").html(`
+                <h6>Rate</h6>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Day(s)</th>
+                            <th>Rate</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${rate.days}</td>
+                            <td>${rateHTML}</td>
+                            <td>${rate.subtotal}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Rental Subtotal</td>
+                            <td>${rate.subtotal}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `);
+
+            const totalAddOnsCost = getAddOnsSubTotal(reservation);
+
+            if (reservation.add_ons) {
+                let rows = '', html = '', count = 0;
+
+                for (const id in reservation.add_ons) {
+                    count++;
+                    const addOn = reservation.add_ons[id];
+                    let addOnRate = addOn.cost;
+                    let nameTdString = `1 x ${addOn.name}`;
+                    if (addOn.fixed_price !== "1") nameTdString += ` for ${reservation.itinerary.days} day(s)`;
+                    if (addOn.name === "Collision Insurance") {
+                        if (reservation.vehicle) {
+                            addOnRate = reservation.vehicle.insurance;
+                        } else {
+                            addOnRate = 0;
+                        }
+                    }
+                    rows += `
+                        <tr data-id="${addOn.id}">
+                            <td>${nameTdString}</td>
+                            <td>${makePriceString(addOnRate)}</td>
+                            <td>${makePriceString(getAddOnCostForTotalDays(addOn, reservation.itinerary.days, reservation.vehicle))}</td>
+                        </tr>
+                    `;
+                }
+
+                if (rows.length) {
+                    html = `
+                    <h6>Add-ons</h6>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Rate</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                            <tr>
+                                <td>Add-ons Subtotal</td>
+                                <td></td>
+                                <td>${makePriceString(totalAddOnsCost)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+                } else {
+                    html = `
+                    <h6>Add-ons</h6>
+                    <div><span>--</span><span>--</span><span>--</span></div>
+                `;
+                }
+
+                $("#reservation-summary div.add-ons.summary").html(html);
+            }
+            const rentalSubtotal = parseInt(priceDay) * rate.days;
+            $("#reservation-summary .estimated-total span:last-child").text(makePriceString(totalAddOnsCost + rentalSubtotal));
+
+            goToAddOns();
+        }
     });
 
     $(".form-input").on('focus change input click', function () {
@@ -385,7 +568,7 @@ $(function () {
                 body: JSON.stringify({ action: "reset_reservation" })
             });
 
-            location.href = '/book-now.php';
+            location.href = '/reservation/';
         }
     });
 
@@ -399,6 +582,7 @@ $(function () {
 
     $("#final-details-form .continue-btn").on('click', async function () {
         const data = {
+            "hotel": $('#final-details-form input[name="hotel"]').val(),
             "first-name": $('#final-details-form input[name="first-name"]').val(),
             "last-name": $('#final-details-form input[name="last-name"]').val(),
             "driver-license": $('#final-details-form input[name="driver-license"]').val(),
@@ -415,6 +599,32 @@ $(function () {
 
         if (!formDataIsValid) return;
 
+        const ReservationSessionRes = await fetch('/includes/reservation.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to JSON
+            },
+            body: JSON.stringify({ action: "get_reservation" })
+        });
+
+        const reservation = await ReservationSessionRes.json();
+        if (!reservation.itinerary) {
+            Swal.fire({
+                icon: "warning",
+                title: "Incomplete Booking",
+                text: "Please complete the itinerary section of the booking before submitting."
+            });
+            return $(".reservation-step.itinerary").trigger('click');
+        }
+        if (!reservation.vehicle) {
+            Swal.fire({
+                icon: "warning",
+                title: "Incomplete Booking",
+                text: "Please complete the vehicle selection section of the booking before submitting."
+            });
+            return $(".reservation-step.vehicle-add-on").trigger('click');
+        }
+
         Swal.fire({
             title: "Sending request...",
             didOpen: () => Swal.showLoading()
@@ -430,8 +640,10 @@ $(function () {
 
         const emailJSON = await emailRes.json();
 
-        if (emailJSON.success) {
-            location.href = `/confirmation.php?key=${emailJSON.data.key}`;
+        if (emailJSON.data.debugging) return console.log(emailJSON);
+
+        if (emailJSON.success && !emailJSON.data.debugging) {
+            location.href = `/confirmation/?key=${emailJSON.data.key}`;
         } else {
             Swal.fire({
                 title: "Error",
@@ -513,17 +725,29 @@ function handleInvalidFormData(data, section) {
 
     } else if (section === "final_details") {
 
-        if (data.first_name === '') {
+        if (data['first-name'] === '') {
             text = 'Please enter your first name.';
             element = $('#final-details-form input[name="first-name"]');
-        } else if (data.last_name === '') {
+        } else if (data['last-name'] === '') {
             text = 'Please enter your last name.';
             element = $('#final-details-form input[name="last-name"]');
+        } else if (data['country-region'] === '') {
+            text = 'Please enter your country or region.';
+            element = $('#final-details-form input[name="country-region"]');
+        } else if (data.street === '') {
+            text = 'Please enter your street address.';
+            element = $('#final-details-form input[name="street"]');
+        } else if (data['town-city'] === '') {
+            text = 'Please enter your town or city.';
+            element = $('#final-details-form input[name="town-city"]');
         } else if (data.phone === '') {
             text = 'Please enter your phone number.';
             element = $('#final-details-form input[name="phone"]');
         } else if (data.email === '') {
             text = 'Please enter your email address.';
+            element = $('#final-details-form input[name="email"]');
+        } else if (!STATE.emailRegEx.test(data.email)) {
+            text = 'Please enter a valid email address.';
             element = $('#final-details-form input[name="email"]');
         }
 
@@ -534,6 +758,9 @@ function handleInvalidFormData(data, section) {
             element = $('#contact-form-section input[name="name"]');
         } else if (data.email === '') {
             text = 'Please enter your email address.';
+            element = $('#contact-form-section input[name="email"]');
+        } else if (!STATE.emailRegEx.test(data.email)) {
+            text = 'Please enter a valid email address.';
             element = $('#contact-form-section input[name="email"]');
         } else if (data.message === '') {
             text = 'Please enter your message.';
@@ -570,6 +797,9 @@ function pickUpDateIsSameAsReturnDate(data) {
 function pickUpDateIsAfterReturnDate(data) {
     const pickUpDay = getDayFromDate(data.pickUpDate.altValue);
     const returnDay = getDayFromDate(data.returnDate.altValue);
+    const pickUpYear = getYearFromDate(data.pickUpDate.altValue);
+    const returnYear = getYearFromDate(data.returnDate.altValue);
+    if (pickUpYear > returnYear) return true;
     return pickUpDay > returnDay && (data.pickUpDate.ts - 86400000 > data.returnDate.ts); // could be same day but different month;
 }
 
@@ -579,8 +809,14 @@ function getDayFromDate(dateStr) {
     return Number(dateStr.split(',')[0].split(' ')[1]);
 }
 
+function getYearFromDate(dateStr) {
+    // dateStr = "April 24, 2024 10:00 am"
+    if (!dateStr) return;
+    return Number(dateStr.split(', ')[1].split(' ')[0]);
+}
+
 function goToAddOns() {
-    $("#vehicle-selection-section").hide();
+    $(".booking-flow-section").hide();
     $("#vehicle-add-ons").show();
 }
 
@@ -593,14 +829,21 @@ function getDifferenceInDays(pickUpDate, returnDate) {
 }
 
 function makePriceString(rate, days = 1, currency = 'USD') {
+    if (!rate) rate = 0;
     // Currency can only be USD or EC
     if (currency !== 'USD' && currency !== 'EC') currency = "USD";
     return `$${currency}${parseInt(rate) * days}`;
 }
 
-function getAddOnCostForTotalDays(addOn, days = 1) {
+function getAddOnCostForTotalDays(addOn, days = 1, vehicle = undefined) {
     let newCost = Number(addOn.cost);
-    if (addOn.fixed_price !== "1") newCost *= days;
+    if (addOn.name === "Collision Insurance") {
+        if (vehicle) {
+            newCost = Number(vehicle.insurance) * days;
+        } else {
+            newCost = 0;
+        }
+    }
     return newCost;
 }
 
@@ -609,14 +852,12 @@ function getAddOnsSubTotal(reservation) {
     if (reservation.add_ons) {
         let days = 1;
         if (reservation.vehicle && reservation.itinerary) {
-            const itinerary = reservation.itinerary;
             days = getDifferenceInDays(reservation.itinerary.pickUpDate.ts, reservation.itinerary.returnDate.ts)
         }
 
         for (const id in reservation.add_ons) {
             const addOn = reservation.add_ons[id];
-            console.log(addOn);
-            subTotal += getAddOnCostForTotalDays(addOn, days);
+            subTotal += getAddOnCostForTotalDays(addOn, days, reservation.vehicle);
         }
     }
 

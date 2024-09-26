@@ -23,14 +23,13 @@ try {
     $message = $data["message"];
 
     // Email values
-    $to = "jc2o@mac.com,jrainey@tropicalstudios.com,shaquanoneil99@gmail.com";
-    $subject = "Someone Has Contacted You From Shaquan's Car Rental Website";
-    $headers  = "From: no-reply@shaquanscarrental.com\r\n";
+    $subject = "Someone Has Contacted You From $company_name Website";
+    $headers  = "From: no-reply@$domain\r\n";
     $headers .= "Reply-To: $email\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-    $body = "Some has contacted you from the Shaquan's Car Rental website.
+    $body = "Some has contacted you from the $company_name website.
 
 Name: $name
 
@@ -39,9 +38,7 @@ Email: $email
 Message: $message";
 
     // Send email to Admin
-    $mail_res = mail($to, $subject, $body, $headers);
-
-    // Later on we send to shaquanoneil99@gmail.com
+    $mail_res = mail($contact_email_string, $subject, $body, $headers);
 
     respond([
         "success" => true,

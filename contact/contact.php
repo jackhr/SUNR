@@ -1,10 +1,44 @@
 <?php
 
-$title_suffix = "Contact";
+$title_override = "Contact Shaquan's Car Rental for Your Rental Needs Today!";
 $page = "contact";
-$description = "Contact Shaquan's Car Rental for more information about our services, vehicles, and more.";
+$description = "Get in touch with Shaquan's Car Rental in Antigua via phone, email, or our contact form. We're open 7 days a week to assist you with your car rental needs.";
+$structured_data = [
+    [
+        "@context" => "https://schema.org",
+        "@type" => "ContactPage",
+        "name" => "Shaquan's Car Rental | Contact",
+        "description" => $description,
+        "url" => "https://www.shaquanscarrental.com/contact/"
+    ],
+    [
+        "@context" => "https://schema.org",
+        "@type" => "LocalBusiness",
+        "name" => "Shaquan's Car Rental",
+        "description" => "Rent affordable and well-maintained cars in Antigua and Barbuda.",
+        "image" => "https://www.shaquanscarrental.com/logo.avif",
+        "url" => "https://www.shaquanscarrental.com/",
+        "address" => [
+            "@type" => "PostalAddress",
+            "streetAddress" => "Herbert's road",
+            "addressLocality" => "Piggots",
+            "addressRegion" => "Antigua",
+            "postalCode" => "",
+            "addressCountry" => "AG"
+        ],
+        "telephone" => "+1-268-786-7449",
+        "contactPoint" => [
+            "@type" => "ContactPoint",
+            "telephone" => "+1-268-786-7449",
+            "contactType" => "Customer Service",
+            "availableLanguage" => "English"
+        ],
+        "openingHours" => "Mo-Su 08:00-18:00"
+    ]
+];
 
-include_once 'includes/header.php';
+
+include_once '../includes/header.php';
 
 ?>
 
@@ -14,7 +48,7 @@ include_once 'includes/header.php';
 
 <section id="contact-card-section">
     <div class="inner">
-        <h1>Shaquan's Car Rental</h1>
+        <h2>Shaquan's Car Rental</h2>
 
         <div class="contact-brief-info">
             <span>Herbert’s road</span>
@@ -43,7 +77,7 @@ include_once 'includes/header.php';
 
 <section id="contact-form-section">
     <div class="inner">
-        <h1>SEND US AN EMAIL</h1>
+        <h2>SEND US AN EMAIL</h2>
         <form action="">
             <div class="left">
                 <div class="input-container">
@@ -67,4 +101,4 @@ include_once 'includes/header.php';
 </section>
 
 
-<?php include_once 'includes/footer.php'; ?>
+<?php include_once '../includes/footer.php'; ?>

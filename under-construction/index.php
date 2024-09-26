@@ -40,7 +40,7 @@
 
 <body>
     <div id="main-container">
-        <img src="/assets/images/misc/hardhat.png" alt="Hardhat">
+        <img src="/assets/images/misc/hardhat.avif" alt="Hardhat">
         <h1>Under Construction</h1>
         <p>The site is getting an upgrade! We should be finished soon, but in case you have any inquiries, please feel free to us a call at <a href="tel:+1 (268) 786-7449">+1 (268) 786-7449</a> or send us an email at <a href="mailto:shaquanoneil99@gmail.com">shaquanoneil99@gmail.com</a></p>
     </div>

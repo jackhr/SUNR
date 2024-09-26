@@ -9,10 +9,10 @@
     padding: 60px var(--general-padding);
 }
 
-#itinerary-section div.inner>h1,
-#vehicle-selection-section div.inner>h1,
-#vehicle-add-ons div.inner>h1,
-#final-section div.inner>h1 {
+#itinerary-section div.inner>h2,
+#vehicle-selection-section div.inner>h2,
+#vehicle-add-ons div.inner>h2,
+#final-section div.inner>h2 {
     margin   : 0 0 60px;
     font-size: 26px;
 }
@@ -275,6 +275,45 @@
     font-weight    : 700;
 }
 
+.discount-tool-tip {
+    background     : var(--black);
+    width          : 14px;
+    display        : inline-flex;
+    height         : 14px;
+    border-radius  : 100%;
+    color          : var(--white);
+    justify-content: center;
+    position       : relative;
+    top            : 0px;
+    font-size      : 11px;
+    font-weight    : bold;
+    cursor         : pointer;
+    margin-left    : 6px;
+}
+
+.discount-tool-tip>div {
+    background    : var(--primary);
+    position      : absolute;
+    top           : 24px;
+    right         : 0;
+    display       : flex;
+    flex-direction: column;
+    white-space   : nowrap;
+    padding       : 24px;
+    color         : var(--black);
+    font-weight   : 500;
+    font-size     : 14px;
+    gap           : 4px;
+    opacity       : 0;
+    pointer-events: none;
+    transition    : opacity ease 0.4s;
+}
+
+.discount-tool-tip:hover>div {
+    opacity       : 1;
+    pointer-events: all;
+}
+
 #vehicles {
     display       : flex;
     flex-direction: column;
@@ -310,9 +349,11 @@
 }
 
 .vehicle-name {
-    margin   : 0;
-    font-size: 20px;
-
+    margin        : 0;
+    font-size     : 20px;
+    display       : block;
+    font-weight   : 700;
+    text-transform: uppercase;
 }
 
 .vehicle-type {
@@ -502,7 +543,6 @@
 .reset-data svg {
     width: 18px;
 }
-
 
 @media screen and (max-width: 991px) {
 

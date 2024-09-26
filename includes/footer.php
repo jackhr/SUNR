@@ -28,7 +28,7 @@
                 </div>
                 <div class="contact-link">
                     <span>Email:</span>
-                    <a href="mailto:info@keyscarrentalantigua.com">info@keyscarrentalantigua.com</a>
+                    <a href="mailto:info@<?php echo $domain; ?>">info@<?php echo $domain; ?></a>
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@ $flatpick_load_lookup = [
 $style_prefix = $page_lookup[$page] ?? "";
 $render_initial_body = isset($page_lookup[$page]);
 $canonical_dir = $page === "index" ? "" : $page . "/";
-$canonical_url = "https://$www_domain.com/{$canonical_dir}";
+$canonical_url = "https://$www_domain/{$canonical_dir}";
 $load_swal = !!$swal_load_lookup[$page];
 $load_flatpick = !!$flatpick_load_lookup[$page];
 
@@ -48,7 +48,7 @@ $load_flatpick = !!$flatpick_load_lookup[$page];
     <meta property="og:title" content="<?php echo $base_title ?>">
     <meta property="og:description" content="<?php echo $description; ?>">
     <meta property="og:type" content="Website">
-    <meta property="og:image" content="https://<?php echo $www_domain; ?>.com/assets/images/logo.avif">
+    <meta property="og:image" content="https://<?php echo $www_domain; ?>/assets/images/logo.avif">
     <meta property="og:url" content="<?php echo $canonical_url; ?>">
     <link rel="canonical" href="<?php echo $canonical_url; ?>" />
     <!-- SEO END -->

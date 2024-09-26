@@ -1,8 +1,10 @@
 <?php
 
-$title_override = "FAQs About Keys Car Rental in Antigua - Your Questions Answered";
+include_once '../includes/env.php';
+
+$title_override = "FAQs About $company_name in Antigua - Your Questions Answered";
 $page = "faq";
-$description = "Frequently asked questions about Shaquan's Car Rental. Find answers to common questions about our services, vehicles, rental requirements, insurance and more.";
+$description = "Frequently asked questions about $company_name. Find answers to common questions about our services, vehicles, rental requirements, insurance and more.";
 
 $structured_data = [
     [
@@ -22,7 +24,7 @@ $structured_data = [
                 "name" => "Will there be a fee if I have to cancel my reservation?",
                 "acceptedAnswer" => [
                     "@type" => "Answer",
-                    "text" => "No, provided that Shaquan's Car Rental has not dispatched a vehicle at the time you cancel."
+                    "text" => "No, provided that $company_name has not dispatched a vehicle at the time you cancel."
                 ]
             ],
             [
@@ -30,7 +32,7 @@ $structured_data = [
                 "name" => "When does the rental time start and stop?",
                 "acceptedAnswer" => [
                     "@type" => "Answer",
-                    "text" => "The start time of the rental period shall be at the actual delivery and acceptance by the individual of the vehicle. The ending time shall be at the end of rental time period. Shaquan's Car Rental will make prior arrangements for pick ups and drop offs at locations most convenient for you."
+                    "text" => "The start time of the rental period shall be at the actual delivery and acceptance by the individual of the vehicle. The ending time shall be at the end of rental time period. $company_name will make prior arrangements for pick ups and drop offs at locations most convenient for you."
                 ]
             ],
             [
@@ -111,7 +113,6 @@ $structured_data = [
 
 include_once '../includes/header.php';
 
-
 ?>
 
 <section class="general-header">
@@ -137,14 +138,14 @@ include_once '../includes/header.php';
                     <div class="faq-toggle"></div>
                     <span class="faq-question">Will there be a fee if I have to cancel my reservation?</span>
                 </div>
-                <p class="faq-answer">No, provided that Shaquan's Car Rental has not dispatched a vehicle at the time you cancel.</p>
+                <p class="faq-answer">No, provided that <?php echo $company_name; ?> has not dispatched a vehicle at the time you cancel.</p>
             </div>
             <div class="faq">
                 <div class="faq-top">
                     <div class="faq-toggle"></div>
                     <span class="faq-question">When does the rental time start and stop?</span>
                 </div>
-                <p class="faq-answer">The start time of the rental period shall be at the actual delivery and acceptance by the individual of the vehicle. The ending time shall be at the end of rental time period. Shaquan's Car Rental will make prior arrangements for pick ups and drop offs at locations most convenient for you.</p>
+                <p class="faq-answer">The start time of the rental period shall be at the actual delivery and acceptance by the individual of the vehicle. The ending time shall be at the end of rental time period. <?php echo $company_name; ?> will make prior arrangements for pick ups and drop offs at locations most convenient for you.</p>
             </div>
             <div class="faq">
                 <div class="faq-top">

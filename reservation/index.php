@@ -9,9 +9,9 @@ if (isset($_GET['reset-data']) && $_GET['reset-data'] == 'true') {
     header('Location: /reservation/');
 }
 
-$title_override = "Reserve Your Island Adventure with Shaquan's Car Rental in Antigua!";
+$title_override = "Reserve Your Island Adventure with $company_name in Antigua!";
 $page = "reservation";
-$description = "Book a car rental no stress with Shaquan's Car Rental! Choose from a variety of vehicles and rental options. Reserve your car today!";
+$description = "Book a car rental no stress with $company_name! Choose from a variety of vehicles and rental options. Reserve your car today!";
 
 $see_all_vehicles = isset($_GET['itinerary']) && ($_GET['see-all-vehicles'] == 'true');
 
@@ -33,7 +33,7 @@ foreach ($vehicles_arr as $vehicle) {
         "@type" => "Product",
         "name" => $vehicle['name'],
         "description" => $vehicle['type'] . " with room for " . $vehicle['people'] . " people.",
-        "image" => "https://www.shaquanscarrental.com/assets/images/vehicles/" . $vehicle['slug'] . ".avif",
+        "image" => "https://$www_domain/assets/images/vehicles/" . $vehicle['slug'] . ".avif",
         "brand" => [
             "@type" => "Brand",
             "name" => explode(" ", $vehicle['name'])[0]

@@ -160,7 +160,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </div>
                 <div class="feature-info">
                     <h2>Outstanding Service</h2>
-                    <p>At The Keys Car Rental, we're dedicated to delivering a service experience that surpasses expectations. Our approach is rooted in honesty, professionalism, and a warm, friendly demeanor towards all our clients. We prioritize your user experience, understanding that the most powerful endorsement comes from satisfied customers sharing their positive experiences through word-of-mouth.</p>
+                    <p>At <?php echo $company_name; ?>, we're dedicated to delivering a service experience that surpasses expectations. Our approach is rooted in honesty, professionalism, and a warm, friendly demeanor towards all our clients. We prioritize your user experience, understanding that the most powerful endorsement comes from satisfied customers sharing their positive experiences through word-of-mouth.</p>
                 </div>
             </div>
             <div class="feature-container">

@@ -40,7 +40,7 @@ foreach ($vehicles_arr as $vehicle) {
         ],
         "offers" => [
             "@type" => "Offer",
-            "price" => $vehicle['price_day_USD'],
+            "price" => $vehicle['base_price_USD'],
             "priceCurrency" => "USD",
             "availability" => "https://schema.org/" . ($vehicle['showing'] == "1" ? "InStock" : "OutOfStock"),
         ],
@@ -77,7 +77,7 @@ foreach ($vehicles_arr as $vehicle) {
 foreach ($add_ons_arr as $add_on) {
     $structured_data[] = [
         "@context" => "https://schema.org",
-        "@type" => "Product",
+        "@type" => "Service",
         "name" => $add_on['name'],
         "description" => strip_tags($add_on['description']),
         "offers" => [

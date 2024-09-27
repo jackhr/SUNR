@@ -165,7 +165,7 @@ if (isset($order_request)) {
     // Adding Add-ons as part of the order
     foreach ($add_ons as $add_on) {
         $structured_data[2]['acceptedOffer']['addOn']['itemOffered'][] = [
-            "@type" => "Product",
+            "@type" => "Service",
             "name" => $add_on['name'],
             "description" => strip_tags($add_on['description']),
             "offers" => [

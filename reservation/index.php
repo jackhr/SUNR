@@ -27,48 +27,48 @@ while ($row = mysqli_fetch_assoc($add_ons_result)) $add_ons_arr[] = $row;
 
 $structured_data = [];
 
-foreach ($vehicles_arr as $vehicle) {
+foreach ($vehicles_arr as $structured_v) {
     $structured_data[] = [
         "@context" => "https://schema.org",
         "@type" => "Product",
-        "name" => $vehicle['name'],
-        "description" => $vehicle['type'] . " with room for " . $vehicle['people'] . " people.",
-        "image" => "https://$www_domain/assets/images/vehicles/" . $vehicle['slug'] . ".avif",
+        "name" => $structured_v['name'],
+        "description" => $structured_v['type'] . " with room for " . $structured_v['people'] . " people.",
+        "image" => "https://$www_domain/assets/images/vehicles/" . $structured_v['slug'] . ".avif",
         "brand" => [
             "@type" => "Brand",
-            "name" => explode(" ", $vehicle['name'])[0]
+            "name" => explode(" ", $structured_v['name'])[0]
         ],
         "offers" => [
             "@type" => "Offer",
-            "price" => $vehicle['base_price_USD'],
+            "price" => $structured_v['base_price_USD'],
             "priceCurrency" => "USD",
-            "availability" => "https://schema.org/" . ($vehicle['showing'] == "1" ? "InStock" : "OutOfStock"),
+            "availability" => "https://schema.org/" . ($structured_v['showing'] == "1" ? "InStock" : "OutOfStock"),
         ],
         "additionalProperty" => [
             [
                 "@type" => "PropertyValue",
                 "name" => "Transmission",
-                "value" => $vehicle['manual'] == "1" ? "Manual" : "Automatic"
+                "value" => $structured_v['manual'] == "1" ? "Manual" : "Automatic"
             ],
             [
                 "@type" => "PropertyValue",
                 "name" => "Air Conditioning",
-                "value" => $vehicle['ac'] == "1" ? "Yes" : "No"
+                "value" => $structured_v['ac'] == "1" ? "Yes" : "No"
             ],
             [
                 "@type" => "PropertyValue",
                 "name" => "4WD",
-                "value" => $vehicle['4wd'] == "1" ? "Yes" : "No"
+                "value" => $structured_v['4wd'] == "1" ? "Yes" : "No"
             ],
             [
                 "@type" => "PropertyValue",
                 "name" => "Seats",
-                "value" => $vehicle['people']
+                "value" => $structured_v['people']
             ],
             [
                 "@type" => "PropertyValue",
                 "name" => "Doors",
-                "value" => $vehicle['doors']
+                "value" => $structured_v['doors']
             ]
         ]
     ];

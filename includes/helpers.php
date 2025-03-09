@@ -142,7 +142,7 @@ function generateEmailBody($hotel, $first_name, $last_name, $country_region, $st
     <p style="margin:0 0 16px">Pay with cash or card when you pick-up your vehicle.</p>';
 
     if ($is_admin_email) {
-        $intro = '<p style="margin:0 0 16px">Hi Rasheed,</p>
+        $intro = '<p style="margin:0 0 16px">Hi Shaquan,</p>
         <p style="margin:0 0 16px">Just to let you know, ' . $first_name . ' ' . $last_name . ' has just put in an order request.</p>
         <p style="margin:0 0 16px">The client\'s email address is ' . $email . '</p>
         <p style="margin:0 0 16px">Below are the details of the order:</p>';

@@ -1,6 +1,6 @@
 # SHAQ
 
-[SHAQ](https://www.shaquanscarrental.com) is a car rental website that offers a wide range of vehicles for rent based in Antigua & Barbuda. Whether you need a compact car for a quick trip or a spacious SUV for a family vacation, SHAQ has you covered.
+[SHAQ](https://www.sunreefrentals.com) is a car rental website that offers a wide range of vehicles for rent based in Antigua & Barbuda. Whether you need a compact car for a quick trip or a spacious SUV for a family vacation, SHAQ has you covered.
 
 ## Features
 - **Vehicle Selection**: Browse through our collection of vehicles and choose the one that suits your needs and preferences.

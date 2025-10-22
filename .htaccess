@@ -11,21 +11,21 @@ RewriteEngine On
 # RewriteCond %{REQUEST_URI} !^/under-construction/
 # RewriteCond %{REQUEST_URI} !\.png$
 # RewriteCond %{REQUEST_URI} !\.css$
-# RewriteRule ^(.*)$ https://www.shaquanscarrental.com/under-construction/ [R=302,L]
+# RewriteRule ^(.*)$ https://www.sunreefrentals.com/under-construction/ [R=302,L]
 
 # Force HTTPS and prepend www. to domain name
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} !^www\.
-RewriteRule ^(.*)$ https://www.shaquanscarrental.com/$1 [R=301,L]
+RewriteRule ^(.*)$ https://www.sunreefrentals.com/$1 [R=301,L]
 
 # Redirect index.php to root
 RewriteCond %{THE_REQUEST} ^.*/index\.php
 RewriteRule ^(.*)index.php$ /$1 [R=301,L]
 
 # Redirect old pages
-RewriteRule ^terms(/.*)?$ https://www.shaquanscarrental.com/ [R=301,L]
-RewriteRule ^book-now\.php$ https://www.shaquanscarrental.com/reservation/ [R=301,L]
-RewriteRule ^contact\.php$ https://www.shaquanscarrental.com/contact/ [R=301,L]
-RewriteRule ^confirmation\.php$ https://www.shaquanscarrental.com/confirmation/ [R=301,L]
-RewriteRule ^faq\.php$ https://www.shaquanscarrental.com/faq/ [R=301,L]
-RewriteRule ^about\.php$ https://www.shaquanscarrental.com/about/ [R=301,L]
+RewriteRule ^terms(/.*)?$ https://www.sunreefrentals.com/ [R=301,L]
+RewriteRule ^book-now\.php$ https://www.sunreefrentals.com/reservation/ [R=301,L]
+RewriteRule ^contact\.php$ https://www.sunreefrentals.com/contact/ [R=301,L]
+RewriteRule ^confirmation\.php$ https://www.sunreefrentals.com/confirmation/ [R=301,L]
+RewriteRule ^faq\.php$ https://www.sunreefrentals.com/faq/ [R=301,L]
+RewriteRule ^about\.php$ https://www.sunreefrentals.com/about/ [R=301,L]

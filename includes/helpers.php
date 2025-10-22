@@ -103,11 +103,11 @@ function getAddOnsSubTotal($add_ons = null, $days = null, $itinerary = null, $ve
 
 function handleSendEmail($email_str = "", $body = "", $reply_to = "")
 {
-    $headers  = "From: bookings@shaquanscarrental.com\r\n";
+    $headers  = "From: bookings@sunreefrentals.com\r\n";
     if (strlen($reply_to) > 0) $headers .= "Reply-To: $reply_to\r\n";
     $headers .= "MIME-Version: 1.0\r\n";
     $headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
-    $subject = "Car Rental Request at Shaquan's Car Rental";
+    $subject = "Car Rental Request at Sun Reef Rentals";
 
     return mail($email_str, $subject, $body, $headers);
 }
@@ -243,10 +243,10 @@ function generateEmailBody($hotel, $first_name, $last_name, $country_region, $st
                                                                     </tbody>
                                                                 </table>
                                                                 <h2 style="text-align: center;margin: 40px auto 0;">Click below to view your full reservation!</h2>
-                                                                <a href="https://www.shaquanscarrental.com/confirmation/?key=' . $key . '" style="width: max-content;padding: 12px;margin: 40px auto;font-weight: 800;font-size: 18px;letter-spacing: 0.5px;border: solid 1px #d4a32a;border-radius: 6px;display: block;color: black !important;text-decoration: none !important;box-shadow: 0 0 10px 1px #d4a32a50;">' . $key . '</a>
+                                                                <a href="https://www.sunreefrentals.com/confirmation/?key=' . $key . '" style="width: max-content;padding: 12px;margin: 40px auto;font-weight: 800;font-size: 18px;letter-spacing: 0.5px;border: solid 1px #d4a32a;border-radius: 6px;display: block;color: black !important;text-decoration: none !important;box-shadow: 0 0 10px 1px #d4a32a50;">' . $key . '</a>
                                                                 <p style="margin:20px 0;text-align:center;line-height: 1.5;font-size: 14px;">Link not working? Copy and paste the following url into your browser to view your full rental summary on our website Can\'t wait to see you on the roads!</p>
-                                                                <p style="text-align:center;margin-bottom: 40px;"><strong>https://www.shaquanscarrental.com/confirmation/?key=' . $key . '</strong></p>
-                                                                <p style="margin:0 0 16px;text-align: center;">Thanks for using <a href="https://www.shaquanscarrental.com/" target="_blank">www.shaquanscarrental.com</a>!</p>
+                                                                <p style="text-align:center;margin-bottom: 40px;"><strong>https://www.sunreefrentals.com/confirmation/?key=' . $key . '</strong></p>
+                                                                <p style="margin:0 0 16px;text-align: center;">Thanks for using <a href="https://www.sunreefrentals.com/" target="_blank">www.sunreefrentals.com</a>!</p>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -272,7 +272,7 @@ function generateEmailBody($hotel, $first_name, $last_name, $country_region, $st
                                                 <tbody>
                                                     <tr>
                                                         <td colspan="2" valign="middle" style="border-radius:6px;border:0;color:#8a8a8a;' . $fontFamily . 'font-size:12px;line-height:150%;text-align:center;padding:24px 0">
-                                                            <p style="margin:0 0 16px">Shaquan\'s Car Rental</p>
+                                                            <p style="margin:0 0 16px">Sun Reef Rentals</p>
                                                         </td>
                                                     </tr>
                                                 </tbody>

@@ -1,5 +1,5 @@
 assets/images/logo.avif filter=lfs diff=lfs merge=lfs -text
-assets/images/logo.avif filter=lfs diff=lfs merge=lfs -text
+assets/images/logo.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/vehicles/mazda_CX5.jpg filter=lfs diff=lfs merge=lfs -text
 assets/images/vehicles/mazda_CX5.avif filter=lfs diff=lfs merge=lfs -text
 assets/images/vehicles/toyota_belta.jpg filter=lfs diff=lfs merge=lfs -text
